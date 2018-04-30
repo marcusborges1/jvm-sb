@@ -2,6 +2,7 @@
 
 JavaClass* read_class_file(char const* file_path);
 void read_constant_pool(FILE *fp, JavaClass* class_file);
+void read_interfaces(FILE *fp, JavaClass* class_file);
 
 uint8_t read_1_byte(FILE* fp);
 uint16_t read_2_bytes(FILE* fp);
@@ -27,6 +28,12 @@ JavaClass* read_class_file(char const* file_path) {
 
   class_file->constant_pool_count = read_2_bytes(file);
   read_constant_pool(file, class_file);
+
+  class_file->access_flags = read_2_bytes(file);
+  class_file->this_class = read_2_bytes(file);
+  class_file->super_class = read_2_bytes(file);
+  class_file->interfaces_count = read_2_bytes(file);
+  read_interfaces(file, class_file);
 
   printf("Magic Number: 0x%0X\n", class_file->magic_number);
   printf("Minor Version: %d\n", class_file->minor_version);
@@ -85,6 +92,13 @@ void read_constant_pool(FILE *fp, JavaClass* class_file) {
         fread(cp_info->UTF8.bytes, 1, cp_info->UTF8.size, fp);
         cp_info->UTF8.bytes[cp_info->UTF8.size] = '\0';
     }
+  }
+}
+
+void read_interfaces(FILE *fp, JavaClass* class_file) {
+  class_file->interfaces = (uint16_t*) malloc(class_file->interfaces_count * sizeof(uint16_t));
+  for (size_t i = 0; i < class_file->interfaces_count; i++) {
+    class_file->interfaces[i] = read_2_bytes(fp);
   }
 }
 
