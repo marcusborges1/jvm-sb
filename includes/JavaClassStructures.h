@@ -77,4 +77,9 @@ typedef struct {
   uint16_t  major_version;
   uint16_t  constant_pool_count;
   CpInfo*   contant_pool;
+  uint16_t access_flags;
+  uint16_t this_class;
+  uint16_t super_class;
+  uint16_t interfaces_count;
+  uint16_t* interfaces;
 } JavaClass;
