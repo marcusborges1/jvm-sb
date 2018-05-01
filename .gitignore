@@ -1,3 +1,12 @@
+# Binaries
+!*.*
+build/
+
+# GCOV files
+*.gcov
+*.gcda
+*.gcno
+
 # Prerequisites
 *.d
 

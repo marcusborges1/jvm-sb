@@ -1,6 +1,6 @@
-#include "../includes/JavaClassStructures.h"
+#include "JavaClassStructures.h"
 
-JavaClass* read_class_file(char const* file_path);
+void read_class_file(char const* file_path);
 void read_constant_pool(FILE *fp, JavaClass* class_file);
 void read_interfaces(FILE *fp, JavaClass* class_file);
 
@@ -13,7 +13,7 @@ int main(int argc, char const *argv[]) {
   return 0;
 }
 
-JavaClass* read_class_file(char const* file_path) {
+void read_class_file(char const* file_path) {
   FILE *file = fopen(file_path, "rb");
 
   if (file == NULL) {
