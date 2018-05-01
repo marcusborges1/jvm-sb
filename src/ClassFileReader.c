@@ -39,6 +39,8 @@ JavaClass* read_class_file(char const* file_path) {
   printf("Minor Version: %d\n", class_file->minor_version);
   printf("Major version: %d\n", class_file->major_version);
   printf("Contanst pool count: %d\n", class_file->constant_pool_count);
+
+  fclose(file);
 }
 
 void read_constant_pool(FILE *fp, JavaClass* class_file) {
