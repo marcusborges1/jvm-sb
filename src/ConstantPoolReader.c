@@ -1,4 +1,5 @@
 #include "ConstantPoolReader.h"
+#include "ReadBytes.h"
 
 void read_constant_pool(FILE *fp, JavaClass* class_file) {
   class_file->contant_pool = (CpInfo *) malloc((class_file->constant_pool_count - 1) * sizeof(CpInfo));

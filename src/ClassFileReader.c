@@ -18,6 +18,7 @@
  */
 
 #include "ConstantPoolReader.h"
+#include "ReadBytes.h"
 
 void read_class_file(char const* file_path);
 void read_interfaces(FILE *fp, JavaClass* class_file);
@@ -62,23 +63,4 @@ void read_interfaces(FILE *fp, JavaClass* class_file) {
   for (size_t i = 0; i < class_file->interfaces_count; i++) {
     class_file->interfaces[i] = read_2_bytes(fp);
   }
-}
-
-uint8_t read_1_byte(FILE* fp) {
-  uint8_t bytes_read = getc(fp);
-  return bytes_read;
-}
-
-uint16_t read_2_bytes(FILE* fp) {
-  uint16_t bytes_read = getc(fp);
-  bytes_read = (bytes_read << 8) | (getc(fp));
-  return bytes_read;
-}
-
-uint32_t read_4_bytes(FILE* fp) {
-  uint32_t bytes_read = getc(fp);
-  bytes_read = (bytes_read << 8) | (getc(fp));
-  bytes_read = (bytes_read << 8) | (getc(fp));
-  bytes_read = (bytes_read << 8) | (getc(fp));
-  return bytes_read;
 }

@@ -7,7 +7,7 @@ C_SRCS := $(wildcard *.c)
 DIR_SRC=src/
 DIR_OBJ=build/
 
-_OBJ=ClassFileReader.o ConstantPoolReader.o
+_OBJ=ClassFileReader.o ConstantPoolReader.o ReadBytes.o
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
 all : clean cppcheck compile exec gcov
