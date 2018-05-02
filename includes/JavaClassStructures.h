@@ -1,6 +1,6 @@
-#include "stdio.h"
-#include "stdlib.h"
-#include "stdint.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 #define CONSTANT_Class  7
 #define CONSTANT_Fieldref  9
@@ -15,7 +15,7 @@
 #define CONSTANT_Utf8 1
 
 typedef struct {
-  uint8_t  tag;
+  uint8_t tag;
 
   union {
     struct {
@@ -77,9 +77,9 @@ typedef struct {
   uint16_t  major_version;
   uint16_t  constant_pool_count;
   CpInfo*   contant_pool;
-  uint16_t access_flags;
-  uint16_t this_class;
-  uint16_t super_class;
-  uint16_t interfaces_count;
+  uint16_t  access_flags;
+  uint16_t  this_class;
+  uint16_t  super_class;
+  uint16_t  interfaces_count;
   uint16_t* interfaces;
 } JavaClass;

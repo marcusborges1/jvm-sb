@@ -2,6 +2,14 @@
 
 A Java Virtual Machine for Basic Software's course.
 
+# .class files
+
+To check ```.class``` files uses:
+
+```
+$ javap HelloWorld.class
+```
+
 # Setups
 
 ## Cppcheck
