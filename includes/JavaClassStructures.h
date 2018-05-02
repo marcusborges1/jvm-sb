@@ -1,3 +1,6 @@
+#ifndef __JAVA_CLASS_STRUCTS_H__
+#define __JAVA_CLASS_STRUCTS_H__
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -83,3 +86,5 @@ typedef struct {
   uint16_t  interfaces_count;
   uint16_t* interfaces;
 } JavaClass;
+
+#endif //__JAVA_CLASS_STRUCTS_H__
