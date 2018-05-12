@@ -80,8 +80,13 @@ typedef struct {
   uint16_t descriptor_index;
   uint16_t attributes_count;
   AttributeInfo* attributes;
-
 } FieldInfo;
+
+typedef struct {
+  uint16_t attribute_name_index;
+  uint32_t attribute_length;
+  uint8_t* info;
+} AttributeInfo;
 
 typedef struct {
   uint32_t 	magic_number;
@@ -95,6 +100,7 @@ typedef struct {
   uint16_t  interfaces_count;
   uint16_t* interfaces;
   uint16_t  fields_count;
+  FieldInfo* fields;
 
 } JavaClass;
 
