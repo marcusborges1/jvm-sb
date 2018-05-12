@@ -1,4 +1,5 @@
 #include "FieldReader.h"
+#include "AttributeInfoReader.h"
 #include "ReadBytes.h"
 
 void read_field(FILE *fp, JavaClass* class_file) {
@@ -7,14 +8,13 @@ void read_field(FILE *fp, JavaClass* class_file) {
   for (int j = 0; j < class_file->field_count; j++) {
       FieldInfo *field = class_file->fields + j;
 
-      field->access_flag = read_2_bytes(file);
-      field->name_index = read_2_bytes(file);
-      field->descriptor_index = read_2_bytes(file);
-      field->atributes_count = read_2_bytes(file);
+      field->access_flag = read_2_bytes(fp);
+      field->name_index = read_2_bytes(fp);
+      field->descriptor_index = read_2_bytes(fp);
+      field->atributes_count = read_2_bytes(fp);
 
       field->attributes = (AttributeInfo*)malloc(field->atributes_count*sizeof(AttributeInfo));
-      for (int i = 0; i < field->atributes_count; ++i) {
-          attributeInfoReader(file, class_file, field->attributes + i);
-      }
+      for (int i = 0; i < field->atributes_count; ++i)
+          read_attribute_info(fp, class_file, field->attributes + i);
   }
 }
