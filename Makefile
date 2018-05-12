@@ -7,7 +7,7 @@ C_SRCS := $(wildcard *.c)
 DIR_SRC=src/
 DIR_OBJ=build/
 
-_OBJ=ClassFileReader.o ConstantPoolReader.o InterfaceReader.o FieldReader.o AttributeInfoReader.o ReadBytes.o
+_OBJ=ClassFileReader.o ConstantPoolReader.o InterfaceReader.o FieldReader.o AttributeInfoReader.o MethodsReader.o ReadBytes.o 
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
 all : clean cppcheck compile exec gcov
@@ -34,7 +34,7 @@ compile: $(OBJ)
 
 cppcheck :
 	@echo "Static code analysis..."
-	@$(CPPCHECK) src/ClassFileReader.c src/ConstantPoolReader.c src/InterfaceReader.c src/FieldReader.c src/AttributeInfoReader.c
+	@$(CPPCHECK) src/ClassFileReader.c src/ConstantPoolReader.c src/InterfaceReader.c src/FieldReader.c src/AttributeInfoReader.c src/MethodsReader.c
 	@echo "Done static analysis!"
 
 clean :
