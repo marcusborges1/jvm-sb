@@ -75,6 +75,15 @@ typedef struct {
 } CpInfo;
 
 typedef struct {
+  uint16_t access_flags;
+  uint16_t name_index;
+  uint16_t descriptor_index;
+  uint16_t attributes_count;
+  AttributeInfo* attributes;
+
+} FieldInfo;
+
+typedef struct {
   uint32_t 	magic_number;
   uint16_t  minor_version;
   uint16_t  major_version;
@@ -85,6 +94,8 @@ typedef struct {
   uint16_t  super_class;
   uint16_t  interfaces_count;
   uint16_t* interfaces;
+  uint16_t  fields_count;
+
 } JavaClass;
 
 #endif //__JAVA_CLASS_STRUCTS_H__

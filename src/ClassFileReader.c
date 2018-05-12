@@ -49,6 +49,8 @@ void read_class_file(char const* file_path) {
   class_file->super_class = read_2_bytes(file);
   class_file->interfaces_count = read_2_bytes(file);
   read_interfaces(file, class_file);
+  class_file->fields_count = read_2_bytes(file);
+  
 
   printf("Magic Number: 0x%0X\n", class_file->magic_number);
   printf("Minor Version: %d\n", class_file->minor_version);
