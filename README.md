@@ -10,6 +10,13 @@ To check ```.class``` files uses:
 $ javap HelloWorld.class
 ```
 
+This program checks the following in a ```.class``` file:
+
+- Constant pools
+- Fields
+- Methods
+- Attributes
+
 # Setups
 
 ## Cppcheck

@@ -18,10 +18,11 @@
  */
 
 #include "ConstantPoolReader.h"
+#include "InterfaceReader.h"
+#include "FieldReader.h"
 #include "ReadBytes.h"
 
 void read_class_file(char const* file_path);
-void read_interfaces(FILE *fp, JavaClass* class_file);
 
 int main(int argc, char const *argv[]) {
   read_class_file(argv[1]);
@@ -47,20 +48,19 @@ void read_class_file(char const* file_path) {
   class_file->access_flags = read_2_bytes(file);
   class_file->this_class = read_2_bytes(file);
   class_file->super_class = read_2_bytes(file);
-  class_file->interfaces_count = read_2_bytes(file);
-  read_interfaces(file, class_file);
+
+  class_file->interface_count = read_2_bytes(file);
+  read_interface(file, class_file);
+
+  class_file->field_count = read_2_bytes(file);
+  read_field(file, class_file);
 
   printf("Magic Number: 0x%0X\n", class_file->magic_number);
   printf("Minor Version: %d\n", class_file->minor_version);
   printf("Major version: %d\n", class_file->major_version);
   printf("Contanst pool count: %d\n", class_file->constant_pool_count);
+  printf("Interface count: %d\n", class_file->interface_count);
+  printf("Field count: %d\n", class_file->field_count);
 
   fclose(file);
-}
-
-void read_interfaces(FILE *fp, JavaClass* class_file) {
-  class_file->interfaces = (uint16_t*) malloc(class_file->interfaces_count * sizeof(uint16_t));
-  for (size_t i = 0; i < class_file->interfaces_count; i++) {
-    class_file->interfaces[i] = read_2_bytes(fp);
-  }
 }
