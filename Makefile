@@ -10,7 +10,7 @@ DIR_OBJ=build/
 _OBJ=ClassFileReader.o ClassFilePrinter.o ConstantPoolReader.o InterfaceReader.o FieldReader.o AttributeInfoReader.o MethodsReader.o ReadBytes.o main.o
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
-all : clean cppcheck compile gcov exec 
+all : clean cppcheck compile gcov exec
 
 gcov :
 	@echo "Checking coverage for ClassFileReader..."
@@ -20,7 +20,7 @@ gcov :
 exec :
 	@echo "Running main..."
 	@echo "\n\n\n"
-	@build/./main src/HelloWorld.class
+	@build/./main test-files/HelloWorld.class
 	@echo "\n\n\n"
 	@echo "Done running!"
 
