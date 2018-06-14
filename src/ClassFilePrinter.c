@@ -142,6 +142,16 @@ void print_constant_pool_info(JavaClass* class_file) {
   }
 }
 
+void print_interfaces_info(JavaClass* class_file){
+    printf("\nInterfaces Info\n");
+
+    for (int i = 0; i < class_file->interface_count; i++) {
+        printf("Interface: cp info #%d <", class_file->interfaces[i]);
+        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
+        printf("\n");
+    }
+}
+
 void print_info_on_screen(JavaClass* class_file) {
   int option = 0;
 
@@ -159,6 +169,9 @@ void print_info_on_screen(JavaClass* class_file) {
         break;
       case 1:
         print_constant_pool_info(class_file);
+        break;
+      case 2:
+        print_interfaces_info(class_file);
         break;
     }
 
