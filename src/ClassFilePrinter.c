@@ -134,6 +134,9 @@ void print_constant_pool_info(JavaClass* class_file) {
         printf("Descriptor index: ");
         printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.descriptor_index-1));
         break;
+      case CONSTANT_EmptySpace:
+        printf("(Large numeric continued)\n");
+        break;
     }
     printf("\n");
   }
