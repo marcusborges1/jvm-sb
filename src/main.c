@@ -24,6 +24,7 @@
 
 int main(int argc, char const *argv[]) {
   JavaClass* class_file = read_class_file(argv[1]);
-  print_formatted_class_file(class_file);
+  // print_formatted_class_file(class_file);
+  print_info_on_screen(class_file);
   return 0;
 }
