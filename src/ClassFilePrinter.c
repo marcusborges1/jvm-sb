@@ -5,35 +5,49 @@ char * get_UTF8_constant_pool(CpInfo *cp_info, uint16_t pos_info) {
   static char string_value[10000];
   int tag = cp_info[pos_info].tag;
 
+  printf("Porra");
   switch (tag){
     case CONSTANT_Utf8:
+      printf("\nc1");
+      printf("posInfo: %d\n",pos_info );
+      printf("tag: %d\n", tag);
       strcpy(string_value, (char*)cp_info[pos_info].UTF8.bytes);
       break;
     case CONSTANT_Class:
+      printf("\nc2");
+
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].Class.type_class_info-1));
       break;
     case CONSTANT_Fieldref:
+      printf("\nc3");
+
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.class_index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.name_and_type_index-1));
       break;
     case CONSTANT_NameAndType:
+      printf("\nc4");
+
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.name_index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.descriptor_index-1));
       break;
     case CONSTANT_Methodref:
+      printf("\nc5");
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.name_and_type-1));
       break;
     case CONSTANT_InterfaceMethodref:
+      printf("\nc6");
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.name_and_type-1));
       break;
     case CONSTANT_String:
+      printf("\nc7");
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1));
       break;
     default:
       break;
   }
+  printf("fim");
   return string_value;
 }
 
@@ -170,6 +184,67 @@ void print_fields_info(JavaClass* class_file){
   }
 }
 
+// void print_attributes(JavaClass* class_file, AttributeInfo* attr) {
+// }
+
+char * test_methods_flags(uint16_t access_flag) {
+  static char string_value[10000];
+  strcpy(string_value, "");
+
+  if(access_flag & ACC_PUBLIC) {
+    strcat(string_value, "public ");
+  }
+  if(access_flag & ACC_PRIVATE) {
+    strcat(string_value, "private ");
+  }
+  if(access_flag & ACC_PROTECTED) {
+    strcat(string_value, "protected ");
+  }
+  if(access_flag & ACC_STATIC) {
+    strcat(string_value, "static ");
+  }
+  if(access_flag & ACC_FINAL) {
+    strcat(string_value, "final ");
+  }
+  if(access_flag & ACC_SYNCRONIZED) {
+    strcat(string_value, "syncronized ");
+  }
+  if(access_flag & ACC_NATIVE) {
+    strcat(string_value, "native ");
+  }
+  if(access_flag & ACC_ABSTRACT) {
+    strcat(string_value, "abstract ");
+  }
+  if(access_flag & ACC_STRICT) {
+    strcat(string_value, "strict ");
+  }
+  return string_value;
+}
+
+void print_methods_info(JavaClass* class_file) {
+  printf("Methods Info: \n");
+  for(int i = 0; i < class_file->methods_count; i++) {
+    MethodInfo* cp = class_file->methods+i;
+    printf("Access Flag: 0x%04x ", cp->access_flag);
+    // printf("%s\n", test_methods_flags(cp->access_flag));
+
+    printf("Name Index: cp info #%d ",cp->name_index);
+    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->name_index -1));
+    printf("\n");
+
+    printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
+    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->descriptor_index - 1));
+    printf("\n");
+
+    // printf("Attributes Count: %d\n",cp->attributes_count);
+    // printf("Attributes: \n");
+    // for (int j = 0; j < cp->attributes_count; j++) {
+    //   AttributeInfo *attr_info = cp->attributes + j;
+    // }
+    printf("\n");
+  }
+}
+
 void print_info_on_screen(JavaClass* class_file) {
   int option = 0;
 
@@ -193,6 +268,9 @@ void print_info_on_screen(JavaClass* class_file) {
         break;
       case 3:
         print_fields_info(class_file);
+        break;
+      case 4:
+        print_methods_info(class_file);
         break;
     }
 

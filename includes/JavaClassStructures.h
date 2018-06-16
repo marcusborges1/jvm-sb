@@ -135,7 +135,7 @@ typedef struct {
     // attribute size in bytes
     u4  attribute_length;
     u1  *info;
-}AttributeInfo;
+} AttributeInfo;
 
 typedef struct {
     u2  access_flag;
@@ -147,7 +147,7 @@ typedef struct {
     u2  atributes_count;
     // JVM implementation should ignore in silence each attribute unrecognized
     AttributeInfo  *attributes;
-}FieldInfo;
+} FieldInfo;
 
 typedef struct {
     u2  access_flag;
@@ -159,7 +159,7 @@ typedef struct {
     u2  attributes_count;
     // JVM implementation should ignore in silence each attribute unrecognized
     AttributeInfo  *attributes;
-}MethodInfo;
+} MethodInfo;
 
 typedef struct {
   // class signature : 0xCAFEBABE
