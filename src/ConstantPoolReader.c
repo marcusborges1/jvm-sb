@@ -48,9 +48,10 @@ void read_constant_pool(FILE *fp, JavaClass* class_file) {
         break;
       case CONSTANT_Utf8:
         cp_info->UTF8.size = read_2_bytes(fp);
-        cp_info->UTF8.bytes = (uint8_t *) malloc((cp_info->UTF8.size + 1) * sizeof(uint8_t));
+        cp_info->UTF8.bytes = (uint8_t *) malloc(((cp_info->UTF8.size) + 1) * sizeof(uint8_t));
         fread(cp_info->UTF8.bytes, 1, cp_info->UTF8.size, fp);
         cp_info->UTF8.bytes[cp_info->UTF8.size] = '\0';
+        break;
     }
   }
 }

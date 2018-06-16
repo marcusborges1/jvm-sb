@@ -1,53 +1,41 @@
 #include "ClassFilePrinter.h"
 #include <string.h>
 
-char * get_UTF8_constant_pool(CpInfo *cp_info, uint16_t pos_info) {
+char * get_UTF8_constant_pool(CpInfo *cp_info, uint32_t pos_info) {
   static char string_value[10000];
   int tag = cp_info[pos_info].tag;
 
-  printf("Porra");
   switch (tag){
     case CONSTANT_Utf8:
-      printf("\nc1");
-      printf("posInfo: %d\n",pos_info );
-      printf("tag: %d\n", tag);
-      strcpy(string_value, (char*)cp_info[pos_info].UTF8.bytes);
+      printf("%s\n", cp_info[pos_info].UTF8.bytes);
+      return "\n";
+      // strcpy(string_value, (char*)cp_info[pos_info].UTF8.bytes);
       break;
     case CONSTANT_Class:
-      printf("\nc2");
-
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].Class.type_class_info-1));
       break;
     case CONSTANT_Fieldref:
-      printf("\nc3");
-
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.class_index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.name_and_type_index-1));
       break;
     case CONSTANT_NameAndType:
-      printf("\nc4");
-
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.name_index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.descriptor_index-1));
       break;
     case CONSTANT_Methodref:
-      printf("\nc5");
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.name_and_type-1));
       break;
     case CONSTANT_InterfaceMethodref:
-      printf("\nc6");
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.index-1));
       strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.name_and_type-1));
       break;
     case CONSTANT_String:
-      printf("\nc7");
       strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1));
       break;
     default:
       break;
   }
-  printf("fim");
   return string_value;
 }
 
@@ -81,7 +69,7 @@ void print_constant_pool_info(JavaClass* class_file) {
   for (int i = 0; i < class_file->constant_pool_count-1; i++) {
     CpInfo* cp_info = class_file->contant_pool+i;
 
-    printf("count: %d - ", i + 1);
+    printf("\nCP_INFO[%d]\n", i + 1);
     switch (cp_info->tag) {
       case CONSTANT_Integer:
         printf("Integer: \n");
