@@ -1,42 +1,51 @@
 #include "ClassFilePrinter.h"
 #include <string.h>
 
-char * get_UTF8_constant_pool(CpInfo *cp_info, uint32_t pos_info) {
-  static char string_value[10000];
+void get_UTF8_constant_pool(CpInfo *cp_info, uint32_t pos_info) {
+  // static char string_value[10000];
   int tag = cp_info[pos_info].tag;
 
   switch (tag){
     case CONSTANT_Utf8:
-      printf("%s\n", cp_info[pos_info].UTF8.bytes);
-      return "\n";
+      printf("%s\n", (char*)cp_info[pos_info].UTF8.bytes);
       // strcpy(string_value, (char*)cp_info[pos_info].UTF8.bytes);
       break;
     case CONSTANT_Class:
-      strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].Class.type_class_info-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].Class.type_class_info-1);
+      // strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].Class.type_class_info-1));
       break;
     case CONSTANT_Fieldref:
-      strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.class_index-1));
-      strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.name_and_type_index-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.class_index-1);
+      // strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.class_index-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.name_and_type_index-1);
+      // strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].FieldRef.name_and_type_index-1));
       break;
     case CONSTANT_NameAndType:
-      strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.name_index-1));
-      strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.descriptor_index-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.name_index-1);
+      // strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.name_index-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.descriptor_index-1);
+      // strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].NameAndType.descriptor_index-1));
       break;
     case CONSTANT_Methodref:
-      strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.index-1));
-      strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.name_and_type-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.index-1);
+      // strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.index-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.name_and_type-1);
+      // strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].MethodRef.name_and_type-1));
       break;
     case CONSTANT_InterfaceMethodref:
-      strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.index-1));
-      strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.name_and_type-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.index-1);
+      // strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.index-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.name_and_type-1);
+      // strcat(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].InterfaceMethodRef.name_and_type-1));
       break;
     case CONSTANT_String:
-      strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1));
+      get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1);
+      // strcpy(string_value, get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1));
       break;
     default:
       break;
   }
-  return string_value;
+  // return string_value;
 }
 
 void print_formatted_class_file(JavaClass* class_file) {
@@ -102,39 +111,49 @@ void print_constant_pool_info(JavaClass* class_file) {
         break;
       case CONSTANT_String:
         printf("String\n");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->String.bytes-1));
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->String.bytes-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->String.bytes-1);
         break;
       case CONSTANT_Class :
         printf("Class\n");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->Class.type_class_info-1));
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->Class.type_class_info-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->Class.type_class_info-1);
         break;
       case CONSTANT_Fieldref:
         printf("FieldRef\n");
         printf("Class index: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->FieldRef.class_index-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->FieldRef.class_index-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->FieldRef.class_index-1));
         printf("Name and Type: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->FieldRef.name_and_type_index-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->FieldRef.name_and_type_index-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->FieldRef.name_and_type_index-1));
         break;
       case CONSTANT_Methodref:
         printf("MethodRef: \n");
         printf("Index: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->MethodRef.index-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->MethodRef.index-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->MethodRef.index-1));
         printf("Name and Type: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->MethodRef.name_and_type-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->MethodRef.name_and_type-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->MethodRef.name_and_type-1));
         break;
       case CONSTANT_InterfaceMethodref:
         printf("InterfaceMethodRef: \n");
         printf("Index: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->InterfaceMethodRef.index-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->InterfaceMethodRef.index-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->InterfaceMethodRef.index-1));
         printf("Name and Type: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->InterfaceMethodRef.name_and_type-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->InterfaceMethodRef.name_and_type-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->InterfaceMethodRef.name_and_type-1));
         break;
       case CONSTANT_NameAndType:
         printf("NameAndType: \n");
         printf("Name index: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.name_index-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.name_index-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.name_index-1));
         printf("Descriptor index: ");
-        printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.descriptor_index-1));
+        get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.descriptor_index-1);
+        // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp_info->NameAndType.descriptor_index-1));
         break;
       case CONSTANT_EmptySpace:
         printf("(Large numeric continued)\n");
@@ -149,7 +168,8 @@ void print_interfaces_info(JavaClass* class_file){
 
   for (int i = 0; i < class_file->interface_count; i++) {
     printf("Interface: cp info #%d <", class_file->interfaces[i]);
-    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
+    get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1);
+    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
     printf("\n");
   }
 }
@@ -162,10 +182,12 @@ void print_fields_info(JavaClass* class_file){
     printf("Name: cp info #%d ", field->name_index);
     printf("<<");
 
-    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1));
+    get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1);
+    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1));
 
     printf("Descriptor: cp info #%d ", field->descriptor_index);
-    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1));
+    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1));
+    get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1);
 
     printf("Access Flag: 0x%04x ", field->access_flag);
     printf("%d\n", field->access_flag);
@@ -214,15 +236,16 @@ void print_methods_info(JavaClass* class_file) {
   for(int i = 0; i < class_file->methods_count; i++) {
     MethodInfo* cp = class_file->methods+i;
     printf("Access Flag: 0x%04x ", cp->access_flag);
-    // printf("%s\n", test_methods_flags(cp->access_flag));
+    printf("%s\n", test_methods_flags(cp->access_flag));
 
-    printf("Name Index: cp info #%d ",cp->name_index);
-    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->name_index -1));
-    printf("\n");
-
-    printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
-    printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->descriptor_index - 1));
-    printf("\n");
+//  READER TA QUEBRADO
+    // printf("Name Index: cp info #%d ",cp->name_index);
+    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->name_index -1));
+    // printf("\n");
+    //
+    // printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
+    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->descriptor_index - 1));
+    // printf("\n");
 
     // printf("Attributes Count: %d\n",cp->attributes_count);
     // printf("Attributes: \n");
