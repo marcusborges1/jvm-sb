@@ -232,29 +232,95 @@ char * test_methods_flags(uint16_t access_flag) {
 }
 
 void print_methods_info(JavaClass* class_file) {
-  printf("Methods Info: \n");
+  printf(" ------------- Methods Info:  -------------\n");
   for(int i = 0; i < class_file->methods_count; i++) {
+    printf("\nMETHOD INFO[%d]\n", i);
     MethodInfo* cp = class_file->methods+i;
     printf("Access Flag: 0x%04x ", cp->access_flag);
     printf("%s\n", test_methods_flags(cp->access_flag));
 
 //  READER TA QUEBRADO
-    // printf("Name Index: cp info #%d ",cp->name_index);
-    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->name_index -1));
-    // printf("\n");
-    //
-    // printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
-    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, cp->descriptor_index - 1));
-    // printf("\n");
+    printf("Name Index: cp info #%d ",cp->name_index);
+    get_UTF8_constant_pool(class_file->contant_pool, cp->name_index -1);
+    printf("\n");
 
-    // printf("Attributes Count: %d\n",cp->attributes_count);
-    // printf("Attributes: \n");
-    // for (int j = 0; j < cp->attributes_count; j++) {
-    //   AttributeInfo *attr_info = cp->attributes + j;
-    // }
+    printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
+    get_UTF8_constant_pool(class_file->contant_pool, cp->descriptor_index - 1);
+    printf("\n");
+
+    printf("Attributes Count: %d\n",cp->attributes_count);
+    printf("Attributes: \n");
+    for (int j = 0; j < cp->attributes_count; j++){
+      printf("\nATTRIBUTE[%d]\n", j);
+      AttributeInfo* info = cp->attributes +j;
+      printAttributesOnScreen(class_file, info);
+    }
     printf("\n");
   }
 }
+
+void printAttributesOnScreen(JavaClass* class_file, AttributeInfo* info) {
+  char stringValue[100];
+  printf("attribute_name_index: cp info #%d ", info->attribute_name_index);
+  get_UTF8_constant_pool(class_file->contant_pool, info->attribute_name_index - 1);
+  printf("attribute length: %d\n", info->attribute_length) ;
+  strcpy(stringValue, class_file->contant_pool[(info->attribute_name_index)- 1].UTF8.bytes);
+  printf("%s\n", stringValue);
+
+
+  if(strcmp("Code", stringValue)){
+    printAttributeCode(class_file, info->code);
+  }
+}
+
+void printAttributeCode(JavaClass *class_file, AttrCode *code){
+    printf("Max stack: %d\n", code->maxStack);
+    printf("Max locals: %d\n", code->maxLocals);
+    printf("Code Length: %d\n", code->codeLength);
+
+    printf("Code: \n");
+    printMethodInstructions(class_file, code);
+
+    printf("Exceptions Length: %d\n", code->exceptionsTableLength);
+    for (int i = 0; i < code->exceptionsTableLength; ++i) {
+        if(i==0)
+            printf("Exceptions:\n\n");
+        AttrCodeExceptions *code_exception = code->exceptions + i;
+
+        printf("Start PC: %d\n", code_exception->startPc);
+        printf("End PC: %d\n", code_exception->endPc);
+        printf("Handler PC: %d\n", code_exception->handlerPc);
+        printf("Catch Type: ");
+        getUTF8StringFromConstantPool(class_file->contant_pool, code_exception->catchType-1);
+    }
+
+    printf("Code Attributes count: %d\n", code->attrCounts);
+    for (int j = 0; j < code->attrCounts; j++) {
+        if(j==0)
+            printf("Attributes:\n\n");
+        printAttributesOnScreen(class_file, code->attributes+j);
+    }
+}
+
+void printMethodInstructions(JavaClass *class_file, AttrCode *attrCode) {
+    Instrucao instrucoes[QTD_INSTRUCTIONS];
+    initVectorDecodificatorInstructions(instrucoes);
+
+    for (int k = 0; k < attrCode->codeLength; k++){
+        uint8_t opcode = attrCode->code[k];
+        Instrucao opcodeInstruct = instrucoes[opcode];
+
+        if(opcodeInstruct.instructionName == "tableswitch"){ //TODO
+            std::cout << "\n" <<k << ": tableswitch" <<std::endl;
+        } else if(opcodeInstruct.instructionName == "lookupswitch"){ //TODO
+            std::cout << "\n" << k << ": lookupswitch" <<std::endl;
+        } else{
+            k = printInstruction(javaClassFile, attrCode, k, opcodeInstruct);
+        }
+    }
+    printf("\n\n");
+}
+
 
 void print_info_on_screen(JavaClass* class_file) {
   int option = 0;
