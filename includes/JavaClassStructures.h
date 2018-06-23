@@ -282,4 +282,11 @@ typedef struct {
   AttributeInfo  *attributes;
 } JavaClass;
 
+typedef struct{
+    char* name;
+    int bytes;
+    int index_constant_pool;
+}Instruction;
+
+
 #endif //__JAVA_CLASS_STRUCTS_H__
