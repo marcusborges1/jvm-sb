@@ -2,6 +2,13 @@
 
 A Java Virtual Machine for Basic Software's course.
 
+This program checks the following in a ``.class`` file:
+
+- Constant pools
+- Fields
+- Methods
+- Attributes
+
 # .class files
 
 To check ```.class``` files uses:
@@ -10,14 +17,27 @@ To check ```.class``` files uses:
 $ javap HelloWorld.class
 ```
 
-This program checks the following in a ```.class``` file:
+# Run
 
-- Constant pools
-- Fields
-- Methods
-- Attributes
+To execute this software follow these commands:
+
+```
+$ make
+```
+
+It will first clean all binaries, than check static code, compile all necessary
+files, check coverage and finally execute the software that reads and prints
+informations about a ``.class`` file.
 
 # Setups
+
+## Javap
+
+### Install on Linux (package-manager)
+
+```
+$ sudo apt-get install openjdk-9-jdk-headless
+```
 
 ## Cppcheck
 
