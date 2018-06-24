@@ -20,7 +20,7 @@ gcov :
 exec :
 	@echo "Running main..."
 	@echo "\n\n\n"
-	@build/./main test/HelloWorld.class
+	@build/./main test-files/Hello.class
 	@echo "\n\n\n"
 	@echo "Done running!"
 

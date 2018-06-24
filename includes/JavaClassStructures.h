@@ -17,6 +17,7 @@
 #define CONSTANT_Double               6
 #define CONSTANT_NameAndType         12
 #define CONSTANT_Utf8                 1
+#define CONSTANT_EmptySpace          13
 
 // access flags
 // public declaration, can be accessed outside the package
@@ -53,6 +54,8 @@
 #define u2 uint16_t
 // uint8_t : typedef unsigned char
 #define u1 uint8_t
+
+typedef struct AttrCode AttrCode;
 
 // constant pool information
 typedef struct {
@@ -129,12 +132,89 @@ typedef struct {
 } CpInfo;
 
 typedef struct {
+    uint16_t start_pc;
+    uint16_t length;
+    uint16_t name_index;
+    uint16_t descriptor_index;
+    uint16_t index;
+} AttrLocalVariableTableData;
+
+typedef struct {
+    uint16_t local_variable_table_length;
+    AttrLocalVariableTableData* table_data;
+} AttrLocalVariableTable;
+
+typedef struct {
+    uint16_t start_pc;
+    uint16_t line_pc;
+} AttrLineNumberTableData;
+
+typedef struct {
+    uint16_t line_number_table_length;
+    AttrLineNumberTableData* table;
+} AttrLineNumberTable;
+
+
+typedef struct {
+  uint16_t source_file_index;
+} AttrSourceFile;
+
+typedef struct {
+    uint16_t inner_class_info_index;
+    uint16_t outer_class_info_index;
+    uint16_t inner_name_index;
+    uint16_t inner_class_access_flag;
+} InnerClassData;
+
+typedef struct {
+    uint16_t number_of_classes;
+    InnerClassData* inner_class_data;
+} AttrInnerClass;
+
+typedef struct {
+    uint16_t value_index;
+} AttrConstantValue;
+
+typedef struct {
+    uint16_t number_of_exceptions;
+    uint16_t * exception_index_table;
+} AttrException;
+
+typedef struct {
+    uint16_t start_pc;
+    uint16_t end_pc;
+    uint16_t handler_pc;
+    uint16_t catch_type;
+} AttrCodeException;
+
+
+typedef struct {
     // CONSTANT_UTf8, attribute name
     u2  attribute_name_index;
     // attribute size in bytes
     u4  attribute_length;
-    u1  *info;
-}AttributeInfo;
+    union {
+      AttrCode* code;
+      AttrConstantValue* constant_value;
+      AttrException* exception;
+      AttrInnerClass* inner_class;
+      AttrSourceFile* source_file;
+      AttrLineNumberTable* lineNumber_table;
+      AttrLocalVariableTable* local_variable_table;
+      uint8_t * info;
+    };
+} AttributeInfo;
+
+struct AttrCode {
+  uint16_t max_stack;
+  uint16_t max_locals;
+  uint32_t code_length;
+  uint8_t *code;
+  uint16_t exceptions_table_length;
+  AttrCodeException *exceptions;
+  uint16_t attr_counts;
+  AttributeInfo *attributes;
+};
 
 typedef struct {
     u2  access_flag;
@@ -146,7 +226,7 @@ typedef struct {
     u2  atributes_count;
     // JVM implementation should ignore in silence each attribute unrecognized
     AttributeInfo  *attributes;
-}FieldInfo;
+} FieldInfo;
 
 typedef struct {
     u2  access_flag;
@@ -158,7 +238,7 @@ typedef struct {
     u2  attributes_count;
     // JVM implementation should ignore in silence each attribute unrecognized
     AttributeInfo  *attributes;
-}MethodInfo;
+} MethodInfo;
 
 typedef struct {
   // class signature : 0xCAFEBABE
@@ -201,5 +281,12 @@ typedef struct {
   // JVM implementation should ignore in silence each attribute unrecognized
   AttributeInfo  *attributes;
 } JavaClass;
+
+typedef struct{
+    char* name;
+    int bytes;
+    int index_constant_pool;
+}Instruction;
+
 
 #endif //__JAVA_CLASS_STRUCTS_H__
