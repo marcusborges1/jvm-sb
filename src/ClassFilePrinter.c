@@ -24,7 +24,8 @@ char* print_menu_choose_type_file() {
   printf("2. Simulação de impressão\n");
   printf("3. Vetor unidimensional\n");
   printf("4. Vetor multidimensional\n");
-  printf("5. Sair\n");
+  printf("5. Herança\n");
+  printf("6. Sair\n");
   scanf("%d", &option);
 
   switch (option) {
@@ -41,6 +42,9 @@ char* print_menu_choose_type_file() {
       strcpy(filename, "test/ArrayMultDemo.class");
       break;
     case 5:
+      strcpy(filename, "test/InheritanceDemo.class");
+      break;
+    case 6:
       printf("Até mais!\n");
       exit(0);
     default:

@@ -41,7 +41,8 @@ Future additions:
 - Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
 - Atributos de classe [AttributeClassDemo.class](test/AttributeClassDemo.class)
 - Atributos de instância [AttributeInstDemo.class](test/AttributeInstDemo.class)
-- Herança [InheritanceDemo.class](test/InheritanceDemo.class)
+- Herança [InheritanceDemo.class](test/InheritanceDemo.class) and
+  [SuperClassDemo.class](test/SuperClassDemo.class)
 - Polimorfismo [PolDemo.class](test/PolDemo.class)
 - Reescrita [RewrittenDemo.class](test/RewrittenDemo.class)
 - Objetos [ObjDemo.class](test/ObjDemo.class)
