@@ -26,6 +26,7 @@ char* print_menu_choose_type_file() {
   printf("4. Vetor multidimensional\n");
   printf("5. Herança\n");
   printf("6. Reescrita\n");
+  printf("7. Float\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -47,6 +48,9 @@ char* print_menu_choose_type_file() {
       break;
     case 6:
       strcpy(filename, "test/RewriteDemo.class");
+      break;
+    case 7:
+      strcpy(filename, "test/FloatDemo.class");
       break;
     case 0:
       printf("Até mais!\n");
