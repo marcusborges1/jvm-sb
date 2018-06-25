@@ -1,8 +1,12 @@
+/** @file ConstantPoolReader.c
+ *  @brief Leitor da estrutura "constant_pool" de um arquivo ".class".
+ *  @bug No know bugs.
+ */
 #include "ConstantPoolReader.h"
 #include "ReadBytes.h"
 
-/*
- *  Lê as constant_pools do arquivo .class na estrutura de dados do sistema.
+/** @brief Lê as constant_pools do arquivo .class na estrutura de dados
+ *    do sistema.
  *  @param fp ...
  *  @param class_file ...
  *  @return void

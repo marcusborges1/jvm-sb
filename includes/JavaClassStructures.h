@@ -1,3 +1,6 @@
+/** @file JavaClassStructures.h
+ *  @brief Estruturas de dados de um arquivo ".class".
+ */
 #ifndef __JAVA_CLASS_STRUCTS_H__
 #define __JAVA_CLASS_STRUCTS_H__
 
@@ -291,4 +294,4 @@ typedef struct{
 }Instruction;
 
 
-#endif //__JAVA_CLASS_STRUCTS_H__
+#endif 

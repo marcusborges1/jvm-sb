@@ -1,9 +1,13 @@
+/** @file ClassFilePrinter.c
+ *  @brief Funções de impressão da interface do sistema e exibidor
+ *    do arquivo ".class".
+ *  @bug No know bugs.
+ */
 #include "ClassFilePrinter.h"
 #include <string.h>
 
 
-/*
- *  Mostra menu inicial para escolher tipo de arquivo java de teste.
+/** @brief Mostra menu inicial para escolher tipo de arquivo java de teste.
  *  @return void
  */
 char* print_menu_choose_type_file() {
@@ -42,8 +46,7 @@ char* print_menu_choose_type_file() {
   return filename;
 }
 
-/*
- *  Mostra informações gerais do arquivo .class.
+/** @brief Mostra informações gerais do arquivo .class.
  *  @param class_file ...
  *  @return void
  */
@@ -58,8 +61,7 @@ void print_general_info(JavaClass* class_file, char *filename) {
   // printf("Methods count: %d\n", class_file->methods_count);
 }
 
-/*
- *  Mostra menu de escolhas do exibidor do arquivo .class.
+/** @brief Mostra menu de escolhas do exibidor do arquivo .class.
  *  @param class_file ...
  *  @return void
  */
@@ -90,8 +92,7 @@ void print_menu_exhibitor(JavaClass* class_file) {
   }
 }
 
-/*
- *  Mostra informações das constant_pools.
+/** @brief Mostra informações das constant_pools.
  *  Tabela de estruturas representando string, nomes de classes ou interfaces,
  *  nomes de campos, etc.
  *  @param class_file ...
@@ -227,8 +228,7 @@ void print_constant_pool_info(JavaClass* class_file) {
   }
 }
 
-/*
- *  Mostra nome no formato UTF8.
+/** @brief Mostra nome no formato UTF8.
  *  @param cp_info ...
  *  @param pos_info ...
  *  @return void

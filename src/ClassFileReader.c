@@ -1,13 +1,13 @@
-// #include "InterfaceReader.h"
-// #include "FieldReader.h"
-// #include "MethodReader.h"
+/** @file ClassFileReader.c
+ *  @brief Funções de leitura do arquivo ".class".
+ *  @bug No know bugs.
+ */
 #include "ConstantPoolReader.h"
 #include "ClassFileReader.h"
 #include "ReadBytes.h"
 
 
-/*
- *  Checa se um .class é válido.
+/** @brief Checa se um .class é válido.
  *  Um .class válido deve conter um número hex mágico do tipo 0xCAFEBABE.
  *  @param magic_number ...
  *  @return ...
@@ -16,8 +16,7 @@ bool check_valid_class_file(uint32_t magic_number) {
   return magic_number == 0xCAFEBABE;
 }
 
-/*
- *  Lê o arquivo .class.
+/** @brief Lê o arquivo .class.
  *  @param file_path ...
  *  @return ...
  */

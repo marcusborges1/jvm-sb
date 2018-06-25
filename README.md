@@ -59,7 +59,22 @@ It will first clean all binaries, than check static code, compile all necessary
 files, check coverage and finally execute the software that reads and prints
 informations about a ``.class`` file.
 
+To generate documentation:
+
+```
+$ doxygen Doxyfile
+```
+
+After the command above, open the file [index.html](html/index.html) with a
+browser. 
+
 # Setup
+
+## Doxygen
+
+```
+$ sudo apt-get install doxygen graphviz
+```
 
 ## Javac/Javap
 
