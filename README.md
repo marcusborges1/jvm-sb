@@ -3,19 +3,49 @@
 A Java Virtual Machine for Basic Software's course.
 
 This program checks the following in a ``.class`` file:
-
 - Constant pools
+
+Future additions:
 - Fields
 - Methods
 - Attributes
 
 # .class files
 
-To check ```.class``` files uses:
+## Compile and check
+
+Convert ``.java`` to ``.class`` file:
+
+```
+$ javac HelloWorld.java
+```
+
+To check ``.class`` files uses:
 
 ```
 $ javap HelloWorld.class
 ```
+
+## Test files
+
+This system covers ``.java`` files that contains:
+- String [StringDemo.class](test/StringDemo.class)
+- Simulação de impressão [PrintDemo.class](test/PrintDemo.class)
+
+Future additions:
+- Instruções de categoria 1 [CategoryOneDemo.class](test/CategoryOneDemo.class)
+- Instruções de categoria 2 [CategoryTwoDemo.class](test/CategoryTwoDemo.class)
+- Arrays unidimensionais [ArrayUniDemo.class](test/ArrayUniDemo.class)
+- Arrays multidimensionais [ArrayMultDemo.class](test/ArrayMultDemo.class)
+- Métodos estáticos [MethodStaticDemo.class](test/MethodStaticDemo.class)
+- Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
+- Atributos de classe [AttributeClassDemo.class](test/AttributeClassDemo.class)
+- Atributos de instância [AttributeInstDemo.class](test/AttributeInstDemo.class)
+- Herança [InheritanceDemo.class](test/InheritanceDemo.class)
+- Polimorfismo [PolDemo.class](test/PolDemo.class)
+- Reescrita [RewrittenDemo.class](test/RewrittenDemo.class)
+- Objetos [ObjDemo.class](test/ObjDemo.class)
+
 
 # Run
 
@@ -29,9 +59,9 @@ It will first clean all binaries, than check static code, compile all necessary
 files, check coverage and finally execute the software that reads and prints
 informations about a ``.class`` file.
 
-# Setups
+# Setup
 
-## Javap
+## Javac/Javap
 
 ### Install on Linux (package-manager)
 
@@ -47,27 +77,6 @@ We use [Cppcheck 1.83](http://cppcheck.sourceforge.net/) as static analyser for 
 
 ```
 $ sudo apt-get install cppcheck
-```
-
-### Install on Linux (SourceFile)
-
-1. Download file from there https://sourceforge.net/projects/cppcheck/  
-2. Go to the folder with for downloads.
-```
-$ cd ~/Downloads/
-```
-3. Unpack archive.
-```
-$ tar -xvf cppcheck-1.83.tar.gz
-```
-4. Go to unpacked folder.
-```
-$ cd cppcheck-1.83/
-```
-5. Install package as root.
-```
-$ make SRCDIR=build CFGDIR=/usr/share/cppcheck/
-$ sudo make install CFGDIR=/usr/share/cppcheck/
 ```
 
 ### Test cppcheck

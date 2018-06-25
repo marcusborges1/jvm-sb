@@ -1,14 +1,21 @@
 #include "ConstantPoolReader.h"
 #include "ReadBytes.h"
 
+/*
+ *  Lê as constant_pools do arquivo .class na estrutura de dados do sistema.
+ *  @param fp ...
+ *  @param class_file ...
+ *  @return void
+ */
 void read_constant_pool(FILE *fp, JavaClass* class_file) {
-  class_file->contant_pool = (CpInfo *) malloc((class_file->constant_pool_count - 1) * sizeof(CpInfo));
+  class_file->contant_pool = (CpInfo*)malloc(
+                          (class_file->constant_pool_count-1)*sizeof(CpInfo));
   int i;
 
   for (i = 0; i < class_file->constant_pool_count - 1; i++) {
     CpInfo *cp_info = class_file->contant_pool + i;
-    cp_info->tag = read_1_byte(fp);
 
+    cp_info->tag = read_1_byte(fp);
     switch (cp_info->tag) {
       case CONSTANT_Class:
         cp_info->Class.type_class_info = read_2_bytes(fp);
@@ -48,7 +55,7 @@ void read_constant_pool(FILE *fp, JavaClass* class_file) {
         break;
       case CONSTANT_Utf8:
         cp_info->UTF8.size = read_2_bytes(fp);
-        cp_info->UTF8.bytes = (uint8_t *) malloc(((cp_info->UTF8.size) + 1) * sizeof(uint8_t));
+        cp_info->UTF8.bytes = (u1*)malloc(((cp_info->UTF8.size)+1)*sizeof(u1));
         fread(cp_info->UTF8.bytes, 1, cp_info->UTF8.size, fp);
         cp_info->UTF8.bytes[cp_info->UTF8.size] = '\0';
         break;

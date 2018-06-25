@@ -48,11 +48,13 @@
 // strictfp, float point mode FP-strict (not normalized)
 #define ACC_STRICT      0x0800
 
-// uint32_t : typedef unsigned int
+// uint64_t : unsigned integer type with width of exactly 64
+#define u8 uint64_t
+// uint32_t : unsigned integer type with width of exactly 32
 #define u4 uint32_t
-// uint16_t : typedef unsigned short
+// uint16_t : unsigned integer type with width of exactly 16
 #define u2 uint16_t
-// uint8_t : typedef unsigned char
+// uint8_t : unsigned integer type with width of exactly 8
 #define u1 uint8_t
 
 typedef struct AttrCode AttrCode;
@@ -132,59 +134,59 @@ typedef struct {
 } CpInfo;
 
 typedef struct {
-    uint16_t start_pc;
-    uint16_t length;
-    uint16_t name_index;
-    uint16_t descriptor_index;
-    uint16_t index;
+    u2 start_pc;
+    u2 length;
+    u2 name_index;
+    u2 descriptor_index;
+    u2 index;
 } AttrLocalVariableTableData;
 
 typedef struct {
-    uint16_t local_variable_table_length;
+    u2 local_variable_table_length;
     AttrLocalVariableTableData* table_data;
 } AttrLocalVariableTable;
 
 typedef struct {
-    uint16_t start_pc;
-    uint16_t line_pc;
+    u2 start_pc;
+    u2 line_pc;
 } AttrLineNumberTableData;
 
 typedef struct {
-    uint16_t line_number_table_length;
+    u2 line_number_table_length;
     AttrLineNumberTableData* table;
 } AttrLineNumberTable;
 
 
 typedef struct {
-  uint16_t source_file_index;
+  u2 source_file_index;
 } AttrSourceFile;
 
 typedef struct {
-    uint16_t inner_class_info_index;
-    uint16_t outer_class_info_index;
-    uint16_t inner_name_index;
-    uint16_t inner_class_access_flag;
+    u2 inner_class_info_index;
+    u2 outer_class_info_index;
+    u2 inner_name_index;
+    u2 inner_class_access_flag;
 } InnerClassData;
 
 typedef struct {
-    uint16_t number_of_classes;
+    u2 number_of_classes;
     InnerClassData* inner_class_data;
 } AttrInnerClass;
 
 typedef struct {
-    uint16_t value_index;
+    u2 value_index;
 } AttrConstantValue;
 
 typedef struct {
-    uint16_t number_of_exceptions;
-    uint16_t * exception_index_table;
+    u2 number_of_exceptions;
+    u2 * exception_index_table;
 } AttrException;
 
 typedef struct {
-    uint16_t start_pc;
-    uint16_t end_pc;
-    uint16_t handler_pc;
-    uint16_t catch_type;
+    u2 start_pc;
+    u2 end_pc;
+    u2 handler_pc;
+    u2 catch_type;
 } AttrCodeException;
 
 
@@ -206,13 +208,13 @@ typedef struct {
 } AttributeInfo;
 
 struct AttrCode {
-  uint16_t max_stack;
-  uint16_t max_locals;
+  u2 max_stack;
+  u2 max_locals;
   uint32_t code_length;
   uint8_t *code;
-  uint16_t exceptions_table_length;
+  u2 exceptions_table_length;
   AttrCodeException *exceptions;
-  uint16_t attr_counts;
+  u2 attr_counts;
   AttributeInfo *attributes;
 };
 

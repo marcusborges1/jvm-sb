@@ -17,14 +17,22 @@
  *
  *  Copyright © 2018 UnB. All rights reserved.
  */
-
  #include "ClassFileReader.h"
  #include "ClassFilePrinter.h"
- #include "JavaClassStructures.h"
 
+
+/*
+ *  Função principal do sistema leitor/exibidor.
+ *  @param argc ...
+ *  @param argv ...
+ *  @return ...
+ */
 int main(int argc, char const *argv[]) {
+  // passa o nome do arquivo .class como argumento para função de leitura
   JavaClass* class_file = read_class_file(argv[1]);
-  // print_formatted_class_file(class_file);
-  print_info_on_screen(class_file);
+  // exibe os dados gerais do arquivo .class informado pelo usuário
+  print_general_info(class_file);
+  // exibe informações das constant_pools
+  print_constant_pool_info(class_file);
   return 0;
 }
