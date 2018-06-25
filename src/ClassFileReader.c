@@ -53,9 +53,9 @@ JavaClass* read_class_file(char const* file_path) {
   // lê as constant_pools do .class
   read_constant_pool(file, class_file);
 
-  // class_file->access_flags = read_2_bytes(file);
-  // class_file->this_class = read_2_bytes(file);
-  // class_file->super_class = read_2_bytes(file);
+  class_file->access_flags = read_2_bytes(file);
+  class_file->this_class = read_2_bytes(file);
+  class_file->super_class = read_2_bytes(file);
 
   // class_file->interface_count = read_2_bytes(file);
   // read_interface(file, class_file);
