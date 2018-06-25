@@ -33,19 +33,26 @@ This system covers ``.java`` files that contains:
 - Simulação de impressão [PrintDemo.class](test/PrintDemo.class)
 - Arrays unidimensionais [ArrayUniDemo.class](test/ArrayUniDemo.class)
 - Arrays multidimensionais [ArrayMultDemo.class](test/ArrayMultDemo.class)
+- Herança [InheritanceDemo.class](test/InheritanceDemo.class) and
+  [SuperClassInheritanceDemo.class](test/SuperClassInheritanceDemo.class)
+- Reescrita [RewrittenDemo.class](test/RewrittenDemo.class),
+  [SubClassRewriteDemo.class](test/SubClassRewriteDemo.class) and
+  [SuperClassRewriteDemo.class](test/SuperClassRewriteDemo.class)
+
 
 Future additions:
-- Instruções de categoria 1 [CategoryOneDemo.class](test/CategoryOneDemo.class)
-- Instruções de categoria 2 [CategoryTwoDemo.class](test/CategoryTwoDemo.class)
+- Instruções de categoria 1 (cat 1 32) [CategoryOneDemo.class](test/CategoryOneDemo.class)
+- Instruções de categoria 2 (cat 2 64) [CategoryTwoDemo.class](test/CategoryTwoDemo.class)
 - Métodos estáticos [MethodStaticDemo.class](test/MethodStaticDemo.class)
 - Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
 - Atributos de classe [AttributeClassDemo.class](test/AttributeClassDemo.class)
 - Atributos de instância [AttributeInstDemo.class](test/AttributeInstDemo.class)
-- Herança [InheritanceDemo.class](test/InheritanceDemo.class) and
-  [SuperClassDemo.class](test/SuperClassDemo.class)
 - Polimorfismo [PolDemo.class](test/PolDemo.class)
-- Reescrita [RewrittenDemo.class](test/RewrittenDemo.class)
 - Objetos [ObjDemo.class](test/ObjDemo.class)
+- Inteiro [IntegerDemo.class](test/IntegerDemo.class)
+- Float [FloatDemo.class](test/FloatDemo.class)
+- Double [DoubleDemo.class](test/DoubleDemo.class)
+- Long [LongDemo.class](test/LongDemo.class)
 
 
 ## Run

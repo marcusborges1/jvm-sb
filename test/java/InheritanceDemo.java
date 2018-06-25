@@ -1,12 +1,12 @@
-class SuperClassDemo {
+class SuperClassInheritanceDemo {
    int age;
 
-   SuperClassDemo(int age) {
+   SuperClassInheritanceDemo(int age) {
       this.age = age;
    }
 }
 
-public class InheritanceDemo extends SuperClassDemo {
+public class InheritanceDemo extends SuperClassInheritanceDemo {
    InheritanceDemo(int age) {
       super(age);
    }

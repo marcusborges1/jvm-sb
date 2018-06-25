@@ -25,7 +25,8 @@ char* print_menu_choose_type_file() {
   printf("3. Vetor unidimensional\n");
   printf("4. Vetor multidimensional\n");
   printf("5. Herança\n");
-  printf("6. Sair\n");
+  printf("6. Reescrita\n");
+  printf("7. Sair\n");
   scanf("%d", &option);
 
   switch (option) {
@@ -45,6 +46,9 @@ char* print_menu_choose_type_file() {
       strcpy(filename, "test/InheritanceDemo.class");
       break;
     case 6:
+      strcpy(filename, "test/RewriteDemo.class");
+      break;
+    case 7:
       printf("Até mais!\n");
       exit(0);
     default:
