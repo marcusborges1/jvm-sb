@@ -1,12 +1,54 @@
 #include "ClassFilePrinter.h"
 #include <string.h>
 
+
+/*
+ *  Mostra menu inicial para escolher tipo de arquivo java de teste.
+ *  @return void
+ */
+char* print_menu_choose_type_file() {
+  int option = 0;
+  static char filename[30];
+
+  printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+  printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+  printf("\n\nLeitor/Exibidor: \n");
+  printf("---------------------\n");
+
+  printf("Insira qual tipo de arquivo java gostaria de testar:\n");
+  printf("1. String\n");
+  printf("2. Simulação de impressão\n");
+  printf("3. Sair\n");
+  scanf("%d", &option);
+
+  switch (option) {
+    case 1:
+      strcpy(filename, "test/StringDemo.class");
+      break;
+    case 2:
+      strcpy(filename, "test/PrintDemo.class");
+      break;
+    case 3:
+      printf("Até mais!\n");
+      exit(0);
+    default:
+      printf("Opção não existe, tente novamente. Pressione enter...\n");
+      char command;
+      scanf("%c", &command);
+      while ((command = getchar()) != '\n' && command != EOF) { };
+      print_menu_choose_type_file();
+  }
+
+  return filename;
+}
+
 /*
  *  Mostra informações gerais do arquivo .class.
  *  @param class_file ...
  *  @return void
  */
-void print_general_info(JavaClass* class_file) {
+void print_general_info(JavaClass* class_file, char *filename) {
+  printf("Filename: %s\n", filename);
   printf("Magic Number: 0x%0X\n", class_file->magic_number);
   printf("Minor Version: %d\n", class_file->minor_version);
   printf("Major version: %d\n", class_file->major_version);
@@ -14,6 +56,38 @@ void print_general_info(JavaClass* class_file) {
   // printf("Interface count: %d\n", class_file->interface_count);
   // printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
+}
+
+/*
+ *  Mostra menu de escolhas do exibidor do arquivo .class.
+ *  @param class_file ...
+ *  @return void
+ */
+void print_menu_exhibitor(JavaClass* class_file) {
+  int option = 0;
+
+  printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+  printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+  printf("Que estrutura de dados deseja imprimir do arquivo .class:\n");
+  printf("1. Constant Pool\n");
+  printf("2. Sair\n");
+  scanf("%d", &option);
+
+  switch (option) {
+    case 1:
+      // exibe informações das constant_pools
+      print_constant_pool_info(class_file);
+      break;
+    case 2:
+      printf("Até mais!\n");
+      exit(0);
+    default:
+      printf("Opção não existe, tente novamente. Pressione enter...\n");
+      char command;
+      scanf("%c", &command);
+      while ((command = getchar()) != '\n' && command != EOF) { };
+      print_menu_exhibitor(class_file);
+  }
 }
 
 /*
@@ -213,83 +287,74 @@ void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info) {
   }
 }
 
-void print_menu_options() {
-  printf("Opcoes:\n");
-  printf("1 - Constant Pool\n");
-  printf("2 - Interfaces\n");
-  printf("3 - Fields\n");
-  printf("4 - Methods\n");
-  printf("-1 - Sair\n");
-  printf(">> ");
-}
 
-void print_interfaces_info(JavaClass* class_file) {
-  printf("\nInterfaces Info\n");
-
-  for (int i = 0; i < class_file->interface_count; i++) {
-    printf("Interface: cp info #%d <", class_file->interfaces[i]);
-    get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1);
-    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
-    printf("\n");
-  }
-}
-
-void print_fields_info(JavaClass* class_file) {
-  printf("\nField Info: \n");
-
-  for (int i = 0; i < class_file->field_count; i++){
-    FieldInfo *field = class_file->fields + i;
-    printf("Name: cp info #%d ", field->name_index);
-    printf("<<");
-
-    get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1);
-    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1));
-
-    printf("Descriptor: cp info #%d ", field->descriptor_index);
-    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1));
-    get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1);
-
-    printf("Access Flag: 0x%04x ", field->access_flag);
-    printf("%d\n", field->access_flag);
-  }
-}
-
-// void print_attributes(JavaClass* class_file, AttributeInfo* attr) {
+// void print_interfaces_info(JavaClass* class_file) {
+//   printf("\nInterfaces Info\n");
+//
+//   for (int i = 0; i < class_file->interface_count; i++) {
+//     printf("Interface: cp info #%d <", class_file->interfaces[i]);
+//     get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1);
+//     // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
+//     printf("\n");
+//   }
 // }
-
-char *test_methods_flags(u2 access_flag) {
-  static char string_value[10000];
-  strcpy(string_value, "");
-
-  if(access_flag & ACC_PUBLIC) {
-    strcat(string_value, "public ");
-  }
-  if(access_flag & ACC_PRIVATE) {
-    strcat(string_value, "private ");
-  }
-  if(access_flag & ACC_PROTECTED) {
-    strcat(string_value, "protected ");
-  }
-  if(access_flag & ACC_STATIC) {
-    strcat(string_value, "static ");
-  }
-  if(access_flag & ACC_FINAL) {
-    strcat(string_value, "final ");
-  }
-  if(access_flag & ACC_SYNCRONIZED) {
-    strcat(string_value, "syncronized ");
-  }
-  if(access_flag & ACC_NATIVE) {
-    strcat(string_value, "native ");
-  }
-  if(access_flag & ACC_ABSTRACT) {
-    strcat(string_value, "abstract ");
-  }
-  if(access_flag & ACC_STRICT) {
-    strcat(string_value, "strict ");
-  }
-  return string_value;
-}
+//
+// void print_fields_info(JavaClass* class_file) {
+//   printf("\nField Info: \n");
+//
+//   for (int i = 0; i < class_file->field_count; i++){
+//     FieldInfo *field = class_file->fields + i;
+//     printf("Name: cp info #%d ", field->name_index);
+//     printf("<<");
+//
+//     get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1);
+//     // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->name_index - 1));
+//
+//     printf("Descriptor: cp info #%d ", field->descriptor_index);
+//     // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1));
+//     get_UTF8_constant_pool(class_file->contant_pool, field->descriptor_index - 1);
+//
+//     printf("Access Flag: 0x%04x ", field->access_flag);
+//     printf("%d\n", field->access_flag);
+//   }
+// }
+//
+// // void print_attributes(JavaClass* class_file, AttributeInfo* attr) {
+// // }
+//
+// char *test_methods_flags(u2 access_flag) {
+//   static char string_value[10000];
+//   strcpy(string_value, "");
+//
+//   if(access_flag & ACC_PUBLIC) {
+//     strcat(string_value, "public ");
+//   }
+//   if(access_flag & ACC_PRIVATE) {
+//     strcat(string_value, "private ");
+//   }
+//   if(access_flag & ACC_PROTECTED) {
+//     strcat(string_value, "protected ");
+//   }
+//   if(access_flag & ACC_STATIC) {
+//     strcat(string_value, "static ");
+//   }
+//   if(access_flag & ACC_FINAL) {
+//     strcat(string_value, "final ");
+//   }
+//   if(access_flag & ACC_SYNCRONIZED) {
+//     strcat(string_value, "syncronized ");
+//   }
+//   if(access_flag & ACC_NATIVE) {
+//     strcat(string_value, "native ");
+//   }
+//   if(access_flag & ACC_ABSTRACT) {
+//     strcat(string_value, "abstract ");
+//   }
+//   if(access_flag & ACC_STRICT) {
+//     strcat(string_value, "strict ");
+//   }
+//   return string_value;
+// }
 
 // void print_methods_info(JavaClass* class_file) {
 //   printf(" ------------- Methods Info:  -------------\n");
@@ -334,33 +399,3 @@ char *test_methods_flags(u2 access_flag) {
 //   else printf("didnt enter\n" );
 // }
 //
-// void print_info_on_screen(JavaClass* class_file) {
-//   int option = 0;
-//
-//   printf("\n\nLeitor/Exibidor: \n");
-//
-//   while(option != -1) {
-//     print_formatted_class_file(class_file);
-//     print_menu_options();
-//     scanf("%d", &option);
-//
-//     switch (option) {
-//       case -1:
-//         option = -1;
-//         printf("Saindo do Leitor/Exibidor");
-//         break;
-//       case 1:
-//         print_constant_pool_info(class_file);
-//         break;
-//       case 2:
-//         print_interfaces_info(class_file);
-//         break;
-//       case 3:
-//         print_fields_info(class_file);
-//         break;
-//       case 4:
-//         print_methods_info(class_file);
-//         break;
-//     }
-//   }
-// }

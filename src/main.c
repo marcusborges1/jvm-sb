@@ -23,16 +23,16 @@
 
 /*
  *  Função principal do sistema leitor/exibidor.
- *  @param argc ...
- *  @param argv ...
  *  @return ...
  */
-int main(int argc, char const *argv[]) {
+int main() {
+  // menu inicial
+  char *filename = print_menu_choose_type_file();
   // passa o nome do arquivo .class como argumento para função de leitura
-  JavaClass* class_file = read_class_file(argv[1]);
+  JavaClass* class_file = read_class_file(filename);
   // exibe os dados gerais do arquivo .class informado pelo usuário
-  print_general_info(class_file);
-  // exibe informações das constant_pools
-  print_constant_pool_info(class_file);
+  print_general_info(class_file, filename);
+  // menu de escolhas do exibidor
+  print_menu_exhibitor(class_file);
   return 0;
 }
