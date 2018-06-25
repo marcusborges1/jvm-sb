@@ -10,9 +10,9 @@ Future additions:
 - Methods
 - Attributes
 
-# .class files
+# Reader and Exhibitor
 
-## Compile and check
+## Compile and check with javac/javap
 
 Convert ``.java`` to ``.class`` file:
 
@@ -31,12 +31,12 @@ $ javap HelloWorld.class
 This system covers ``.java`` files that contains:
 - String [StringDemo.class](test/StringDemo.class)
 - Simulação de impressão [PrintDemo.class](test/PrintDemo.class)
+- Arrays unidimensionais [ArrayUniDemo.class](test/ArrayUniDemo.class)
+- Arrays multidimensionais [ArrayMultDemo.class](test/ArrayMultDemo.class)
 
 Future additions:
 - Instruções de categoria 1 [CategoryOneDemo.class](test/CategoryOneDemo.class)
 - Instruções de categoria 2 [CategoryTwoDemo.class](test/CategoryTwoDemo.class)
-- Arrays unidimensionais [ArrayUniDemo.class](test/ArrayUniDemo.class)
-- Arrays multidimensionais [ArrayMultDemo.class](test/ArrayMultDemo.class)
 - Métodos estáticos [MethodStaticDemo.class](test/MethodStaticDemo.class)
 - Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
 - Atributos de classe [AttributeClassDemo.class](test/AttributeClassDemo.class)
@@ -47,7 +47,7 @@ Future additions:
 - Objetos [ObjDemo.class](test/ObjDemo.class)
 
 
-# Run
+## Run
 
 To execute this software follow these commands:
 
@@ -66,7 +66,7 @@ $ doxygen Doxyfile
 ```
 
 After the command above, open the file [index.html](html/index.html) with a
-browser. 
+browser.
 
 # Setup
 

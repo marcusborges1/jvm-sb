@@ -22,7 +22,9 @@ char* print_menu_choose_type_file() {
   printf("Insira qual tipo de arquivo java gostaria de testar:\n");
   printf("1. String\n");
   printf("2. Simulação de impressão\n");
-  printf("3. Sair\n");
+  printf("3. Vetor unidimensional\n");
+  printf("4. Vetor multidimensional\n");
+  printf("5. Sair\n");
   scanf("%d", &option);
 
   switch (option) {
@@ -33,6 +35,12 @@ char* print_menu_choose_type_file() {
       strcpy(filename, "test/PrintDemo.class");
       break;
     case 3:
+      strcpy(filename, "test/ArrayUniDemo.class");
+      break;
+    case 4:
+      strcpy(filename, "test/ArrayMultDemo.class");
+      break;
+    case 5:
       printf("Até mais!\n");
       exit(0);
     default:
