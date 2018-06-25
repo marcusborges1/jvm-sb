@@ -71,11 +71,14 @@ char* print_menu_choose_type_file() {
  *  @return void
  */
 void print_general_info(JavaClass* class_file, char *filename) {
-  printf("Filename: %s\n", filename);
-  printf("Magic Number: 0x%0X\n", class_file->magic_number);
-  printf("Minor Version: %d\n", class_file->minor_version);
-  printf("Major version: %d\n", class_file->major_version);
-  printf("Contanst pool count: %d\n", class_file->constant_pool_count);
+  printf("Filename:             %s\n", filename);
+  printf("Magic Number:         0x%0X\n", class_file->magic_number);
+  printf("Minor Version:        %d\n", class_file->minor_version);
+  printf("Major version:        %d\n", class_file->major_version);
+  printf("Contanst pool count:  %d\n", class_file->constant_pool_count);
+  printf("Access flags:         0x%.4x\n", class_file->access_flags);
+  printf("This class:           cp_info #%d\n", class_file->this_class);
+  printf("Super class:          cp_info #%d\n", class_file->super_class);
   // printf("Interface count: %d\n", class_file->interface_count);
   // printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
