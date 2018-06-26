@@ -17,6 +17,10 @@ void print_constant_pool_info(JavaClass* class_file);
 
 void print_interfaces_info(JavaClass* class_file);
 
+void print_fields_info(JavaClass *class_file);
+
+void print_attributes_info(JavaClass* class_file);
+
 void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info);
 
 #endif

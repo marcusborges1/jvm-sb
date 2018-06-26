@@ -28,6 +28,7 @@ char* print_menu_choose_type_file() {
   printf("6. Reescrita\n");
   printf("7. Float\n");
   printf("8. Interface\n");
+  printf("9. Attributes\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -55,6 +56,9 @@ char* print_menu_choose_type_file() {
       break;
     case 8:
       strcpy(filename, "test/InterfaceDemo.class");
+      break;
+    case 9:
+      strcpy(filename, "test/AttributesDemo.class");
       break;
     case 0:
       printf("Até mais!\n");
@@ -84,7 +88,7 @@ void print_general_info(JavaClass* class_file, char *filename) {
   printf("This class:           cp_info #%d\n", class_file->this_class);
   printf("Super class:          cp_info #%d\n", class_file->super_class);
   printf("Interface count: %d\n", class_file->interface_count);
-  // printf("Field count: %d\n", class_file->field_count);
+  printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
 }
 
@@ -100,6 +104,9 @@ void print_menu_exhibitor(JavaClass* class_file) {
   printf("Que estrutura de dados deseja imprimir do arquivo .class:\n");
   printf("1. Constant Pool\n");
   printf("2. Interface\n");
+  printf("3. Fields\n");
+  printf("4. Methods\n");
+  printf("5. Attributes\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -111,6 +118,15 @@ void print_menu_exhibitor(JavaClass* class_file) {
     case 2:
       // exibe as interfaces implementadas pela classe
       print_interfaces_info(class_file);
+      break;
+    case 3:
+      print_fields_info(class_file);
+      break;
+    case 4:
+      printf("Não implementado");
+      break;
+    case 5:
+      printf("Não implementado");
       break;
     case 0:
       printf("Até mais!\n");
@@ -192,7 +208,7 @@ void print_constant_pool_info(JavaClass* class_file) {
         printf("Class: ");
         // exibe nome de uma classe ou interface
         get_UTF8_constant_pool(class_file->contant_pool,
-                              cp_info->Class.type_class_info-1);
+                              cp_info->Class.name_index - 1);
         break;
       // caso tag seja 8
       case CONSTANT_String:
@@ -280,7 +296,7 @@ void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info) {
       break;
     case CONSTANT_Class:
       get_UTF8_constant_pool(cp_info,
-                            cp_info[pos_info].Class.type_class_info-1);
+                            cp_info[pos_info].Class.name_index - 1);
       break;
     case CONSTANT_Fieldref:
       get_UTF8_constant_pool(cp_info,
@@ -324,15 +340,45 @@ void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info) {
  *  @return void
  */
 void print_interfaces_info(JavaClass* class_file) {
-  printf("\nInterfaces Info\n");
+  int i;
 
-  for (int i = 0; i < class_file->interface_count; i++) {
-    printf("Interface: cp info #%d <", class_file->interfaces[i]);
-    get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1);
-    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
-    printf("\n");
+  if (class_file->interface_count != 0) {
+    for(i = 0; i < class_file->interface_count; i++) {
+      int index = class_file->contant_pool[class_file->interfaces[i] - 1].Class.name_index;
+
+      printf("\tInterface %d:     cp_info_#%d   %d", i, class_file->interfaces[i], index);
+      // READ UTF 8
+      printf("\n");
+    }
   }
 }
+
+/*  @brief Printa os fields contidos no .class
+ *  @param class_file
+ *  @return void
+ */
+void print_fields_info(JavaClass* class_file) {
+  int i, j;
+
+  if (class_file->field_count != 0) {
+    for (i = 0; i < class_file->field_count; i++) {
+      printf("\tName:             cp_info_#%d \n", class_file->fields[i].name_index);
+      printf("\tDescriptor:       cp_info_#%d \n", class_file->fields[i].descriptor_index);
+      printf("\tAccess Flag:      0x%04X      \n", class_file->fields[i].access_flag);
+      printf("\tAttributes count: %d        \n\n", class_file->fields[i].atributes_count);
+
+      for (j = 0; j < class_file->fields[i].atributes_count; j++) {
+        printf("\tGeneric Info\n");
+        printf("\t\tattribute_name_index:     cp_info_#%d\n", class_file->fields[i].attributes->attribute_name_index);
+        printf("\t\tattribute_length:         %u        \n\n", class_file->fields[i].attributes->attribute_length);
+        printf("\tSpecific Info:\n");
+        printf("\t\tconstant_value_index:     cp_info_#%d\n", class_file->fields[i].attributes->constant_value->value_index - 1);
+        printf("\n\n\n");
+      }
+    }
+  }
+}
+
 //
 // void print_fields_info(JavaClass* class_file) {
 //   printf("\nField Info: \n");

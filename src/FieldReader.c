@@ -3,18 +3,25 @@
 #include "ReadBytes.h"
 
 void read_field(FILE *fp, JavaClass* class_file) {
-  class_file->fields = (FieldInfo*)malloc(class_file->field_count * sizeof(FieldInfo));
+  int i, j;
+  int fields_count = class_file->field_count;
 
-  for (int j = 0; j < class_file->field_count; j++) {
-      FieldInfo *field = class_file->fields + j;
+  if (class_file->field_count == 0) {
+    return;
+  }
 
-      field->access_flag = read_2_bytes(fp);
-      field->name_index = read_2_bytes(fp);
-      field->descriptor_index = read_2_bytes(fp);
-      field->atributes_count = read_2_bytes(fp);
+  class_file->fields = (FieldInfo *) malloc(sizeof(FieldInfo) * fields_count);
+  for (i = 0; i < fields_count; i++) {
+    class_file->fields[i].access_flag = read_2_bytes(fp);
+    class_file->fields[i].name_index = read_2_bytes(fp);
+    class_file->fields[i].descriptor_index = read_2_bytes(fp);
+    class_file->fields[i].atributes_count = read_2_bytes(fp);
+    class_file->fields[i].attributes = (AttributeInfo *) malloc(sizeof(AttributeInfo) * class_file->fields[i].atributes_count);
 
-      field->attributes = (AttributeInfo*)malloc(field->atributes_count*sizeof(AttributeInfo));
-      for (int i = 0; i < field->atributes_count; ++i)
-          read_attribute_info(fp, class_file, field->attributes + i);
+    for (j = 0; j < class_file->fields[i].atributes_count; j++) {
+      class_file->fields[i].attributes->attribute_name_index = read_2_bytes(fp);
+      class_file->fields[i].attributes->attribute_length = read_4_bytes(fp);
+      class_file->fields[i].attributes->constant_value->value_index = read_2_bytes(fp);
+    }
   }
 }
