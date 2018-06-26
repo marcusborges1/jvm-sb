@@ -27,6 +27,7 @@ char* print_menu_choose_type_file() {
   printf("5. Herança\n");
   printf("6. Reescrita\n");
   printf("7. Float\n");
+  printf("8. Interface\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -51,6 +52,9 @@ char* print_menu_choose_type_file() {
       break;
     case 7:
       strcpy(filename, "test/FloatDemo.class");
+      break;
+    case 8:
+      strcpy(filename, "test/InterfaceDemo.class");
       break;
     case 0:
       printf("Até mais!\n");
@@ -79,7 +83,7 @@ void print_general_info(JavaClass* class_file, char *filename) {
   printf("Access flags:         0x%.4x\n", class_file->access_flags);
   printf("This class:           cp_info #%d\n", class_file->this_class);
   printf("Super class:          cp_info #%d\n", class_file->super_class);
-  // printf("Interface count: %d\n", class_file->interface_count);
+  printf("Interface count: %d\n", class_file->interface_count);
   // printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
 }
@@ -95,7 +99,8 @@ void print_menu_exhibitor(JavaClass* class_file) {
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
   printf("Que estrutura de dados deseja imprimir do arquivo .class:\n");
   printf("1. Constant Pool\n");
-  printf("2. Sair\n");
+  printf("2. Interface\n");
+  printf("0. Sair\n");
   scanf("%d", &option);
 
   switch (option) {
@@ -104,6 +109,10 @@ void print_menu_exhibitor(JavaClass* class_file) {
       print_constant_pool_info(class_file);
       break;
     case 2:
+      // exibe as interfaces implementadas pela classe
+      print_interfaces_info(class_file);
+      break;
+    case 0:
       printf("Até mais!\n");
       exit(0);
     default:
@@ -310,17 +319,20 @@ void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info) {
   }
 }
 
+/** @brief Printa as interfaces contidas no .class
+ *  @param class_file
+ *  @return void
+ */
+void print_interfaces_info(JavaClass* class_file) {
+  printf("\nInterfaces Info\n");
 
-// void print_interfaces_info(JavaClass* class_file) {
-//   printf("\nInterfaces Info\n");
-//
-//   for (int i = 0; i < class_file->interface_count; i++) {
-//     printf("Interface: cp info #%d <", class_file->interfaces[i]);
-//     get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1);
-//     // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
-//     printf("\n");
-//   }
-// }
+  for (int i = 0; i < class_file->interface_count; i++) {
+    printf("Interface: cp info #%d <", class_file->interfaces[i]);
+    get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1);
+    // printf("%s\n", get_UTF8_constant_pool(class_file->contant_pool, class_file->interfaces[i]-1));
+    printf("\n");
+  }
+}
 //
 // void print_fields_info(JavaClass* class_file) {
 //   printf("\nField Info: \n");

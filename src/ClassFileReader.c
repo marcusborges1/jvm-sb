@@ -4,6 +4,7 @@
  */
 #include "ConstantPoolReader.h"
 #include "ClassFileReader.h"
+#include "InterfaceReader.h"
 #include "ReadBytes.h"
 
 
@@ -57,8 +58,10 @@ JavaClass* read_class_file(char const* file_path) {
   class_file->this_class = read_2_bytes(file);
   class_file->super_class = read_2_bytes(file);
 
-  // class_file->interface_count = read_2_bytes(file);
-  // read_interface(file, class_file);
+  // lê a quantidade de interfaces que estão sendo implementadas pela classe
+  class_file->interface_count = read_2_bytes(file);
+  // lê as interfaces no cp
+  read_interface(file, class_file);
 
   // class_file->field_count = read_2_bytes(file);
   // read_field(file, class_file);

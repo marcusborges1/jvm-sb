@@ -7,22 +7,22 @@ C_SRCS := $(wildcard *.c)
 DIR_SRC=src/
 DIR_OBJ=build/
 
-# _OBJ=InterfaceReader.o FieldReader.o AttributeInfoReader.o MethodsReader.o
-_OBJ=ClassFileReader.o ClassFilePrinter.o ConstantPoolReader.o ReadBytes.o main.o
+# _OBJ= FieldReader.o AttributeInfoReader.o MethodsReader.o
+_OBJ= ClassFileReader.o ClassFilePrinter.o ConstantPoolReader.o InterfaceReader.o ReadBytes.o main.o
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
 all : clean cppcheck compile gcov exec
 
 gcov :
 	@echo "Checking coverage..."
-	# build/InterfaceReader build/FieldReader build/AttributeInfoReader
-	@gcov build/ClassFileReader build/ClassFilePrinter build/ConstantPoolReader build/main
+	# build/FieldReader build/AttributeInfoReader
+	@gcov build/ClassFileReader build/ClassFilePrinter build/ConstantPoolReader build/InterfaceReader build/main
 	@echo "Done checking!"
 
 exec :
 	@echo "Running main..."
 	@echo "\n\n\n"
-	@build/./main 
+	@build/./main
 	@echo "\n\n\n"
 	@echo "Done running!"
 
