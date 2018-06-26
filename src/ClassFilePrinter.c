@@ -28,6 +28,12 @@ char* print_menu_choose_type_file() {
   printf("6. Reescrita\n");
   printf("7. Float\n");
   printf("8. Interface\n");
+  printf("9. Inteiro\n");
+  printf("10. Polimorfismo\n");
+  printf("11. Double - ERRO\n");
+  printf("12. Static - arrumar name and type [2]\n");
+  printf("13. Atributo de instancia\n");
+  printf("14. Atributo de classe\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -55,6 +61,24 @@ char* print_menu_choose_type_file() {
       break;
     case 8:
       strcpy(filename, "test/InterfaceDemo.class");
+      break;
+    case 9:
+      strcpy(filename, "test/Inteiro.class");
+      break;
+    case 10:
+      strcpy(filename, "test/Polimorfismo.class");
+      break;
+    case 11:
+      strcpy(filename, "test/Double.class");
+      break;
+    case 12:
+      strcpy(filename, "test/Static.class");
+      break;
+    case 13:
+      strcpy(filename, "test/Atributo_Instancia.class");
+      break;
+    case 14:
+      strcpy(filename, "test/Atributo_Classe.class");
       break;
     case 0:
       printf("Até mais!\n");
