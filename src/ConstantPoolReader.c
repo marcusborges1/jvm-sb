@@ -22,7 +22,7 @@ void read_constant_pool(FILE *fp, JavaClass* class_file) {
     cp_info->tag = read_1_byte(fp);
     switch (cp_info->tag) {
       case CONSTANT_Class:
-        cp_info->Class.type_class_info = read_2_bytes(fp);
+        cp_info->Class.name_index = read_2_bytes(fp);
         break;
       case CONSTANT_Fieldref:
         cp_info->FieldRef.class_index = read_2_bytes(fp);
