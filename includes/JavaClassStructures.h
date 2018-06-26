@@ -69,7 +69,7 @@ typedef struct {
   union {
     // class or interface representation
     struct {
-      u2 type_class_info;
+      u2 name_index;
     } Class;
 
     // field representation
@@ -294,4 +294,4 @@ typedef struct{
 }Instruction;
 
 
-#endif 
+#endif
