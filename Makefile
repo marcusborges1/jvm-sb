@@ -7,16 +7,14 @@ C_SRCS := $(wildcard *.c)
 DIR_SRC=src/
 DIR_OBJ=build/
 
-# _OBJ= FieldReader.o AttributeInfoReader.o MethodsReader.o
-_OBJ= ClassFileReader.o ClassFilePrinter.o ConstantPoolReader.o InterfaceReader.o ReadBytes.o main.o
+_OBJ= ClassFileReader.o ClassFilePrinter.o ConstantPoolReader.o InterfaceReader.o FieldReader.o MethodsReader.o AttributeInfoReader.o ReadBytes.o main.o
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
 all : clean cppcheck compile gcov exec
 
 gcov :
 	@echo "Checking coverage..."
-	# build/FieldReader build/AttributeInfoReader
-	@gcov build/ClassFileReader build/ClassFilePrinter build/ConstantPoolReader build/InterfaceReader build/main
+	@gcov build/ClassFileReader build/ClassFilePrinter build/ConstantPoolReader build/InterfaceReader build/FieldReader build/MethodsReader build/AttributeInfoReader build/main
 	@echo "Done checking!"
 
 exec :
@@ -36,8 +34,7 @@ compile: $(OBJ)
 
 cppcheck :
 	@echo "Static code analysis..."
-	# src/InterfaceReader.c src/FieldReader.c src/AttributeInfoReader.c src/MethodsReader.c
-	@$(CPPCHECK) src/ClassFileReader.c src/ClassFilePrinter.c src/ConstantPoolReader.c src/main.c
+	@$(CPPCHECK) src/ClassFileReader.c src/ClassFilePrinter.c src/ConstantPoolReader.c src/InterfaceReader.c src/MethodsReader.c src/FieldReader.c src/AttributeInfoReader.c src/main.c
 	@echo "Done static analysis!"
 
 clean :
