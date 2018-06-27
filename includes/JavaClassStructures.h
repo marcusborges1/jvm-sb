@@ -20,7 +20,7 @@
 #define CONSTANT_Double               6
 #define CONSTANT_NameAndType         12
 #define CONSTANT_Utf8                 1
-#define CONSTANT_EmptySpace          13
+#define CONSTANT_EmptySpace           0
 
 // access flags
 // public declaration, can be accessed outside the package

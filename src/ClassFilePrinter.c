@@ -28,7 +28,14 @@ char* print_menu_choose_type_file() {
   printf("6. Reescrita\n");
   printf("7. Float\n");
   printf("8. Interface\n");
-  printf("9. Attributes\n");
+  printf("9. Inteiro\n");
+  printf("10. Polimorfismo\n");
+  printf("11. Double\n");
+  printf("12. Static\n");
+  printf("13. Atributo de instancia\n");
+  printf("14. Atributo de classe\n");
+  printf("15. Metodos Dinamicos\n");
+  printf("16. Attributes\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -58,6 +65,27 @@ char* print_menu_choose_type_file() {
       strcpy(filename, "test/InterfaceDemo.class");
       break;
     case 9:
+      strcpy(filename, "test/Inteiro.class");
+      break;
+    case 10:
+      strcpy(filename, "test/Polimorfismo.class");
+      break;
+    case 11:
+      strcpy(filename, "test/DoubleDemo.class");
+      break;
+    case 12:
+      strcpy(filename, "test/Static.class");
+      break;
+    case 13:
+      strcpy(filename, "test/Atributo_Instancia.class");
+      break;
+    case 14:
+      strcpy(filename, "test/Atributo_Classe.class");
+      break;
+    case 15:
+      strcpy(filename, "test/GFG.class");
+      break;
+    case 16:
       strcpy(filename, "test/AttributesDemo.class");
       break;
     case 0:
@@ -75,7 +103,7 @@ char* print_menu_choose_type_file() {
 }
 
 /** @brief Mostra informações gerais do arquivo .class.
- *  @param class_file ...
+ *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
  */
 void print_general_info(JavaClass* class_file, char *filename) {
@@ -85,15 +113,17 @@ void print_general_info(JavaClass* class_file, char *filename) {
   printf("Major version:        %d\n", class_file->major_version);
   printf("Contanst pool count:  %d\n", class_file->constant_pool_count);
   printf("Access flags:         0x%.4x\n", class_file->access_flags);
-  printf("This class:           cp_info #%d\n", class_file->this_class);
-  printf("Super class:          cp_info #%d\n", class_file->super_class);
-  printf("Interface count: %d\n", class_file->interface_count);
-  printf("Field count: %d\n", class_file->field_count);
+  printf("This class:           cp_info #%d < ", class_file->this_class);
+  get_UTF8_constant_pool(class_file->contant_pool, class_file->contant_pool[(class_file->this_class)-1].Class.name_index-1);
+  printf("\nSuper class:          cp_info #%d < ", class_file->super_class);
+  get_UTF8_constant_pool(class_file->contant_pool, class_file->contant_pool[(class_file->super_class)-1].Class.name_index-1);
+  printf("\nInterface count: %d\n", class_file->interface_count);
+  // printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
 }
 
 /** @brief Mostra menu de escolhas do exibidor do arquivo .class.
- *  @param class_file ...
+ *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
  */
 void print_menu_exhibitor(JavaClass* class_file) {
@@ -143,14 +173,12 @@ void print_menu_exhibitor(JavaClass* class_file) {
 /** @brief Mostra informações das constant_pools.
  *  Tabela de estruturas representando string, nomes de classes ou interfaces,
  *  nomes de campos, etc.
- *  @param class_file ...
+ *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
  */
 void print_constant_pool_info(JavaClass* class_file) {
-  double double_value;
   float float_value;
   long long_value;
-  u8 aux;
 
   printf("\n\nConstant Pool Info: \n\n");
   for (int i = 0; i < class_file->constant_pool_count-1; i++) {
@@ -192,14 +220,15 @@ void print_constant_pool_info(JavaClass* class_file) {
         break;
       // caso tag seja 6
       case CONSTANT_Double:
-        // representa uma constante de ponto flutuante de 8 bytes em big-endian
-        // no formato IEEE-754
-        aux = ((u8)
-                cp_info->Double.high_bytes << 32 | cp_info->Double.low_bytes);
-        memcpy(&double_value, &(aux), sizeof(double));
         printf("Double:\n");
         printf("\tHigh: 0x%0x\n", cp_info->Double.high_bytes);
         printf("\tLow: 0x%0x\n", cp_info->Double.low_bytes);
+        u8 aux;
+        // representa uma constante de ponto flutuante de 8 bytes em big-endian
+        // no formato IEEE-754
+        aux = ((u8)cp_info->Double.high_bytes << 32) | cp_info->Double.low_bytes;
+        double double_value;
+        memcpy(&double_value, &aux, sizeof(double));
         // (long bits) = ((long) high_bytes << 32) + low_bytes;
         printf("\tDouble Value: %lf\n", double_value);
         break;
@@ -267,6 +296,9 @@ void print_constant_pool_info(JavaClass* class_file) {
         printf("\nDescriptor index: ");
         get_UTF8_constant_pool(class_file->contant_pool,
                               cp_info->NameAndType.descriptor_index-1);
+        break;
+      case CONSTANT_EmptySpace:
+        printf("Large numeric continued / empty item");
         break;
       default:
         printf("Tag %d. Wrong tag number. Shutting down.\n", cp_info->tag);
