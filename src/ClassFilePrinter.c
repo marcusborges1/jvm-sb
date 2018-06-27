@@ -372,7 +372,7 @@ void print_fields_info(JavaClass* class_file) {
         printf("\t\tattribute_name_index:     cp_info_#%d\n", class_file->fields[i].attributes->attribute_name_index);
         printf("\t\tattribute_length:         %u        \n\n", class_file->fields[i].attributes->attribute_length);
         printf("\tSpecific Info:\n");
-        printf("\t\tconstant_value_index:     cp_info_#%d\n", class_file->fields[i].attributes->constant_value->value_index - 1);
+        printf("\t\tconstant_value_index:     cp_info_#%d\n", class_file->fields[i].attributes->constant_value_index - 1);
         printf("\n\n\n");
       }
     }

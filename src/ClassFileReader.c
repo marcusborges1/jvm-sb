@@ -72,7 +72,7 @@ JavaClass* read_class_file(char const* file_path) {
   read_field(file, class_file);
 
   // Lê a quantidade de métodos
-  //  class_file->methods_count = read_2_bytes(file);
+  class_file->methods_count = read_2_bytes(file);
   // Lê os métodos da classe/interface
   // read_methods(file, class_file);
 

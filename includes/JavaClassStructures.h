@@ -60,238 +60,135 @@
 // uint8_t : unsigned integer type with width of exactly 8
 #define u1 uint8_t
 
-typedef struct AttrCode AttrCode;
-
 // constant pool information
-typedef struct {
+typedef struct CpInfo {
   u1 tag;
-
   union {
-    // class or interface representation
     struct {
       u2 name_index;
-    } Class;
+    } Class;                      // class or interface representation
 
-    // field representation
     struct {
       u2 class_index;
       u2 name_and_type_index;
-    } FieldRef;
+    } FieldRef;                   // field representation
 
-    // field or method without the class or interface which belongs
     struct {
       u2 name_index;
       u2 descriptor_index;
-    } NameAndType;
+    } NameAndType;                // field or method without the class or interface which belongs
 
-    // constant string, unicode included
     struct {
-      u2 size;
-      // not allowed zero values or value between the interval 0xf0 to 0xff,
-      // that means, [240, 255]
+      u2 size;                    // not allowed zero values or value between the interval 0xf0 to 0xff, that means, [240, 255]
       u1 *bytes;
-    } UTF8;
+    } UTF8;                       // constant string, unicode included
 
-    // method representation
     struct {
       u2 index;
       u2 name_and_type;
-    } MethodRef;
+    } MethodRef;                  // method representation
 
-    // interface method representation
     struct {
       u2 index;
       u2 name_and_type;
-    } InterfaceMethodRef;
+    } InterfaceMethodRef;         // interface method representation
 
-    // constant object string
     struct {
       u2 bytes;
-    } String;
+    } String;                     // constant object string
 
-    // integer constant of 4 bytes (big-endian)
     struct {
       u4 bytes;
-    } Integer;
+    } Integer;                    // integer constant of 4 bytes (big-endian)
 
-    // float constant of 4 bytes (big-endian, IEEE-754)
     struct {
       u4 bytes;
-    } Float;
+    } Float;                      // float constant of 4 bytes (big-endian, IEEE-754)
 
-    // integer constant of 8 bytes (big-endian), occupies 2 indexes
-    // in constant_pool table
     struct {
       u4 high_bytes;
       u4 low_bytes;
-    } Long;
+    } Long;                        // integer constant of 8 bytes (big-endian), occupies 2 indexes in constant_pool table
 
-    // float constant of 8 bytes (big-endian, IEEE-754), occupies
-    // 2 indexes in constant_pool table
     struct {
       u4 high_bytes;
       u4 low_bytes;
-    } Double;
-
+    } Double;                     // float constant of 8 bytes (big-endian, IEEE-754), occupies 2 indexes in constant_pool table
   };
 } CpInfo;
 
-typedef struct {
-    u2 start_pc;
-    u2 length;
-    u2 name_index;
-    u2 descriptor_index;
-    u2 index;
-} AttrLocalVariableTableData;
+typedef struct ExceptionsAttribute {
+  u2 attribute_name_index;
+  u4 attribute_length;
+  u2 number_exceptions;
+  u2* exception_index_table;
+} ExceptionsAttribute;
 
-typedef struct {
-    u2 local_variable_table_length;
-    AttrLocalVariableTableData* table_data;
-} AttrLocalVariableTable;
+typedef struct CvInfo {
+  u2 attribute_name_index;
+  u4 attribute_length;
+  u2 constant_value_index;
+} CvInfo;
 
-typedef struct {
-    u2 start_pc;
-    u2 line_pc;
-} AttrLineNumberTableData;
-
-typedef struct {
-    u2 line_number_table_length;
-    AttrLineNumberTableData* table;
-} AttrLineNumberTable;
-
-
-typedef struct {
-  u2 source_file_index;
-} AttrSourceFile;
-
-typedef struct {
-    u2 inner_class_info_index;
-    u2 outer_class_info_index;
-    u2 inner_name_index;
-    u2 inner_class_access_flag;
-} InnerClassData;
-
-typedef struct {
-    u2 number_of_classes;
-    InnerClassData* inner_class_data;
-} AttrInnerClass;
-
-typedef struct {
-    u2 value_index;
-} AttrConstantValue;
-
-typedef struct {
-    u2 number_of_exceptions;
-    u2 * exception_index_table;
-} AttrException;
-
-typedef struct {
-    u2 start_pc;
-    u2 end_pc;
-    u2 handler_pc;
-    u2 catch_type;
-} AttrCodeException;
-
-
-typedef struct {
-    // CONSTANT_UTf8, attribute name
-    u2  attribute_name_index;
-    // attribute size in bytes
-    u4  attribute_length;
-    union {
-      AttrCode* code;
-      AttrConstantValue* constant_value;
-      AttrException* exception;
-      AttrInnerClass* inner_class;
-      AttrSourceFile* source_file;
-      AttrLineNumberTable* lineNumber_table;
-      AttrLocalVariableTable* local_variable_table;
-      uint8_t * info;
-    };
-} AttributeInfo;
-
-struct AttrCode {
-  u2 max_stack;
-  u2 max_locals;
-  uint32_t code_length;
-  uint8_t *code;
-  u2 exceptions_table_length;
-  AttrCodeException *exceptions;
-  u2 attr_counts;
-  AttributeInfo *attributes;
-};
-
-typedef struct {
-    u2  access_flag;
-    // CONSTANT_UTf8, field name
-    u2  name_index;
-    // CONSTANT_UTf8, field valid descriptor
-    u2  descriptor_index;
-    // number of field attributes
-    u2  atributes_count;
-    // JVM implementation should ignore in silence each attribute unrecognized
-    AttributeInfo  *attributes;
+typedef struct FieldInfo {
+    u2  access_flag;            // CONSTANT_UTf8, field name
+    u2  name_index;             // CONSTANT_UTf8, field valid descriptor
+    u2  descriptor_index;       // number of field attributes
+    u2  atributes_count;        // JVM implementation should ignore in silence each attribute unrecognized
+    CvInfo* attributes;
 } FieldInfo;
 
-typedef struct {
-    u2  access_flag;
-    // CONSTANT_UTf8, special name (<init> or <clinit>) or a simple name
-    u2  name_index;
-    // CONSTANT_UTf8, method valid descriptor
-    u2  descriptor_index;
-    // number of method attributes
-    u2  attributes_count;
-    // JVM implementation should ignore in silence each attribute unrecognized
-    AttributeInfo  *attributes;
+typedef struct AttributeInfo {
+    u2  attribute_name_index;                         // CONSTANT_UTf8, attribute name
+    u4  attribute_length;                             // attribute size in bytes
+    u1* info;
+} AttributeInfo;
+
+typedef struct ExceptionTable {
+  uint16_t start_pc;
+  uint16_t end_pc;
+  uint16_t catch_type;
+} ExceptionTable;
+
+typedef struct CodeAttribute {
+  u2 attribute_name_index;
+  u4 attribute_length;
+  u2 max_stack;
+  u2 max_locals;
+  u4 code_length;
+  u1 *code;
+  u2 exceptions_table_length;
+  ExceptionTable *exceptions;
+  u2 attributes_count;
+  AttributeInfo *attributes;
+} CodeAttribute;
+
+typedef struct MethodInfo {
+    u2  access_flag;              // CONSTANT_UTf8, special name (<init> or <clinit>) or a simple name
+    u2  name_index;               // CONSTANT_UTf8, method valid descriptor
+    u2  descriptor_index;         // number of method attributes
+    u2  attributes_count;         // JVM implementation should ignore in silence each attribute unrecognized
+    CodeAttribute* code_attributes;
+    ExceptionsAttribute* exceptions_attributes;
 } MethodInfo;
 
-typedef struct {
-  // class signature : 0xCAFEBABE
-  u4 	magic_number;
-  u2  minor_version;
-  // format version M.m, defined by Sun
-  u2  major_version;
-  // number of entries in constant pool + 1 table
-  // 1 <= constant pool index < constant_pool_count
-  u2  constant_pool_count;
-  // constant pool structure table
-  CpInfo  *contant_pool;
-  // bits mask about access permissions and class properties or interface
-  u2  access_flags;
-  // valid index from constant pool table, points to CONSTANT_Class,
-  // class or interface
-  u2  this_class;
-  // valid index from constant pool table, points to CONSTANT_Class
-  // direct super class, zero if the class is not derivated
-  u2  super_class;
-  // interface number of entries
-  // 0 <= interfaces index < interfaces_count
-  u2  interface_count;
-  // valid index from constant pool table, points to CONSTANT_Class,
-  // interface that is a direct superinterface of the class or the interface
-  u2 *interfaces;
-  // number of class variables or instance variables
-  u2  field_count;
-  // each field belongs to the field_intro structure
-  // there are no fields inherited from superclasses or super interfaces
-  FieldInfo *fields;
-  // method_info number of entries
-  u2  methods_count;
-  // each field belongs to the method_info structure
-  // there are no fields inherited from superclasses or super interfaces
-  MethodInfo  *methods;
-  // attributes_info number of entries
-  u2  attributes_count;
-  // each field belongs to the attributes_info structure
-  // JVM implementation should ignore in silence each attribute unrecognized
-  AttributeInfo  *attributes;
+typedef struct JavaClass {
+  u4   magic_number;              // class signature : 0xCAFEBABE
+  u2  minor_version;              // format version M.m, defined by Sun
+  u2  major_version;              // number of entries in constant pool + 1 table; 1 <= cp_index < cp_count
+  u2  constant_pool_count;        // constant pool structure table
+  CpInfo  *contant_pool;          // bits mask about access permissions and class properties or interface
+  u2  access_flags;               // valid index from constant pool table, points to CONSTANT_Class, class or interface
+  u2  this_class;                 // valid index from constant pool table, points to CONSTANT_Class
+  u2  super_class;                // direct super class, zero if the class is not derivated
+  u2  interface_count;            // interface number of entries; 0 <= interfaces index < interfaces_count
+  u2 *interfaces;                 // valid index from constant pool table, points to CONSTANT_Class, interface that is a direct superinterface of the class or the interface
+  u2  field_count;                // number of class variables or instance variables each field belongs to the field_intro structure there are no fields inherited from superclasses or super interfaces
+  FieldInfo *fields;              // method_info number of entries
+  u2  methods_count;              // each field belongs to the method_info structure, there are no fields inherited from superclasses or super interfaces
+  MethodInfo  *methods;           // attributes_info number of entries
+  u2  attributes_count;           // each field belongs to the attributes_info structure
+  AttributeInfo  *attributes;     // JVM implementation should ignore in silence each attribute unrecognized
 } JavaClass;
-
-typedef struct{
-    char* name;
-    int bytes;
-    int index_constant_pool;
-}Instruction;
-
 
 #endif
