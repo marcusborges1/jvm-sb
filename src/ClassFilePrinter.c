@@ -34,6 +34,7 @@ char* print_menu_choose_type_file() {
   printf("12. Static\n");
   printf("13. Atributo de instancia\n");
   printf("14. Atributo de classe\n");
+  printf("15. Metodos Dinamicos\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -79,6 +80,9 @@ char* print_menu_choose_type_file() {
       break;
     case 14:
       strcpy(filename, "test/Atributo_Classe.class");
+      break;
+    case 15:
+      strcpy(filename, "test/GFG.class");
       break;
     case 0:
       printf("Até mais!\n");
