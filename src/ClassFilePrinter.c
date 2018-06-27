@@ -69,7 +69,7 @@ char* print_menu_choose_type_file() {
       strcpy(filename, "test/Polimorfismo.class");
       break;
     case 11:
-      strcpy(filename, "test/Double.class");
+      strcpy(filename, "test/DoubleDemo.class");
       break;
     case 12:
       strcpy(filename, "test/Static.class");
@@ -155,10 +155,8 @@ void print_menu_exhibitor(JavaClass* class_file) {
  *  @return void
  */
 void print_constant_pool_info(JavaClass* class_file) {
-  double double_value;
   float float_value;
   long long_value;
-  u8 aux;
 
   printf("\n\nConstant Pool Info: \n\n");
   for (int i = 0; i < class_file->constant_pool_count-1; i++) {
@@ -200,14 +198,15 @@ void print_constant_pool_info(JavaClass* class_file) {
         break;
       // caso tag seja 6
       case CONSTANT_Double:
-        // representa uma constante de ponto flutuante de 8 bytes em big-endian
-        // no formato IEEE-754
-        aux = ((u8)
-                cp_info->Double.high_bytes << 32 | cp_info->Double.low_bytes);
-        memcpy(&double_value, &(aux), sizeof(double));
         printf("Double:\n");
         printf("\tHigh: 0x%0x\n", cp_info->Double.high_bytes);
         printf("\tLow: 0x%0x\n", cp_info->Double.low_bytes);
+        u8 aux;
+        // representa uma constante de ponto flutuante de 8 bytes em big-endian
+        // no formato IEEE-754
+        aux = ((u8)cp_info->Double.high_bytes << 32) | cp_info->Double.low_bytes;
+        double double_value;
+        memcpy(&double_value, &aux, sizeof(double));
         // (long bits) = ((long) high_bytes << 32) + low_bytes;
         printf("\tDouble Value: %lf\n", double_value);
         break;
@@ -276,9 +275,9 @@ void print_constant_pool_info(JavaClass* class_file) {
         get_UTF8_constant_pool(class_file->contant_pool,
                               cp_info->NameAndType.descriptor_index-1);
         break;
-      default:
-        printf("Tag %d. Wrong tag number. Shutting down.\n", cp_info->tag);
-        exit(1);
+      // default:
+      //   printf("Tag %d. Wrong tag number. Shutting down.\n", cp_info->tag);
+      //   exit(1);
     }
     printf("\n");
   }
@@ -337,9 +336,9 @@ void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info) {
     case CONSTANT_String:
       get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1);
       break;
-    default:
-      printf("Tag %d. Wrong tag number. Shutting down.\n", tag);
-      exit(1);
+    // default:
+    //   printf("Tag %d. Wrong tag number. Shutting down.\n", tag);
+    //   exit(1);
   }
 }
 

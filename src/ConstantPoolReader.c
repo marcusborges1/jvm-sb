@@ -48,10 +48,12 @@ void read_constant_pool(FILE *fp, JavaClass* class_file) {
       case CONSTANT_Long:
         cp_info->Long.high_bytes = read_4_bytes(fp);
         cp_info->Long.low_bytes = read_4_bytes(fp);
+        i++;
         break;
       case CONSTANT_Double:
         cp_info->Double.high_bytes = read_4_bytes(fp);
         cp_info->Double.low_bytes = read_4_bytes(fp);
+        i++;
         break;
       case CONSTANT_NameAndType:
         cp_info->NameAndType.name_index = read_2_bytes(fp);
@@ -59,7 +61,7 @@ void read_constant_pool(FILE *fp, JavaClass* class_file) {
         break;
       case CONSTANT_Utf8:
         cp_info->UTF8.size = read_2_bytes(fp);
-        cp_info->UTF8.bytes = (u1*)malloc(((cp_info->UTF8.size)+1)*sizeof(u1));
+        cp_info->UTF8.bytes = (u1*) malloc((cp_info->UTF8.size+1)*sizeof(u1));
         fread(cp_info->UTF8.bytes, 1, cp_info->UTF8.size, fp);
         cp_info->UTF8.bytes[cp_info->UTF8.size] = '\0';
         break;
