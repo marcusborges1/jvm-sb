@@ -30,8 +30,8 @@ char* print_menu_choose_type_file() {
   printf("8. Interface\n");
   printf("9. Inteiro\n");
   printf("10. Polimorfismo\n");
-  printf("11. Double - ERRO\n");
-  printf("12. Static - arrumar name and type [2]\n");
+  printf("11. Double\n");
+  printf("12. Static\n");
   printf("13. Atributo de instancia\n");
   printf("14. Atributo de classe\n");
   printf("0. Sair\n");
@@ -95,7 +95,7 @@ char* print_menu_choose_type_file() {
 }
 
 /** @brief Mostra informações gerais do arquivo .class.
- *  @param class_file ...
+ *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
  */
 void print_general_info(JavaClass* class_file, char *filename) {
@@ -105,15 +105,17 @@ void print_general_info(JavaClass* class_file, char *filename) {
   printf("Major version:        %d\n", class_file->major_version);
   printf("Contanst pool count:  %d\n", class_file->constant_pool_count);
   printf("Access flags:         0x%.4x\n", class_file->access_flags);
-  printf("This class:           cp_info #%d\n", class_file->this_class);
-  printf("Super class:          cp_info #%d\n", class_file->super_class);
-  printf("Interface count: %d\n", class_file->interface_count);
+  printf("This class:           cp_info #%d < ", class_file->this_class);
+  get_UTF8_constant_pool(class_file->contant_pool, class_file->contant_pool[(class_file->this_class)-1].Class.type_class_info-1);
+  printf("\nSuper class:          cp_info #%d < ", class_file->super_class);
+  get_UTF8_constant_pool(class_file->contant_pool, class_file->contant_pool[(class_file->super_class)-1].Class.type_class_info-1);
+  printf("\nInterface count: %d\n", class_file->interface_count);
   // printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
 }
 
 /** @brief Mostra menu de escolhas do exibidor do arquivo .class.
- *  @param class_file ...
+ *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
  */
 void print_menu_exhibitor(JavaClass* class_file) {
@@ -151,7 +153,7 @@ void print_menu_exhibitor(JavaClass* class_file) {
 /** @brief Mostra informações das constant_pools.
  *  Tabela de estruturas representando string, nomes de classes ou interfaces,
  *  nomes de campos, etc.
- *  @param class_file ...
+ *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
  */
 void print_constant_pool_info(JavaClass* class_file) {
@@ -275,9 +277,12 @@ void print_constant_pool_info(JavaClass* class_file) {
         get_UTF8_constant_pool(class_file->contant_pool,
                               cp_info->NameAndType.descriptor_index-1);
         break;
-      // default:
-      //   printf("Tag %d. Wrong tag number. Shutting down.\n", cp_info->tag);
-      //   exit(1);
+      case CONSTANT_EmptySpace:
+        printf("Large numeric continued / empty item");
+        break;
+      default:
+        printf("Tag %d. Wrong tag number. Shutting down.\n", cp_info->tag);
+        exit(1);
     }
     printf("\n");
   }
@@ -336,9 +341,9 @@ void get_UTF8_constant_pool(CpInfo *cp_info, u4 pos_info) {
     case CONSTANT_String:
       get_UTF8_constant_pool(cp_info, cp_info[pos_info].String.bytes-1);
       break;
-    // default:
-    //   printf("Tag %d. Wrong tag number. Shutting down.\n", tag);
-    //   exit(1);
+    default:
+      printf("Tag %d. Wrong tag number. Shutting down.\n", tag);
+      exit(1);
   }
 }
 
