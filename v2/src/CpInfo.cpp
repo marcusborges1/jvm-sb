@@ -13,54 +13,54 @@ void CpInfo::read(FILE * fp, JavaClass class_file) {
 //    class_file.constant_pool = (CpInfo*)malloc((class_file.constant_pool_count-1)*sizeof(CpInfo));
 
     for (int i = 0; i < class_file.constant_pool_count -1  ; i++) {
-        CpInfo cp_info;
-        cp_info.tag = ClassFileReader::read_1_byte(fp);
+        class_file.constant_pool[i].tag =ClassFileReader::read_1_byte(fp);
 
-        switch (cp_info.tag) {
+        switch (class_file.constant_pool[i].tag) {
             case CONSTANT_Class:
-                cp_info.Class.type_class_info = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].Class.type_class_info = ClassFileReader::read_2_bytes(fp);
                 break;
             case CONSTANT_Fieldref:
-                cp_info.FieldRef.class_index = ClassFileReader::read_2_bytes(fp);
-                cp_info.FieldRef.name_and_type_index = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].FieldRef.class_index = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].FieldRef.name_and_type_index = ClassFileReader::read_2_bytes(fp);
                 break;
             case CONSTANT_Methodref:
-                cp_info.MethodRef.index = ClassFileReader::read_2_bytes(fp);
-                cp_info.MethodRef.name_and_type = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].MethodRef.index = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].MethodRef.name_and_type = ClassFileReader::read_2_bytes(fp);
                 break;
             case CONSTANT_InterfaceMethodref:
-                cp_info.InterfaceMethodRef.index = ClassFileReader::read_2_bytes(fp);
-                cp_info.InterfaceMethodRef.name_and_type = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].InterfaceMethodRef.index = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].InterfaceMethodRef.name_and_type = ClassFileReader::read_2_bytes(fp);
                 break;
             case CONSTANT_String:
-                cp_info.String.bytes = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].String.bytes = ClassFileReader::read_2_bytes(fp);
                 break;
             case CONSTANT_Integer:
-                cp_info.Integer.bytes = ClassFileReader::read_4_bytes(fp);
+                class_file.constant_pool[i].Integer.bytes = ClassFileReader::read_4_bytes(fp);
                 break;
             case CONSTANT_Float:
-                cp_info.Float.bytes = ClassFileReader::read_4_bytes(fp);
+                class_file.constant_pool[i].Float.bytes = ClassFileReader::read_4_bytes(fp);
                 break;
             case CONSTANT_Long:
-                cp_info.Long.high_bytes = ClassFileReader::read_4_bytes(fp);
-                cp_info.Long.low_bytes = ClassFileReader::read_4_bytes(fp);
+                class_file.constant_pool[i].Long.high_bytes = ClassFileReader::read_4_bytes(fp);
+                class_file.constant_pool[i].Long.low_bytes = ClassFileReader::read_4_bytes(fp);
+                i++;
                 break;
             case CONSTANT_Double:
-                cp_info.Double.high_bytes = ClassFileReader::read_4_bytes(fp);
-                cp_info.Double.low_bytes = ClassFileReader::read_4_bytes(fp);
+                class_file.constant_pool[i].Double.high_bytes = ClassFileReader::read_4_bytes(fp);
+                class_file.constant_pool[i].Double.low_bytes = ClassFileReader::read_4_bytes(fp);
+                i++;
                 break;
             case CONSTANT_NameAndType:
-                cp_info.NameAndType.name_index = ClassFileReader::read_2_bytes(fp);
-                cp_info.NameAndType.descriptor_index = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].NameAndType.name_index = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].NameAndType.descriptor_index = ClassFileReader::read_2_bytes(fp);
                 break;
             case CONSTANT_Utf8:
-                cp_info.UTF8.size = ClassFileReader::read_2_bytes(fp);
-                cp_info.UTF8.bytes = (u1*)malloc(((cp_info.UTF8.size)+1)*sizeof(u1));
-                fread(cp_info.UTF8.bytes, 1, cp_info.UTF8.size, fp);
-                cp_info.UTF8.bytes[cp_info.UTF8.size] = '\0';
+                class_file.constant_pool[i].UTF8.size = ClassFileReader::read_2_bytes(fp);
+                class_file.constant_pool[i].UTF8.bytes = (u1*) calloc((class_file.constant_pool[i].UTF8.size) +1, sizeof(u1));
+                fread(class_file.constant_pool[i].UTF8.bytes, 1, class_file.constant_pool[i].UTF8.size, fp);
+                class_file.constant_pool[i].UTF8.bytes[class_file.constant_pool[i].UTF8.size] = '\0';
                 break;
         }
-        class_file.constant_pool[i] = cp_info;
     }
 };
 

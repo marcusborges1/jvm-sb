@@ -7,19 +7,24 @@
 #include "ClassFileReader.cpp"
 
 void MethodInfo::read(JavaClass class_file, FILE * fp) {
-
-
-    for(int i = 0; i < class_file.methods_count; i++){
+    int i = 0, j =0;
+    for(i = 0; i < class_file.methods_count; i++){
 
        class_file.methods[i].access_flag = ClassFileReader::read_2_bytes(fp);
        class_file.methods[i].name_index = ClassFileReader::read_2_bytes(fp);
        class_file.methods[i].descriptor_index = ClassFileReader::read_2_bytes(fp);
        class_file.methods[i].attributes_count = ClassFileReader::read_2_bytes(fp);
 
-       class_file.methods[i].attributes = (AttributeInfo*)malloc(class_file.methods[i].attributes_count * sizeof(AttributeInfo));
-        for (int j = 0; j <class_file.methods[i].attributes_count; j++)
-            AttributeInfo::get_attribute_info(fp, class_file.methods[i].attributes[j], class_file);
+        class_file.methods[i].attributes = (AttributeInfo*)malloc(class_file.methods[i].attributes_count * sizeof(AttributeInfo));
+        for (j = 0; j < class_file.methods[i].attributes_count; j++){
+//            class_file.methods[i].attributes[j] =
+            class_file.methods[i].attributes[j] = AttributeInfo::get_attribute_info(fp, class_file.methods[i].attributes[j], class_file);
+        }
     }
+
+    printf(" ---------------------- DEBUG-------------------- \n");
+    AttributeInfo::print_attribute_info(class_file, class_file.methods[0].attributes[0]);
+    printf(" ---------------------------------------------------\n");
 }
 
 void MethodInfo::print(JavaClass class_file) {
@@ -39,17 +44,17 @@ void MethodInfo::print(JavaClass class_file) {
         std::cout << CpInfo::get_utf8_string(class_file.constant_pool, class_file.methods[i].descriptor_index - 1);
         printf("\n");
 
-
         printf("Attributes Count: %d\n",class_file.methods[i].attributes_count);
-        printf("Attributes: \n");
-        for (int j = 0; j < class_file.methods[i].attributes_count; j++){
-          AttributeInfo::print_attribute_info(class_file.methods[i].attributes[j]);
+        for (int j = 0; j < class_file.methods[i].attributes_count; j++) {
+            AttributeInfo::print_attribute_info(class_file, class_file.methods[i].attributes[j]);
         }
 
         printf("\n");
     }
 
 }
+
+
 
  std::string MethodInfo::test_methods_flags(u2 access_flag) {
    std::string string;
