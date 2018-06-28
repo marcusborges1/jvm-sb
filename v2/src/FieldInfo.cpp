@@ -15,9 +15,9 @@ void FieldInfo::read(JavaClass class_file, FILE * fp) {
         class_file.fields[i].descriptor_index = ClassFileReader::read_2_bytes(fp);
         class_file.fields[i].atributes_count = ClassFileReader::read_2_bytes(fp);
 
-//        class_file.fields[i].attributes = (AttributeInfo*)malloc(class_file.fields[i].atributes_count*sizeof(AttributeInfo));
-//        for (int i = 0; i < class_file.fields[i].atributes_count; ++i)
-//            read_attribute_info(fp, class_file, class_file.fields[i].attributes + i);
+        class_file.fields[i].attributes = (AttributeInfo*)malloc(class_file.fields[i].atributes_count*sizeof(AttributeInfo));
+        for (int j = 0;  j < class_file.fields[i].atributes_count; j++)
+            AttributeInfo::get_attribute_info(fp, class_file.fields[i].attributes[j], class_file);
     }
 }
 

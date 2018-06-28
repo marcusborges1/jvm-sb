@@ -64,6 +64,7 @@
 class CpInfo;
 class FieldInfo;
 class MethodInfo;
+class AttributeInfo;
 
 class JavaClass{
     public:
@@ -84,6 +85,9 @@ class JavaClass{
         FieldInfo* fields;
         u2  methods_count;
         MethodInfo  *methods;
+        u2  attributes_count;
+        AttributeInfo  *attributes;
+
 
 };
 

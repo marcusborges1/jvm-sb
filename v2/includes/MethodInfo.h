@@ -7,13 +7,14 @@
 
 
 #include "JavaClass.h"
+#include "AttributeInfo.h"
 
 class MethodInfo {
     // CONSTANT_UTf8, special name (<init> or <clinit>) or a simple name
     // CONSTANT_UTf8, method valid descriptor
     // number of method attributes
     u2  attributes_count; // JVM implementation should ignore in silence each attribute unrecognized
-//    AttributeInfo  *attributes;
+    AttributeInfo  *attributes;
 
 public:
     static void read(JavaClass, FILE*);

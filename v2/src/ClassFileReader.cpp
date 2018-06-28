@@ -8,6 +8,7 @@
 #include <string>
 #include <FieldInfo.h>
 #include <MethodInfo.h>
+#include <AttributeInfo.h>
 
 class ClassFileReader {
 
@@ -49,10 +50,13 @@ class ClassFileReader {
             class_file.fields = (FieldInfo*)malloc(class_file.fields_count * sizeof(FieldInfo));
             FieldInfo::read(class_file, file);
 
-
             class_file.methods_count = read_2_bytes(file);
             class_file.methods = (MethodInfo*) malloc(class_file.methods_count * sizeof(MethodInfo));
             MethodInfo::read(class_file, file);
+//
+//            class_file.attributes_count = read_2_bytes(file);
+//            class_file.attributes = (AttributeInfo*)malloc(class_file.attributes_count * sizeof(AttributeInfo));
+//            AttributeInfo::read(class_file, file);
 
             return class_file;
 
