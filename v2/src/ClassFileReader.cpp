@@ -55,12 +55,10 @@ class ClassFileReader {
             class_file.methods = (MethodInfo*) malloc(class_file.methods_count * sizeof(MethodInfo));
             MethodInfo::read(class_file, file);
 //
-            printf(" ---------------------- DEBUG-------------------- \n");
-            AttributeInfo::print_attribute_info(class_file, class_file.methods[0].attributes[0]);
-            printf(" ---------------------------------------------------\n");
-//            class_file.attributes_count = read_2_bytes(file);
-//            class_file.attributes = (AttributeInfo*)malloc(class_file.attributes_count * sizeof(AttributeInfo));
-//            AttributeInfo::read(class_file, file);
+
+            class_file.attributes_count = read_2_bytes(file);
+            class_file.attributes = (AttributeInfo*)malloc(class_file.attributes_count * sizeof(AttributeInfo));
+            AttributeInfo::read(class_file, file);
 
             return class_file;
 

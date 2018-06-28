@@ -54,7 +54,7 @@ public:
 public:
     static void read(JavaClass, FILE*);
     static AttributeInfo get_attribute_info(FILE*, AttributeInfo, JavaClass);
-    void print(JavaClass);
+    static void print(JavaClass);
     static void print_attribute_info(JavaClass, AttributeInfo);
 };
 

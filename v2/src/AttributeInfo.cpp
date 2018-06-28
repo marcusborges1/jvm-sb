@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <Instruction.h>
 #include "AttributeInfo.h"
 #include "ClassFileReader.cpp"
 
@@ -44,11 +45,15 @@ void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
     printf("Max stack: %d\n", attribute.code.max_stack);
     printf("Max locals: %d\n",attribute.code.max_locals);
     printf("Code Length: %d\n", attribute.code.code_length);
-
+    Instruction instructions[256];
+    Instruction::setup_instructions(instructions);
     printf("Code: \n");
     for (int i = 0; i < attribute.code.code_length; i++) {
-        printf("%08X\n", attribute.code.code[i]);
+        u1 op_code = attribute.code.code[i];
+        std::cout << instructions[op_code].name << std::endl;
     }
+
+
     printf("\n");
 //    printMethodInstructions(class_file, code);
 
@@ -71,7 +76,7 @@ void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
 
 void AttributeInfo::read(JavaClass class_file, FILE *fp) {
     for (int i = 0; i < class_file.attributes_count ; i++) {
-        AttributeInfo::get_attribute_info(fp, class_file.attributes[i], class_file);
+        class_file.attributes[i] = AttributeInfo::get_attribute_info(fp, class_file.attributes[i], class_file);
     }
 
 }
@@ -103,6 +108,13 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
 }
 
 void AttributeInfo::print(JavaClass class_file){
+    std::cout << " ----------------- Attributes ---------------" << std::endl;
+    printf("attribute count: %d\n", class_file.attributes_count);
+
+    for (int j = 0; j < class_file.attributes_count; j++) {
+        std::cout << "attribute #" << j << ": ";
+        AttributeInfo::print_attribute_info(class_file, class_file.attributes[j]);
+    }
 
 }
 

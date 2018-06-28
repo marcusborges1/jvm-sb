@@ -39,6 +39,7 @@
         ClassFilePrinter::print_interfaces(class_file);
         FieldInfo::print(class_file);
         MethodInfo::print(class_file);
-    //    print_menu_exhibitor(class_file);
+        AttributeInfo::print(class_file);
+
         return 0;
     }
