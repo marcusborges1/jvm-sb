@@ -8,7 +8,16 @@
 
 #include "JavaClass.h"
 
-class ConstantValue{};
+class ConstantValueAttribute{
+    public:
+        u2 attribute_name_index;
+        u4 attribute_length;
+        u2 constantvalue_index;
+
+        static ConstantValueAttribute read(JavaClass,FILE*, AttributeInfo);
+        static void print(JavaClass, AttributeInfo);
+};
+
 class Exception{
 public:
     u2 number_of_exceptions;
@@ -38,6 +47,7 @@ class CodeAttribute {
     public:
         static CodeAttribute read(JavaClass, FILE*, AttributeInfo);
         static void print(JavaClass, AttributeInfo);
+
 };
 
 class AttributeInfo {
@@ -46,7 +56,7 @@ public:
     u4 attribute_length;
     union {
         CodeAttribute code;
-        ConstantValue constant_value;
+        ConstantValueAttribute constant_value;
         Exception execptions;
         u1* info;
     };

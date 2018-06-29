@@ -7,6 +7,19 @@
 #include "AttributeInfo.h"
 #include "ClassFileReader.cpp"
 
+ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE * fp, AttributeInfo attribute_info) {
+    attribute_info.constant_value.attribute_name_index = ClassFileReader::read_2_bytes(fp);
+    attribute_info.constant_value.attribute_length = ClassFileReader::read_4_bytes(fp);
+    attribute_info.constant_value.constantvalue_index = ClassFileReader::read_2_bytes(fp);
+    return  attribute_info.constant_value;
+}
+
+void ConstantValueAttribute::print(JavaClass class_file, AttributeInfo attribute_info) {
+    std::cout << "\tname: " << CpInfo::get_utf8_string(class_file.constant_pool, attribute_info.constant_value.attribute_name_index) << std::endl; // isso ou -1?
+    std::cout << "\tlength: " << attribute_info.constant_value.attribute_length << std::endl;
+    std::cout << "\tvalue: " << CpInfo::get_utf8_string(class_file.constant_pool, attribute_info.constant_value.constantvalue_index) << std::endl;
+}
+
 CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo attribute_info){
 //    ClassFileReader::read_2_bytes(fp); // READING 2 BYTES LESS AT THIS POINT. WHY?
     attribute_info.code.max_stack = ClassFileReader::read_2_bytes(fp);
@@ -59,6 +72,14 @@ void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
                 j++;
 //                i++;
             }
+
+            else if( op_code == GOTO || op_code == if_acmpeq || op_code == if_acmpne || op_code == if_icmpeq || op_code == if_icmpne || op_code == if_icmplt || op_code == if_icmpge || op_code == if_icmpgt || op_code == if_icmple || op_code == iifeq || op_code == ifne || op_code == iflt || op_code == ifge || op_code == ifgt || op_code == ifle || op_code == ifnonull || op_code == ifnull || op_code == jsr ) {
+                u1 branchbyte1 = attribute.code.code[i];
+                u1 branchbyte2 = attribute.code.code[i+1];
+                u2 address = (branchbyte1 << 8) | branchbyte2;
+                printf(" %08X ", address);
+            }
+
             else {
 
                 printf(" %x ", attribute.code.code[j]);
@@ -68,23 +89,6 @@ void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
     }
 
     printf("\n");
-//    printMethodInstructions(class_file, code);
-
-//    printf("Exceptions Length: %d\n", attribute.code.exception_table_length);
-//    printf("Exceptions:\n\n");
-//    for (int i = 0; i < attribute.code.exception_table_length; i++) {
-//        printf("Start PC: %d\n", attribute.code.exception_table[i].start_pc);
-//        printf("End PC: %d\n", attribute.code.exception_table[i].end_pc);
-//        printf("Handler PC: %d\n", attribute.code.exception_table[i].handler_pc);
-//        printf("Catch Type: ");
-//        std::cout << CpInfo::get_utf8_string(class_file.constant_pool, attribute.code.exception_table[i].catch_type-1) << std::endl;
-//    }
-//
-//    printf("Code Attributes count: %d\n", attribute.code.attributes_count);
-//    printf("Attributes:\n\n");
-//    for (int j = 0; j < attribute.code.attributes_count; j++) {
-//        AttributeInfo::print_attribute_info(class_file, attribute.code.attributes[j]);
-//    }
 }
 
 void AttributeInfo::read(JavaClass class_file, FILE *fp) {
@@ -103,15 +107,19 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
     std::cout << "Attribute name:" << attribute_name << "\n";
     std::cout << "Attribute length:" << attribute_info.attribute_length<< '\n';
 
-//
     if(attribute_name == "Code"){
         attribute_info.code = CodeAttribute::read(class_file, fp, attribute_info);
         return attribute_info;
     }
 
+    if(attribute_name == "ConstantValue"){
+        attribute_info.constant_value = ConstantValueAttribute::read(class_file, fp, attribute_info);
+    }
+
     else {
 
         attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
+
         for (int j = 0; j < attribute_info.attribute_length; j++) {
             attribute_info.info[j] = ClassFileReader::read_1_byte(fp);
         }
