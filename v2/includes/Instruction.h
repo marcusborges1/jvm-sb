@@ -13,7 +13,7 @@ class Instruction {
 public:
     std::string name;
     u4 bytes;
-    u4 index;
+    u4 constant_pool_flag;
     static void setup_instructions(Instruction*);
 };
 

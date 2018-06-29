@@ -10,11 +10,8 @@
 CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo attribute_info){
 //    ClassFileReader::read_2_bytes(fp); // READING 2 BYTES LESS AT THIS POINT. WHY?
     attribute_info.code.max_stack = ClassFileReader::read_2_bytes(fp);
-    std::cout << "max_stack: " <<  attribute_info.code.max_stack << "\n";
     attribute_info.code.max_locals = ClassFileReader::read_2_bytes(fp);
-    std::cout << "max_locals:" <<  attribute_info.code.max_locals << "\n";
     attribute_info.code.code_length = ClassFileReader::read_4_bytes(fp);
-    std::cout << "code length: " << attribute_info.code.code_length << "\n";
     attribute_info.code.code = (u1*)malloc(sizeof(u1)*attribute_info.code.code_length);
 //    printf("CODE:\n");
     for (int i = 0; i < attribute_info.code.code_length; i++) {
@@ -50,9 +47,25 @@ void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
     printf("Code: \n");
     for (int i = 0; i < attribute.code.code_length; i++) {
         u1 op_code = attribute.code.code[i];
-        std::cout << instructions[op_code].name << std::endl;
-    }
+        std::cout << "\t"<< i << ": " << instructions[op_code].name;
+        for (int j = 0; j < instructions[op_code].bytes; j++) {
+            i++;
+            if (op_code == anewarray || op_code == checkcast || op_code == getfield || op_code == getstatic || op_code == instanceof || op_code == invokespecial || op_code == invokestatic || op_code == invokevirtual || op_code == ldc_w || op_code == ldc2_w || op_code == NEW || op_code == putfield || op_code == putstatic){
+//                u2 index = attribute.code.code[j] << 8 ;
+                u1 byte1 = attribute.code.code[i];
+                u1 byte2 = attribute.code.code[i+1];
+                u2 index = (byte1<<8)|byte2;
+                std::cout << " " << CpInfo::get_utf8_string(class_file.constant_pool, index - 1);
+                j++;
+//                i++;
+            }
+            else {
 
+                printf(" %x ", attribute.code.code[j]);
+            }
+        }
+        std::cout << std::endl;
+    }
 
     printf("\n");
 //    printMethodInstructions(class_file, code);

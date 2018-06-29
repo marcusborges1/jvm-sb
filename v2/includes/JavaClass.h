@@ -15,6 +15,24 @@
 // uint8_t : unsigned integer type with width of exactly 8
 #define u1 uint8_t
 
+#define anewarray 189
+#define checkcast 192
+#define getfield 180
+#define getstatic 178
+#define instanceof 193
+#define invokedynamic 186
+#define invokeinterface 185
+#define invokespecial 183
+#define invokestatic 184
+#define invokevirtual 182
+#define ldc_w 19
+#define ldc2_w 20
+#define multianewarray 197
+#define NEW 187
+#define putfield 181
+#define putstatic 179
+
+
 #define CONSTANT_Class                7
 #define CONSTANT_Fieldref             9
 #define CONSTANT_Methodref           10
