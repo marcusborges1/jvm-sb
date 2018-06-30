@@ -80,6 +80,15 @@ void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
                 printf(" %08X ", address);
             }
 
+            else if(op_code == goto_w || opcode == jsw_r) {
+                u1 branchbyte1 = attribute.code.code[i];
+                u1 branchbyte2 = attribute.code.code[i+1];
+                u1 branchbyte3 = attribute.code.code[i+2];
+                u1 branchbyte4 = attribute.code.code[i+3];
+                u2 address = (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4);
+                printf("%08X ", address);
+            }
+
             else {
 
                 printf(" %x ", attribute.code.code[j]);
