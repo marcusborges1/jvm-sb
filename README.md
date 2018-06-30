@@ -45,9 +45,9 @@ This system covers ``.java`` files that contains:
 - Inteiro [IntegerDemo.class](test/IntegerDemo.class)
 - Float [FloatDemo.class](test/FloatDemo.class)
 - Double [DoubleDemo.class](test/DoubleDemo.class)
+- Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
 
 Future additions:
-- Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
 - Objetos [ObjDemo.class](test/ObjDemo.class)
 - Long [LongDemo.class](test/LongDemo.class)
 

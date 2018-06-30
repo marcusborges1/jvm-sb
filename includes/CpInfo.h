@@ -84,7 +84,6 @@ public:
 
     void read(FILE*, JavaClass);
     void print(JavaClass);
-    std::string get_utf8_string(CpInfo*, u2);
 };
 
 

@@ -15,46 +15,41 @@ void MethodInfo::read(JavaClass class_file, FILE * fp) {
 
         class_file.methods[i].attributes = (AttributeInfo*)malloc(class_file.methods[i].attributes_count * sizeof(AttributeInfo));
         for (j = 0; j < class_file.methods[i].attributes_count; j++){
-//            class_file.methods[i].attributes[j] =
             class_file.methods[i].attributes[j] = attributeinfo->get_attribute_info(fp, class_file.methods[i].attributes[j], class_file);
         }
     }
-
-    printf(" ---------------------- DEBUG-------------------- \n");
-    attributeinfo->print_attribute_info(class_file, class_file.methods[0].attributes[0]);
-    printf(" ---------------------------------------------------\n");
 }
 
-void MethodInfo::print(JavaClass class_file) {
-  CpInfo *cpinfo = new CpInfo();
-  AttributeInfo *attributeinfo = new AttributeInfo();
-
-  printf(" ------------- Methods Info:  -------------\n");
-  for(int i = 0; i < class_file.methods_count; i++) {
-      printf("\nmethod_info %d\n", i);
-      printf("Access Flag: 0x%04x ", class_file.methods[i].access_flag);
-      std::cout <<  MethodInfo::test_methods_flags(class_file.methods[i].access_flag) << "\n";
-
-
-      printf("Name Index: cp info #%d ",class_file.methods[i].name_index);
-      std::cout << cpinfo->get_utf8_string(class_file.constant_pool, class_file.methods[i].name_index -1);
-
-      printf("\n");
-
-      printf("Descriptor Index: cp info #%d ",class_file.methods[i].descriptor_index);
-      std::cout << cpinfo->get_utf8_string(class_file.constant_pool, class_file.methods[i].descriptor_index - 1);
-      printf("\n");
-
-      printf("Attributes Count: %d\n",class_file.methods[i].attributes_count);
-      for (int j = 0; j < class_file.methods[i].attributes_count; j++) {
-          attributeinfo->print_attribute_info(class_file, class_file.methods[i].attributes[j]);
-      }
-
-      printf("\n");
-  }
-
-}
-
+// void MethodInfo::print(JavaClass class_file) {
+//   CpInfo *cpinfo = new CpInfo();
+//   AttributeInfo *attributeinfo = new AttributeInfo();
+//
+//   printf(" ------------- Methods Info:  -------------\n");
+//   for(int i = 0; i < class_file.methods_count; i++) {
+//       printf("\nmethod_info %d\n", i);
+//       printf("Access Flag: 0x%04x ", class_file.methods[i].access_flag);
+//       std::cout <<  MethodInfo::test_methods_flags(class_file.methods[i].access_flag) << "\n";
+//
+//
+//       printf("Name Index: cp info #%d ",class_file.methods[i].name_index);
+//       std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool, class_file.methods[i].name_index -1);
+//
+//       printf("\n");
+//
+//       printf("Descriptor Index: cp info #%d ",class_file.methods[i].descriptor_index);
+//       std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool, class_file.methods[i].descriptor_index - 1);
+//       printf("\n");
+//
+//       printf("Attributes Count: %d\n",class_file.methods[i].attributes_count);
+//       for (int j = 0; j < class_file.methods[i].attributes_count; j++) {
+//           attributeinfo->print_attribute_info(class_file, class_file.methods[i].attributes[j]);
+//       }
+//
+//       printf("\n");
+//   }
+//
+// }
+//
 
 
  std::string MethodInfo::test_methods_flags(u2 access_flag) {

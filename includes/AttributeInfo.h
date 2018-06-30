@@ -1,13 +1,9 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 #ifndef JVM_CPP_ATTRIBUTEINFO_H
 #define JVM_CPP_ATTRIBUTEINFO_H
 
 
 #include "JavaClass.h"
-#include "CpInfo.h"
+#include "ClassFilePrinter.h"
 
 class ConstantValueAttribute{
     public:
@@ -53,7 +49,7 @@ class CodeAttribute {
 
 class AttributeInfo {
 public:
-    CpInfo *cpinfo = new CpInfo();
+    ClassFilePrinter *printer = new ClassFilePrinter();
     u2 attribute_name_index;
     u4 attribute_length;
     union {

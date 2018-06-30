@@ -1,7 +1,11 @@
+/** @file ClassFileReader.cpp
+ *  @brief Funções de leitura do arquivo ".class".
+ *  @bug No know bugs.
+ */
 #include <iostream>
 #include "ClassFileReader.h"
 #include "ReadBytes.h"
-#include "FieldInfo.h"
+
 
 /** @brief Faz a leitura sequencial do arquivo .Class indicado pelo parâmetro filename.
 *  @param filename ...
@@ -38,21 +42,20 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     class_file.fields_count = read_2_bytes(file);
     class_file.fields = (FieldInfo*)malloc(class_file.fields_count * sizeof(FieldInfo));
-    // fieldinfo->read(class_file, file);
-    //
-    // class_file.methods_count = read_2_bytes(file);
-    // class_file.methods = (MethodInfo*) malloc(class_file.methods_count * sizeof(MethodInfo));
-    // methodinfo->read(class_file, file);
-    //
-    // class_file.attributes_count = read_2_bytes(file);
-    // class_file.attributes = (AttributeInfo*)malloc(class_file.attributes_count * sizeof(AttributeInfo));
-    // attributeinfo->read(class_file, file);
+    field_info->read(class_file, file);
+
+    class_file.methods_count = read_2_bytes(file);
+    class_file.methods = (MethodInfo*) malloc(class_file.methods_count * sizeof(MethodInfo));
+    method_info->read(class_file, file);
+
+    class_file.attributes_count = read_2_bytes(file);
+    class_file.attributes = (AttributeInfo*)malloc(class_file.attributes_count * sizeof(AttributeInfo));
+    attribute_info->read(class_file, file);
 
     return class_file;
 }
 
 void ClassFileReader::read_interfaces(JavaClass class_file, FILE* file){
-  for (int i = 0; i < class_file.interfaces_count ; i++) {
+  for (int i = 0; i < class_file.interfaces_count; i++)
       class_file.interfaces[i] = read_2_bytes(file);
-  }
 }
