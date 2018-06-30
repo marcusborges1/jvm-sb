@@ -1,7 +1,3 @@
-//
-// Created by gabriel on 28/06/18.
-//
-
 #include "Instruction.h"
 
 void Instruction::setup_instructions(Instruction* instructions) {

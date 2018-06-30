@@ -4,7 +4,6 @@
 
 // uint64_t : unsigned integer type with width of exactly 64
 #include <cstdint>
-#include "../includes/CpInfo.h"
 #include "CpInfo.h"
 
 #define u8 uint64_t

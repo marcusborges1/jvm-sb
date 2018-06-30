@@ -1,13 +1,9 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 #ifndef JVM_CPP_CONSTANTPOOLINFO_H
 #define JVM_CPP_CONSTANTPOOLINFO_H
 
 #include <cstdio>
+#include <string>
 #include "JavaClass.h"
-#include "string"
 
 /**
  * @brief Estrutura de Classe para unidade da Constant Pool.
@@ -86,11 +82,9 @@ public:
 
     };
 
-
-
-    static void read(FILE*, JavaClass);
-    static void print(JavaClass);
-    static std::string get_utf8_string(CpInfo* , u2 );
+    void read(FILE*, JavaClass);
+    void print(JavaClass);
+    std::string get_utf8_string(CpInfo*, u2);
 };
 
 

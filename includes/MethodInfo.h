@@ -1,10 +1,5 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 #ifndef JVM_CPP_METHODINFO_H
 #define JVM_CPP_METHODINFO_H
-
 
 #include "JavaClass.h"
 #include "AttributeInfo.h"
@@ -16,15 +11,14 @@ class MethodInfo {
 
 public:
     u2 name_index;
-
     u2 access_flag;
     u2 descriptor_index;
     u2  attributes_count; // JVM implementation should ignore in silence each attribute unrecognized
-    AttributeInfo  *attributes;
+    AttributeInfo *attributes;
 
-    static void print(JavaClass);
-    static void read(JavaClass, FILE*);
-    static std::string test_methods_flags(u2);
+    void print(JavaClass);
+    void read(JavaClass, FILE*);
+    std::string test_methods_flags(u2);
 };
 
 

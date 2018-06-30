@@ -8,6 +8,7 @@
 #include <cstring>
 #include <cstdio>
 #include "JavaClass.h"
+#include "ReadBytes.h"
 #include "ClassFilePrinter.h"
 
 /** @brief Mostra menu inicial para escolher tipo de arquivo java de teste.
@@ -108,17 +109,30 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
 /** @brief Mostra informações básicas do Class File.
 *  @return void
 */
-void ClassFilePrinter::print_general_info(JavaClass class_file){
-    printf("Magic Number:         0x%0X\n", class_file.magic_number);
-    printf("Minor Version:        %d\n", class_file.minor_version);
-    printf("Major version:        %d\n", class_file.major_version);
+void ClassFilePrinter::print_general_info(JavaClass class_file, std::string filename) {
+  std::cout << "Filename:             " << filename << std::endl;
+  printf("Magic Number:         0x%0X\n", class_file.magic_number);
+  printf("Minor Version:        %d\n", class_file.minor_version);
+  printf("Major version:        %d\n", class_file.major_version);
+  printf("Contanst pool count:  %d\n", class_file.constant_pool_count);
+  printf("Access flags:         0x%.4x\n", class_file.access_flags);
+  printf("This class:           cp_info #%d < ", class_file.this_class);
+  std::cout << cpinfo->get_utf8_string(class_file.constant_pool,
+  class_file.constant_pool[(class_file.this_class)-1].Class.type_class_info-1)
+  << " >";
+  printf("\nSuper class:          cp_info #%d < ", class_file.super_class);
+  std::cout << cpinfo->get_utf8_string(class_file.constant_pool,
+  class_file.constant_pool[(class_file.super_class)-1].Class.type_class_info-1)
+  << " >";
 }
 
 void ClassFilePrinter::print_interfaces(JavaClass class_file){
-    printf("\n--------------- Interfaces Info ---------------\n");
-   for (int i = 0; i < class_file.interfaces_count; i++) {
-     printf("Interface: cp info #%d <", class_file.interfaces[i]);
-     std::cout << CpInfo::get_utf8_string(class_file.constant_pool, class_file.interfaces[i]-1);
-     printf("\n");
-   }
+
+  printf("\n--------------- Interfaces Info ---------------\n");
+  for (int i = 0; i < class_file.interfaces_count; i++) {
+    printf("Interface: cp info #%d <", class_file.interfaces[i]);
+    std::cout << cpinfo->get_utf8_string(class_file.constant_pool,
+                                    class_file.interfaces[i]-1);
+    printf("\n");
+  }
 }

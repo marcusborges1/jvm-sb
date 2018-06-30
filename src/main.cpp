@@ -22,28 +22,34 @@
 #include <string>
 
 #include "ClassFilePrinter.h"
-// #include "ClassFileReader.h"
-#include "JavaClass.h"
-#include "CpInfo.h"
+#include "ClassFileReader.h"
+// #include "CpInfo.h"
+// #include "AttributeInfo.h"
+// #include "FieldInfo.h"
+// #include "MethodInfo.h"
 
 /** @brief Função principal do sistema leitor/exibidor.
  *  @return ...
  */
 int main() {
-    ClassFilePrinter *printer = new ClassFilePrinter();
-    // ClassFileReader *reader = new ClassFileReader();
+  ClassFileReader *reader = new ClassFileReader();
+  ClassFilePrinter *printer = new ClassFilePrinter();
+  // AttributeInfo *attributeinfo = new AttributeInfo();
+  // MethodInfo *methodinfo = new MethodInfo();
+  // FieldInfo *fieldinfo = new FieldInfo();
+  // CpInfo *cpinfo = new CpInfo();
 
-    // passa o nome do arquivo .class como argumento para função de leitura
-    std::string filename = printer->print_menu_choose_type_file();
-    // exibe os dados gerais do arquivo .class informado pelo usuário
-    // JavaClass class_file = reader->read_class_file(filename);
-    // // menu de escolhas do exibidor
-    // printer->print_general_info(class_file);
-    // CpInfo::print(class_file);
-    // printer->print_interfaces(class_file);
-    // FieldInfo::print(class_file);
-    // MethodInfo::print(class_file);
-    // AttributeInfo::print(class_file);
+  std::string filename = printer->print_menu_choose_type_file();
+  // passa o nome do arquivo .class como argumento para função de leitura
+  JavaClass class_file = reader->read_class_file(filename);
+  // exibe os dados gerais do arquivo .class informado pelo usuário
+  printer->print_general_info(class_file, filename);
+  // menu de escolhas do exibidor
+  // cpinfo->print(class_file);
+  // printer->print_interfaces(class_file);
+  // fieldinfo->print(class_file);
+  // methodinfo->print(class_file);
+  // attributeinfo->print(class_file);
 
-    return 0;
+  return 0;
 }

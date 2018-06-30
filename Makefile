@@ -7,14 +7,14 @@ C_SRCS := $(wildcard *.cpp)
 DIR_SRC=src/
 DIR_OBJ=build/
 
-_OBJ= ClassFileReader.o ClassFilePrinter.o CpInfo.o FieldInfo.o MethodInfo.o AttributeInfo.o Instruction.o main.o
+_OBJ= ClassFileReader.o ClassFilePrinter.o CpInfo.o FieldInfo.o MethodInfo.o AttributeInfo.o ReadBytes.o Instruction.o main.o
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
 all : clean cppcheck compile gcov exec
 
 gcov :
 	@echo "Checking coverage..."
-	@gcov build/ClassFileReader build/ClassFilePrinter build/CpInfo build/FieldInfo build/MethodInfo build/AttributeInfo build/Instruction build/main
+	@gcov build/ClassFileReader build/ClassFilePrinter build/CpInfo build/FieldInfo build/MethodInfo build/AttributeInfo build/ReadBytes build/Instruction build/main
 	@echo "Done checking!"
 
 exec :
@@ -34,7 +34,7 @@ compile: $(OBJ)
 
 cppcheck :
 	@echo "Static code analysis..."
-	@$(CPPCHECK) src/ClassFileReader.cpp src/ClassFilePrinter.cpp src/CpInfo.cpp src/MethodInfo.cpp src/FieldInfo.cpp src/AttributeInfo.cpp src/Instruction.cpp src/main.cpp
+	@$(CPPCHECK) src/ClassFileReader.cpp src/ClassFilePrinter.cpp src/CpInfo.cpp src/MethodInfo.cpp src/FieldInfo.cpp src/AttributeInfo.cpp src/Instruction.cpp src/ReadBytes.cpp src/main.cpp
 	@echo "Done static analysis!"
 
 clean :

@@ -1,74 +1,73 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 #include <iostream>
 #include "Instruction.h"
 #include "AttributeInfo.h"
-#include "ClassFileReader.cpp"
+#include "ReadBytes.h"
+
 
 ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE * fp, AttributeInfo attribute_info) {
-    attribute_info.constant_value.attribute_name_index = ClassFileReader::read_2_bytes(fp);
-    attribute_info.constant_value.attribute_length = ClassFileReader::read_4_bytes(fp);
-    attribute_info.constant_value.constantvalue_index = ClassFileReader::read_2_bytes(fp);
+    attribute_info.constant_value.attribute_name_index = read_2_bytes(fp);
+    attribute_info.constant_value.attribute_length = read_4_bytes(fp);
+    attribute_info.constant_value.constantvalue_index = read_2_bytes(fp);
     return  attribute_info.constant_value;
 }
 
 void ConstantValueAttribute::print(JavaClass class_file, AttributeInfo attribute_info) {
-    std::cout << "\tname: " << CpInfo::get_utf8_string(class_file.constant_pool, attribute_info.constant_value.attribute_name_index) << std::endl; // isso ou -1?
+  CpInfo *cpinfo = new CpInfo();
+    std::cout << "\tname: " << cpinfo->get_utf8_string(class_file.constant_pool, attribute_info.constant_value.attribute_name_index) << std::endl; // isso ou -1?
     std::cout << "\tlength: " << attribute_info.constant_value.attribute_length << std::endl;
-    std::cout << "\tvalue: " << CpInfo::get_utf8_string(class_file.constant_pool, attribute_info.constant_value.constantvalue_index) << std::endl;
+    std::cout << "\tvalue: " << cpinfo->get_utf8_string(class_file.constant_pool, attribute_info.constant_value.constantvalue_index) << std::endl;
 }
 
 CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo attribute_info){
-//    ClassFileReader::read_2_bytes(fp); // READING 2 BYTES LESS AT THIS POINT. WHY?
-    attribute_info.code.max_stack = ClassFileReader::read_2_bytes(fp);
-    attribute_info.code.max_locals = ClassFileReader::read_2_bytes(fp);
-    attribute_info.code.code_length = ClassFileReader::read_4_bytes(fp);
+    AttributeInfo *attributeinfo = new AttributeInfo();
+//    read_2_bytes(fp); // READING 2 BYTES LESS AT THIS POINT. WHY?
+    attribute_info.code.max_stack = read_2_bytes(fp);
+    attribute_info.code.max_locals = read_2_bytes(fp);
+    attribute_info.code.code_length = read_4_bytes(fp);
     attribute_info.code.code = (u1*)malloc(sizeof(u1)*attribute_info.code.code_length);
 //    printf("CODE:\n");
-    for (int i = 0; i < attribute_info.code.code_length; i++) {
-        attribute_info.code.code[i] = ClassFileReader::read_1_byte(fp);
+    for (int i = 0; (unsigned)i < attribute_info.code.code_length; i++) {
+        attribute_info.code.code[i] = read_1_byte(fp);
     }
     printf("\n");
 
-    attribute_info.code.exception_table_length = ClassFileReader::read_2_bytes(fp);
+    attribute_info.code.exception_table_length = read_2_bytes(fp);
     attribute_info.code.exception_table = (CodeException*)malloc(sizeof(CodeException)*attribute_info.code.exception_table_length);
     for (int j = 0; j < attribute_info.code.exception_table_length; j++) {
-        attribute_info.code.exception_table[j].start_pc = ClassFileReader::read_2_bytes(fp);
-        attribute_info.code.exception_table[j].end_pc = ClassFileReader::read_2_bytes(fp);
-        attribute_info.code.exception_table[j].handler_pc = ClassFileReader::read_2_bytes(fp);
-        attribute_info.code.exception_table[j].catch_type = ClassFileReader::read_2_bytes(fp);
+        attribute_info.code.exception_table[j].start_pc = read_2_bytes(fp);
+        attribute_info.code.exception_table[j].end_pc = read_2_bytes(fp);
+        attribute_info.code.exception_table[j].handler_pc = read_2_bytes(fp);
+        attribute_info.code.exception_table[j].catch_type = read_2_bytes(fp);
     }
 
-    attribute_info.code.attributes_count = ClassFileReader::read_2_bytes(fp);
+    attribute_info.code.attributes_count = read_2_bytes(fp);
     attribute_info.code.attributes = (AttributeInfo*)malloc(sizeof(AttributeInfo)*attribute_info.code.attributes_count);
     for (int k = 0; k < attribute_info.code.attributes_count; k++) {
-        attribute_info.code.attributes[k] = AttributeInfo::get_attribute_info(fp, attribute_info.code.attributes[k], class_file);
+        attribute_info.code.attributes[k] = attributeinfo->get_attribute_info(fp, attribute_info.code.attributes[k], class_file);
     }
 
     return attribute_info.code;
 }
 
 void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
-
+  CpInfo *cpinfo = new CpInfo();
     printf("Max stack: %d\n", attribute.code.max_stack);
     printf("Max locals: %d\n",attribute.code.max_locals);
     printf("Code Length: %d\n", attribute.code.code_length);
     Instruction instructions[256];
     Instruction::setup_instructions(instructions);
     printf("Code: \n");
-    for (int i = 0; i < attribute.code.code_length; i++) {
+    for (int i = 0; (unsigned)i < attribute.code.code_length; i++) {
         u1 op_code = attribute.code.code[i];
         std::cout << "\t"<< i << ": " << instructions[op_code].name;
-        for (int j = 0; j < instructions[op_code].bytes; j++) {
+        for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
             i++;
             if (op_code == anewarray || op_code == checkcast || op_code == getfield || op_code == getstatic || op_code == instanceof || op_code == invokespecial || op_code == invokestatic || op_code == invokevirtual || op_code == ldc_w || op_code == ldc2_w || op_code == NEW || op_code == putfield || op_code == putstatic){
 //                u2 index = attribute.code.code[j] << 8 ;
                 u1 byte1 = attribute.code.code[i];
                 u1 byte2 = attribute.code.code[i+1];
                 u2 index = (byte1<<8)|byte2;
-                std::cout << " " << CpInfo::get_utf8_string(class_file.constant_pool, index - 1);
+                std::cout << " " << cpinfo->get_utf8_string(class_file.constant_pool, index - 1);
                 j++;
 //                i++;
             }
@@ -99,10 +98,10 @@ void AttributeInfo::read(JavaClass class_file, FILE *fp) {
 }
 
 AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribute_info, JavaClass class_file) {
-    attribute_info.attribute_name_index = ClassFileReader::read_2_bytes(fp);
-    ClassFileReader::read_2_bytes(fp);
-    attribute_info.attribute_length = ClassFileReader::read_2_bytes(fp);
-    std::string attribute_name = CpInfo::get_utf8_string(class_file.constant_pool, attribute_info.attribute_name_index - 1);
+    attribute_info.attribute_name_index = read_2_bytes(fp);
+    read_2_bytes(fp);
+    attribute_info.attribute_length = read_2_bytes(fp);
+    std::string attribute_name = cpinfo->get_utf8_string(class_file.constant_pool, attribute_info.attribute_name_index - 1);
 
     std::cout << "Attribute name:" << attribute_name << "\n";
     std::cout << "Attribute length:" << attribute_info.attribute_length<< '\n';
@@ -120,8 +119,8 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
 
         attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
 
-        for (int j = 0; j < attribute_info.attribute_length; j++) {
-            attribute_info.info[j] = ClassFileReader::read_1_byte(fp);
+        for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
+            attribute_info.info[j] = read_1_byte(fp);
         }
     }
 
@@ -140,7 +139,7 @@ void AttributeInfo::print(JavaClass class_file){
 }
 
 void AttributeInfo::print_attribute_info(JavaClass class_file, AttributeInfo attribute_info) {
-    std::string a_name = CpInfo::get_utf8_string(class_file.constant_pool,attribute_info.attribute_name_index - 1);
+    std::string a_name = cpinfo->get_utf8_string(class_file.constant_pool,attribute_info.attribute_name_index - 1);
     std::cout << a_name << std::endl;
     std::cout << "attribute length: " << attribute_info.attribute_length << std::endl;
 

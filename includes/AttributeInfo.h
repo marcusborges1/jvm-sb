@@ -7,6 +7,7 @@
 
 
 #include "JavaClass.h"
+#include "CpInfo.h"
 
 class ConstantValueAttribute{
     public:
@@ -52,6 +53,7 @@ class CodeAttribute {
 
 class AttributeInfo {
 public:
+    CpInfo *cpinfo = new CpInfo();
     u2 attribute_name_index;
     u4 attribute_length;
     union {
@@ -61,11 +63,10 @@ public:
         u1* info;
     };
 
-public:
-    static void read(JavaClass, FILE*);
-    static AttributeInfo get_attribute_info(FILE*, AttributeInfo, JavaClass);
-    static void print(JavaClass);
-    static void print_attribute_info(JavaClass, AttributeInfo);
+    void read(JavaClass, FILE*);
+    AttributeInfo get_attribute_info(FILE*, AttributeInfo, JavaClass);
+    void print(JavaClass);
+    void print_attribute_info(JavaClass, AttributeInfo);
 };
 
 
