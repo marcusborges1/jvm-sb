@@ -1,10 +1,5 @@
-//
-// Created by gabriel on 28/06/18.
-//
-
 #ifndef JVM_CPP_INSTRUCTION_H
 #define JVM_CPP_INSTRUCTION_H
-
 
 #include <string>
 #include "JavaClass.h"
@@ -17,5 +12,4 @@ public:
     static void setup_instructions(Instruction*);
 };
 
-
-#endif //JVM_CPP_INSTRUCTION_H
+#endif

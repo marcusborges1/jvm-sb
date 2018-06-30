@@ -1,7 +1,3 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
@@ -196,4 +192,3 @@ void CpInfo::print(JavaClass class_file){
         printf("\n----------------------------\n");
     }
 }
-

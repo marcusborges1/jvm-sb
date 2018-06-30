@@ -18,28 +18,32 @@
  *  @author Marcus Vinícius da Silva Borges   13/0032891
  *  @bug No know bugs.
  */
-#include <CpInfo.h>
-#include "../src/ClassFilePrinter.cpp"
-#include "../includes/JavaClass.h"
-#include "iostream"
-#include "string"
-#include "../src/ClassFileReader.cpp"
+#include <iostream>
+#include <string>
+
+#include "ClassFilePrinter.h"
+// #include "ClassFileReader.h"
+#include "JavaClass.h"
 #include "CpInfo.h"
 
 /** @brief Função principal do sistema leitor/exibidor.
  *  @return ...
  */
+int main() {
+    ClassFilePrinter *printer = new ClassFilePrinter();
+    // ClassFileReader *reader = new ClassFileReader();
 
-    int main() {
-        // menu inicial
-        const char *filename = ClassFilePrinter::print_menu_choose_type_file(); // passa o nome do arquivo .class como argumento para função de leitura
-        JavaClass class_file = ClassFileReader::read_class_file(filename); // exibe os dados gerais do arquivo .class informado pelo usuário
-        ClassFilePrinter::print_general_info(class_file); // menu de escolhas do exibidor
-        CpInfo::print(class_file);
-        ClassFilePrinter::print_interfaces(class_file);
-        FieldInfo::print(class_file);
-        MethodInfo::print(class_file);
-        AttributeInfo::print(class_file);
+    // passa o nome do arquivo .class como argumento para função de leitura
+    std::string filename = printer->print_menu_choose_type_file();
+    // exibe os dados gerais do arquivo .class informado pelo usuário
+    // JavaClass class_file = reader->read_class_file(filename);
+    // // menu de escolhas do exibidor
+    // printer->print_general_info(class_file);
+    // CpInfo::print(class_file);
+    // printer->print_interfaces(class_file);
+    // FieldInfo::print(class_file);
+    // MethodInfo::print(class_file);
+    // AttributeInfo::print(class_file);
 
-        return 0;
-    }
+    return 0;
+}

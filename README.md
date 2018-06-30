@@ -38,20 +38,17 @@ This system covers ``.java`` files that contains:
 - Reescrita [RewrittenDemo.class](test/RewrittenDemo.class),
   [SubClassRewriteDemo.class](test/SubClassRewriteDemo.class) and
   [SuperClassRewriteDemo.class](test/SuperClassRewriteDemo.class)
-
-
-Future additions:
-- Instruções de categoria 1 (cat 1 32) [CategoryOneDemo.class](test/CategoryOneDemo.class)
-- Instruções de categoria 2 (cat 2 64) [CategoryTwoDemo.class](test/CategoryTwoDemo.class)
 - Métodos estáticos [MethodStaticDemo.class](test/MethodStaticDemo.class)
-- Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
 - Atributos de classe [AttributeClassDemo.class](test/AttributeClassDemo.class)
 - Atributos de instância [AttributeInstDemo.class](test/AttributeInstDemo.class)
 - Polimorfismo [PolDemo.class](test/PolDemo.class)
-- Objetos [ObjDemo.class](test/ObjDemo.class)
 - Inteiro [IntegerDemo.class](test/IntegerDemo.class)
 - Float [FloatDemo.class](test/FloatDemo.class)
 - Double [DoubleDemo.class](test/DoubleDemo.class)
+
+Future additions:
+- Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
+- Objetos [ObjDemo.class](test/ObjDemo.class)
 - Long [LongDemo.class](test/LongDemo.class)
 
 

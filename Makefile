@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall -std=c++11
 CPPCHECK=cppcheck
 GCOV=--coverage
-C_SRCS := $(wildcard *.cpppp)
+C_SRCS := $(wildcard *.cpp)
 
 DIR_SRC=src/
 DIR_OBJ=build/
