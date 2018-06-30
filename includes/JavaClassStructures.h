@@ -138,16 +138,12 @@ typedef struct FieldInfo {
     CvInfo* attributes;
 } FieldInfo;
 
-typedef struct AttributeInfo {
-    u2  attribute_name_index;                         // CONSTANT_UTf8, attribute name
-    u4  attribute_length;                             // attribute size in bytes
-    u1* info;
-} AttributeInfo;
+typedef struct AttributeInfo AttributeInfo;
 
 typedef struct ExceptionTable {
-  uint16_t start_pc;
-  uint16_t end_pc;
-  uint16_t catch_type;
+  u2 start_pc;
+  u2 end_pc;
+  u2 catch_type;
 } ExceptionTable;
 
 typedef struct CodeAttribute {
@@ -168,8 +164,7 @@ typedef struct MethodInfo {
     u2  name_index;               // CONSTANT_UTf8, method valid descriptor
     u2  descriptor_index;         // number of method attributes
     u2  attributes_count;         // JVM implementation should ignore in silence each attribute unrecognized
-    CodeAttribute* code_attributes;
-    ExceptionsAttribute* exceptions_attributes;
+    AttributeInfo  *attributes;   // JVM implementation should ignore in silence each attribute unrecognized
 } MethodInfo;
 
 typedef struct JavaClass {
@@ -190,5 +185,93 @@ typedef struct JavaClass {
   u2  attributes_count;           // each field belongs to the attributes_info structure
   AttributeInfo  *attributes;     // JVM implementation should ignore in silence each attribute unrecognized
 } JavaClass;
+
+typedef struct {
+    u2 start_pc;
+    u2 end_pc;
+    u2 handler_pc;
+    u2 catch_type;
+} attribute_code_exception;
+
+
+typedef struct {
+    u2 value_index;
+} attribute_constant_value;
+
+
+typedef struct {
+    u2 number_exceptions;
+    u2 *exception_index_table;
+} attribute_exception;
+
+typedef struct {
+    u2 max_stack;
+    u2 max_locals;
+    u4 code_length;
+    u1 *code;
+    u2 exceptions_table_length;
+    attribute_code_exception *exceptions;
+    u2 attribute_count;
+    AttributeInfo *attributes;
+} attribute_code;
+
+typedef struct {
+    u2 inner_class_info_index;
+    u2 outer_class_info_index;
+    u2 inner_name_index;
+    u2 inner_class_access_flag;
+} inner_class_data;
+
+typedef struct {
+    u2 number_of_classes;
+    inner_class_data *inner_class_data;
+} attribute_inner_class;
+
+
+typedef struct {
+    u2 source_file_index;
+} attribute_source_file;
+
+
+typedef struct {
+    u2 start_pc;
+    u2 line_pc;
+} attribute_line_number_table_data;
+
+
+typedef struct {
+    u2 line_number_table_length;
+    attribute_line_number_table_data *table;
+} attribute_line_number_table;
+
+
+typedef struct {
+    u2 start_pc;
+    u2 length;
+    u2 name_index;
+    u2 descriptor_index;
+    u2 index;
+} attribute_local_variable_table_data;
+
+
+typedef struct {
+    u2 local_variable_table_length;
+    attribute_local_variable_table_data *table_data;
+} attribute_local_variable_table;
+
+typedef struct AttributeInfo {
+    u2  attribute_name_index;                         // CONSTANT_UTf8, attribute name
+    u4  attribute_length;                             // attribute size in bytes
+    union {
+        attribute_code *code;
+        attribute_constant_value *constant_value;
+        attribute_exception *exception;
+        attribute_inner_class *inner_class;
+        attribute_source_file *source_file;
+        attribute_line_number_table *line_number_table;
+        attribute_local_variable_table *local_variable_table;
+        u1 *info;
+    };
+} AttributeInfo;
 
 #endif

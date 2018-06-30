@@ -114,10 +114,12 @@ void print_general_info(JavaClass* class_file, char *filename) {
   printf("Contanst pool count:  %d\n", class_file->constant_pool_count);
   printf("Access flags:         0x%.4x\n", class_file->access_flags);
   printf("This class:           cp_info #%d < ", class_file->this_class);
-  get_UTF8_constant_pool(class_file->contant_pool, class_file->contant_pool[(class_file->this_class)-1].Class.name_index-1);
+  // get_UTF8_constant_pool(class_file->contant_pool,
+      // class_file->contant_pool[(class_file->this_class)-1].Class.name_index-1);
   printf("\nSuper class:          cp_info #%d < ", class_file->super_class);
-  get_UTF8_constant_pool(class_file->contant_pool, class_file->contant_pool[(class_file->super_class)-1].Class.name_index-1);
-  printf("\nInterface count: %d\n", class_file->interface_count);
+  // get_UTF8_constant_pool(class_file->contant_pool,
+      // class_file->contant_pool[(class_file->super_class)-1].Class.name_index-1);
+  // printf("\nInterface count: %d\n", class_file->interface_count);
   // printf("Field count: %d\n", class_file->field_count);
   // printf("Methods count: %d\n", class_file->methods_count);
 }

@@ -63,3 +63,5 @@ dkms.conf
 # Doxygen
 html/*
 latex/*
+
+.DS_Store

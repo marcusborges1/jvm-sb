@@ -77,9 +77,9 @@ JavaClass* read_class_file(char const* file_path) {
   // read_methods(file, class_file);
 
   // Lê a quantidade de atributos
-  //  class_file->attributes_count = read_2_bytes(file);
+   // class_file->attributes_count = read_2_bytes(file);
   // Lê os atributos da classe/interface
-  // read_attribute_info(file, class_file);
+  // read_attributes(file, class_file);
 
   // fecha o arquivo .class que estava sendo lido
   fclose(file);
