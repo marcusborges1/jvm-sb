@@ -83,7 +83,7 @@ public:
     };
 
     void read(FILE*, JavaClass);
-    void print(JavaClass);
+    std::string get_utf8_constant_pool(CpInfo *cp_info, u2 pos_info);
 };
 
 

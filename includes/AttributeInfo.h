@@ -5,15 +5,12 @@
 #include <iostream>
 #include <cstring>
 #include "JavaClass.h"
-#include "ClassFilePrinter.h"
-// #include "CpInfo.h"
+#include "CpInfo.h"
 // #include "FieldInfo.h"
 // #include "MethodInfo.h"
 // #include "AttributeInfo.h"
 // #include "InterfaceInfo.h"
 
-
-// class ClassFilePrinter;
 
 class ConstantValueAttribute{
     public:
@@ -59,7 +56,7 @@ class CodeAttribute {
 
 class AttributeInfo {
 public:
-    ClassFilePrinter *printer = new ClassFilePrinter();
+    CpInfo *cpinfo = new CpInfo();
     u2 attribute_name_index;
     u4 attribute_length;
     union {

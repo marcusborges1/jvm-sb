@@ -121,16 +121,13 @@ class JavaClass{
         u2 this_class;
         u2 super_class;
         u2 interfaces_count;
-        // InterfaceInfo *interfaces;
-        u2 *interfaces; 
+        InterfaceInfo *interfaces;
         u2  fields_count;
         FieldInfo* fields;
         u2  methods_count;
         MethodInfo  *methods;
         u2  attributes_count;
         AttributeInfo  *attributes;
-
-
 };
 
 

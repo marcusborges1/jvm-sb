@@ -8,7 +8,6 @@
 #include "MethodInfo.h"
 #include "AttributeInfo.h"
 #include "InterfaceInfo.h"
-// #include "ClassFilePrinter.h"
 
 
 class ClassFileReader {
@@ -20,8 +19,6 @@ public:
   InterfaceInfo *interface_info = new InterfaceInfo();
 
   JavaClass read_class_file(std::string filename);
-  void print_menu_exhibitor(JavaClass* class_file);
-  void read_interfaces(JavaClass class_file, FILE* file);
 };
 
 #endif

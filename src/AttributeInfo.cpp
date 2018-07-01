@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Instruction.h"
 #include "AttributeInfo.h"
-#include "ClassFilePrinter.h"
 #include "ReadBytes.h"
 
 
@@ -14,9 +13,9 @@ ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE *
 
 // void ConstantValueAttribute::print(JavaClass class_file, AttributeInfo attribute_info) {
 //   CpInfo *cpinfo = new CpInfo();
-//     std::cout << "\tname: " << printer->get_utf8_constant_pool(class_file.constant_pool, attribute_info.constant_value.attribute_name_index) << std::endl; // isso ou -1?
+//     std::cout << "\tname: " << cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.constant_value.attribute_name_index) << std::endl; // isso ou -1?
 //     std::cout << "\tlength: " << attribute_info.constant_value.attribute_length << std::endl;
-//     std::cout << "\tvalue: " << printer->get_utf8_constant_pool(class_file.constant_pool, attribute_info.constant_value.constantvalue_index) << std::endl;
+//     std::cout << "\tvalue: " << cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.constant_value.constantvalue_index) << std::endl;
 // }
 
 CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo attribute_info){
@@ -102,7 +101,7 @@ CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo 
 
 void AttributeInfo::read(JavaClass class_file, FILE *fp) {
     for (int i = 0; i < class_file.attributes_count ; i++) {
-        class_file.attributes[i] = AttributeInfo::get_attribute_info(fp, class_file.attributes[i], class_file);
+        class_file.attributes[i] = get_attribute_info(fp, class_file.attributes[i], class_file);
     }
 
 }
@@ -111,25 +110,25 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
     attribute_info.attribute_name_index = read_2_bytes(fp);
     // read_2_bytes(fp);
     attribute_info.attribute_length = read_4_bytes(fp);
-    // std::string attribute_name = printer->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
+    std::string attribute_name = cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
 
-    // if(attribute_name == "Code"){
-    //     attribute_info.code = CodeAttribute::read(class_file, fp, attribute_info);
-    //     return attribute_info;
-    // }
+    if(attribute_name == "Code"){
+        attribute_info.code = CodeAttribute::read(class_file, fp, attribute_info);
+        return attribute_info;
+    }
 
-    // if(attribute_name == "ConstantValue"){
-    //     attribute_info.constant_value = ConstantValueAttribute::read(class_file, fp, attribute_info);
-    // }
+    if(attribute_name == "ConstantValue"){
+        attribute_info.constant_value = ConstantValueAttribute::read(class_file, fp, attribute_info);
+    }
 
-    // else {
+    else {
 
-    //     attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
+        attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
 
-    //     for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
-    //         attribute_info.info[j] = read_1_byte(fp);
-    //     }
-    // }
+        for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
+            attribute_info.info[j] = read_1_byte(fp);
+        }
+    }
 
     return attribute_info;
 }
@@ -140,13 +139,13 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
 //
 //     for (int j = 0; j < class_file.attributes_count; j++) {
 //         std::cout << "attribute #" << j << ": ";
-//         AttributeInfo::print_attribute_info(class_file, class_file.attributes[j]);
+//         print_attribute_info(class_file, class_file.attributes[j]);
 //     }
 //
 // }
 //
 // void AttributeInfo::print_attribute_info(JavaClass class_file, AttributeInfo attribute_info) {
-//     std::string a_name = printer->get_utf8_constant_pool(class_file.constant_pool,attribute_info.attribute_name_index - 1);
+//     std::string a_name = cpinfo->get_utf8_constant_pool(class_file.constant_pool,attribute_info.attribute_name_index - 1);
 //     std::cout << a_name << std::endl;
 //     std::cout << "attribute length: " << attribute_info.attribute_length << std::endl;
 //

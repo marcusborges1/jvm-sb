@@ -37,10 +37,8 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     class_file.super_class = read_2_bytes(file);
 
     class_file.interfaces_count = read_2_bytes(file);
-    // class_file.interfaces = (InterfaceInfo*)malloc(class_file.interfaces_count * sizeof(InterfaceInfo));
-    class_file.interfaces = (u2*)malloc(class_file.interfaces_count * sizeof(u2));
-    read_interfaces(class_file, file);
-    // interface_info->read(class_file, file);
+    class_file.interfaces = (InterfaceInfo*)malloc(class_file.interfaces_count * sizeof(InterfaceInfo));
+    interface_info->read(class_file, file);
 
     class_file.fields_count = read_2_bytes(file);
     class_file.fields = (FieldInfo*)malloc(class_file.fields_count * sizeof(FieldInfo));
@@ -56,13 +54,3 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     return class_file;
 }
-
-
-
-/////tirar isso daqui quando arrumar o bug, ele ja existe no InterfacesInfo.cpp
-void ClassFileReader::read_interfaces(JavaClass class_file, FILE* file){
-  for (int i = 0; i < class_file.interfaces_count; i++)
-      class_file.interfaces[i] = read_2_bytes(file);
-}
-
-
