@@ -1,7 +1,3 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 #ifndef JVM_CPP_FIELDINFO_H
 #define JVM_CPP_FIELDINFO_H
 

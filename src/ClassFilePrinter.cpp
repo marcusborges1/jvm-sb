@@ -57,7 +57,7 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
       filename = "test/ArrayMultDemo.class";
       break;
     case 5:
-      filename = "test/InheritanceDemo.class";
+      filename = "test/SuperClassInheritanceDemo.class";
       break;
     case 6:
       filename = "test/RewriteDemo.class";
@@ -131,17 +131,6 @@ void ClassFilePrinter::print_general_info(JavaClass class_file,
   printf("Attributes count: %d\n", class_file.attributes_count);
 }
 
-void ClassFilePrinter::print_interfaces(JavaClass class_file){
-
-  printf("\n--------------- Interfaces Info ---------------\n");
-  for (int i = 0; i < class_file.interfaces_count; i++) {
-    printf("Interface: cp info #%d <", class_file.interfaces[i]);
-    std::cout << get_utf8_constant_pool(class_file.constant_pool,
-                                    class_file.interfaces[i]-1);
-    printf("\n");
-  }
-}
-
 /** @brief Mostra menu de escolhas do exibidor do arquivo .class.
  *  @param class_file ponteiro com as informações lidas do .class
  *  @return void
@@ -165,7 +154,7 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
       break;
     case 2:
       // exibe as interfaces implementadas pela classe
-      // print_interfaces_info(class_file);
+      // print_interfaces(class_file);
       break;
     case 3:
       // print_fields_info(class_file);
@@ -188,6 +177,26 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
   }
 }
 
+/** @brief Printa as interfaces contidas no .class
+ *  @param class_file
+ *  @return void
+ */
+void ClassFilePrinter::print_interfaces(JavaClass class_file){
+  printf("\n--------------- Interfaces Info ---------------\n");
+
+  // interface_info = class_file.interfaces;
+
+  for (int i = 0; i < class_file.interfaces_count-1; i++) 
+  {
+    // printf("Interface: cp info #%d <", class_file.interfaces[i].interface_table);
+    // std::cout << get_utf8_constant_pool(class_file.constant_pool,
+                                    // class_file->interfaces.interface_count[i]-1);
+    printf("\n");
+  }
+}
+
+
+
 /** @brief Mostra informações das constant_pools.
  *  Tabela de estruturas representando string, nomes de classes ou interfaces,
  *  nomes de campos, etc.
@@ -195,28 +204,29 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
  *  @return void
  */
 void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
-  printf("\n\nConstant Pool Info: \n\n");
+  std::cout << std::endl << std::endl << "------- Constant Pool -------" << std::endl << std::endl;
+
   for (int i = 0; i < class_file.constant_pool_count-1; i++) {
 
-    printf("\nCP_INFO[%d]\n", i + 1);
+    std::cout << std::endl << "CP_INFO["<< i+1 << "]" << std::endl;
 
     // formato de cada entrada é indicado pelo byte tag
     switch (class_file.constant_pool[i].tag) {
       // caso tag seja 1
       case CONSTANT_Utf8:
-        printf("CONSTANT_UTF8_info\n");
-        printf("Tamanho: %d - ", class_file.constant_pool[i].UTF8.size);
-        printf("Valor: %s\n", class_file.constant_pool[i].UTF8.bytes);
+        std::cout << "CONSTANT_UTF8_info"<< std::endl;
+        std::cout << "\tLength:\t"<< std::dec << class_file.constant_pool[i].UTF8.size << std::endl;
+        std::cout << "\tBytes:\t"<< class_file.constant_pool[i].UTF8.bytes << std::endl;
         break;
       // caso tag seja 3
       case CONSTANT_Integer:
         // representa o valor da constante int, em big-endian
-        printf("CONSTANT_Integer_info:\n");
+        printf("CONSTANT_Integer\n");
         printf("Valor: %d\n", class_file.constant_pool[i].Integer.bytes);
         break;
       // caso tag seja 4
       case CONSTANT_Float:
-        printf("CONSTANT_Float_info:\n");
+        printf("CONSTANT_Float\n");
         float valor_f;
         memcpy(&valor_f, &(class_file.constant_pool[i].Float.bytes),
               sizeof(float));
@@ -226,10 +236,11 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
         break;
       // caso tag seja 5
       case CONSTANT_Long:
-        printf("CONSTANT_Long_info:\n");
+        printf("CONSTANT_Long\n");
         // representa uma constante inteira de 8 bytes em big-endian
         // unsigned
-        printf("\tHigh: 0x%0x\n", class_file.constant_pool[i].Long.high_bytes);
+        std::cout << "\tHigh:\t0x" << std::hex << class_file.constant_pool[i].Long.high_bytes << std::endl;
+        // printf("\tHigh: 0x%0x\n", class_file.constant_pool[i].Long.high_bytes);
         printf("\tLow: 0x%0x\n", class_file.constant_pool[i].Long.low_bytes);
         long read_long_value;
         memcpy(&read_long_value, &(class_file.constant_pool[i].Long.high_bytes),
@@ -241,85 +252,103 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
         break;
       // caso tag seja 6
       case CONSTANT_Double:
-        printf("CONSTANT_Double_info:\n");
-        printf("\tHigh: 0x%0x\n", class_file.constant_pool[i].Double.high_bytes);
-        printf("\tLow: 0x%0x\n", class_file.constant_pool[i].Double.low_bytes);
+        printf("CONSTANT_Double\n");
+
+        std::cout << "\tHigh:\t0x"<< std::hex << class_file.constant_pool[i].Double.high_bytes << std::endl;
+        std::cout << "\tLow:\t0x"<< std::hex << class_file.constant_pool[i].Double.low_bytes << std::endl;
+        
         double read_double_value;
         u8 aux;
         // representa uma constante de ponto flutuante de 8 bytes em big-endian
         // no formato IEEE-754
         aux = ((u8)class_file.constant_pool[i].Double.high_bytes << 32) | class_file.constant_pool[i].Double.low_bytes;
         memcpy(&read_double_value, &aux, sizeof(double));
-        // (long bits) = ((long) high_bytes << 32) + low_bytes;
-        printf("\tDouble Value: %lf\n", read_double_value);
+        
+        std::cout << "\tDouble Value:\t"<< read_double_value << std::endl;
         break;
       // caso tag seja 7
       case CONSTANT_Class :
-        printf("CONSTANT_Class_info:\n");
+        std::cout << "CONSTANT_Class_info" << std::endl;
+
+        std::cout << "\tName index:\t#" << std::dec << class_file.constant_pool[i].Class.type_class_info << std::endl;
         // exibe nome de uma classe ou interface
-        std::cout << get_utf8_constant_pool(class_file.constant_pool,
-                            class_file.constant_pool[i].Class.type_class_info - 1);
+        std::cout << "\tClass name:\t" << get_utf8_constant_pool(class_file.constant_pool,
+                            class_file.constant_pool[i].Class.type_class_info - 1) << std::endl;
       break;
       // caso tag seja 8
       case CONSTANT_String:
-        printf("String: ");
+        std::cout << "CONSTANT_String" << std::endl;
+        
         // representa sequência de caracteres com a qual o objeto String será
         // iniciado
-        get_utf8_constant_pool(class_file.constant_pool,
-                              class_file.constant_pool[i].String.bytes-1);
+        std::cout << "\tString:\t#" << std::dec << class_file.constant_pool[i].String.bytes;
+        std::cout << "\t" << get_utf8_constant_pool(class_file.constant_pool,
+                              class_file.constant_pool[i].String.bytes-1) << std::endl;
         break;
       // caso tag seja 9
       case CONSTANT_Fieldref:
-        printf("CONSTANT_Fieldref_info:\n");
-        printf("Class index: ");
+        std::cout << "CONSTANT_Fieldref" << std::endl;
+
         // representa nome completo da classe ou interface que contem
         // a declaração desse field
-        get_utf8_constant_pool(class_file.constant_pool,
-                          class_file.constant_pool[i].FieldRef.class_index-1);
-        printf("\nName and Type: ");
+        std::cout << "\tClass index:\t#" << std::dec << class_file.constant_pool[i].FieldRef.class_index;
+        std::cout << "\t" << get_utf8_constant_pool(class_file.constant_pool,
+                          class_file.constant_pool[i].FieldRef.class_index-1) << std::endl;
+
         // representa um field ou método sem indicar classe ou interface
         // a que pertence
-        get_utf8_constant_pool(class_file.constant_pool,
-                  class_file.constant_pool[i].FieldRef.name_and_type_index-1);
+        std::cout << "\tName and Type:\t#" << std::dec << class_file.constant_pool[i].FieldRef.name_and_type_index;
+        std::cout << "\t" << get_utf8_constant_pool(class_file.constant_pool,
+                  class_file.constant_pool[i].FieldRef.name_and_type_index-1) << std::endl;
         break;
       // caso tag seja 10
       case CONSTANT_Methodref:
-        printf("CONSTANT_Methodref_info:\n");
+        std::cout << "CONSTANT_Methodref"<< std::endl;
+
         // representa um método
-        printf("Index: ");
+        std::cout << "\tClass index:\t#"<< class_file.constant_pool[i].MethodRef.index;
         // representa nome completo classe que contem a declaração desse método
-        std::cout << get_utf8_constant_pool(class_file.constant_pool,
+        std::cout << " \t" << get_utf8_constant_pool(class_file.constant_pool,
                               class_file.constant_pool[i].MethodRef.index-1);
-        printf("\nName and Type: ");
+        std::cout << std::endl;
+
+
+        std::cout << "\tName and Type:\t#"<< class_file.constant_pool[i].MethodRef.name_and_type;
         // indica nome e descritor do método
-        std::cout << get_utf8_constant_pool(class_file.constant_pool,
+        std::cout << "\t" << get_utf8_constant_pool(class_file.constant_pool,
                         class_file.constant_pool[i].MethodRef.name_and_type-1);
+        std::cout << std::endl;
         break;
       // caso tag seja 11
       case CONSTANT_InterfaceMethodref:
-        printf("InterfaceMethodRef: \n");
-        printf("Index: ");
+        std::cout << "CONSTANT_InterfaceMethodref"<< std::endl;
+
         // representa nome completo da interface que contem a declaração desse
-        // método
+        // método        
+        std::cout << "Index:"<< std::endl;
         std::cout << get_utf8_constant_pool(class_file.constant_pool,
-                      class_file.constant_pool[i].InterfaceMethodRef.index-1);
-        printf("\nName and Type: ");
+                      class_file.constant_pool[i].InterfaceMethodRef.index-1)<< std::endl;
+
         // indica nome e descritor do método
+        std::cout << "Name and Type:"<< std::endl;
         std::cout << get_utf8_constant_pool(class_file.constant_pool,
               class_file.constant_pool[i].InterfaceMethodRef.name_and_type-1);
         break;
       // caso tag seja 12
       case CONSTANT_NameAndType:
-        printf("CONSTANT_NameAndType_info:\n");
-        printf("Name index: ");
-        std::cout << get_utf8_constant_pool(class_file.constant_pool,
-                        class_file.constant_pool[i].NameAndType.name_index-1);
-        printf("\nDescriptor index: ");
-        std::cout << get_utf8_constant_pool(class_file.constant_pool,
-                  class_file.constant_pool[i].NameAndType.descriptor_index-1);
+        std::cout << "CONSTANT_NameAndType:"<< std::endl;
+
+        // printf("Name index: ");
+        std::cout << "\tName:\t\t#"<< class_file.constant_pool[i].NameAndType.name_index;
+        std::cout << "\t" << get_utf8_constant_pool(class_file.constant_pool,
+                        class_file.constant_pool[i].NameAndType.name_index-1) << std::endl;
+        // printf("\nDescriptor index: ");
+        std::cout << "\tDescriptor:\t#"<< class_file.constant_pool[i].NameAndType.descriptor_index;
+        std::cout << "\t" << get_utf8_constant_pool(class_file.constant_pool,
+                  class_file.constant_pool[i].NameAndType.descriptor_index-1) << std::endl;
         break;
       case CONSTANT_EmptySpace:
-        printf("Large numeric continued / empty item");
+        std::cout << "\tLarge numeric continued / empty item"<< std::endl;
         break;
       default:
         printf("Tag %d. Wrong tag number. Shutting down.\n",
@@ -392,24 +421,24 @@ std::string ClassFilePrinter::get_utf8_constant_pool(CpInfo *cp_info, u2 pos_inf
   return utf8_const;
 }
 
-// /** @brief Printa as interfaces contidas no .class
-//  *  @param class_file
-//  *  @return void
-//  */
-// void ClassFilePrinter::print_interfaces_info(JavaClass class_file) {
+/** @brief Printa as interfaces contidas no .class
+ *  @param class_file
+ *  @return void
+ */
+// void ClassFilePrinter::print_interfaces(JavaClass class_file) {
 //   int i;
-//
+
 //   if (class_file.interface_count != 0) {
 //     for(i = 0; i < class_file.interface_count; i++) {
 //       int index = class_file.constant_pool[class_file.interfaces[i] - 1].Class.type_class_info;
-//
+
 //       printf("\tInterface %d:     cp_info_#%d   %d", i, class_file.interfaces[i], index);
 //       // READ UTF 8
 //       printf("\n");
 //     }
 //   }
 // }
-//
+
 // /*  @brief Printa os fields contidos no .class
 //  *  @param class_file
 //  *  @return void

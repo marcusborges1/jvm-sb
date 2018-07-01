@@ -7,6 +7,7 @@
 #include "FieldInfo.h"
 #include "MethodInfo.h"
 #include "AttributeInfo.h"
+#include "InterfaceInfo.h"
 
 class ClassFileReader {
 public:
@@ -14,6 +15,7 @@ public:
   FieldInfo *field_info = new FieldInfo();
   MethodInfo *method_info = new MethodInfo();
   AttributeInfo *attribute_info = new AttributeInfo();
+  InterfaceInfo *interface_info = new InterfaceInfo();
 
   JavaClass read_class_file(std::string filename);
   void print_menu_exhibitor(JavaClass* class_file);

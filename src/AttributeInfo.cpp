@@ -108,8 +108,8 @@ void AttributeInfo::read(JavaClass class_file, FILE *fp) {
 
 AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribute_info, JavaClass class_file) {
     attribute_info.attribute_name_index = read_2_bytes(fp);
-    read_2_bytes(fp);
-    attribute_info.attribute_length = read_2_bytes(fp);
+    // read_2_bytes(fp);
+    attribute_info.attribute_length = read_4_bytes(fp);
     std::string attribute_name = printer->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
 
     if(attribute_name == "Code"){

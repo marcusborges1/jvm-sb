@@ -5,6 +5,7 @@
 // uint64_t : unsigned integer type with width of exactly 64
 #include <cstdint>
 #include "CpInfo.h"
+#include "InterfaceInfo.h"
 
 #define u8 uint64_t
 // uint32_t : unsigned integer type with width of exactly 32
@@ -63,7 +64,7 @@
 #define CONSTANT_Double               6
 #define CONSTANT_NameAndType         12
 #define CONSTANT_Utf8                 1
-#define CONSTANT_EmptySpace          13
+#define CONSTANT_EmptySpace           0
 
 // access flags
 // public declaration, can be accessed outside the package
@@ -102,6 +103,7 @@ class CpInfo;
 class FieldInfo;
 class MethodInfo;
 class AttributeInfo;
+class InterfaceInfo;
 
 class JavaClass{
     public:
@@ -117,7 +119,8 @@ class JavaClass{
         u2 this_class;
         u2 super_class;
         u2 interfaces_count;
-        u2 *interfaces;
+        // InterfaceInfo *interfaces;
+        u2 *interfaces; 
         u2  fields_count;
         FieldInfo* fields;
         u2  methods_count;

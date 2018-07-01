@@ -4,9 +4,11 @@
 #include <string>
 #include "JavaClass.h"
 
+
 class ClassFilePrinter {
 public:
     CpInfo *cpinfo = new CpInfo();
+    InterfaceInfo *interface_info = new InterfaceInfo();
 
     std::string print_menu_choose_type_file();
     void print_general_info(JavaClass class_file, std::string filename);
