@@ -1,11 +1,12 @@
-//
-// Created by gabriel on 26/06/18.
-//
-
 // uint64_t : unsigned integer type with width of exactly 64
 #include <cstdint>
-#include "CpInfo.h"
-#include "InterfaceInfo.h"
+// #include "CpInfo.h"
+// #include "InterfaceInfo.h"
+// #include "FieldInfo.h"
+// #include "MethodInfo.h"
+// #include "ClassFilePrinter.h"
+// #include "AttributeInfo.h"
+
 
 #define u8 uint64_t
 // uint32_t : unsigned integer type with width of exactly 32
@@ -104,6 +105,7 @@ class FieldInfo;
 class MethodInfo;
 class AttributeInfo;
 class InterfaceInfo;
+
 
 class JavaClass{
     public:

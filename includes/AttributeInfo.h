@@ -1,9 +1,19 @@
 #ifndef JVM_CPP_ATTRIBUTEINFO_H
 #define JVM_CPP_ATTRIBUTEINFO_H
 
-
+#include <cstdlib>
+#include <iostream>
+#include <cstring>
 #include "JavaClass.h"
 #include "ClassFilePrinter.h"
+// #include "CpInfo.h"
+// #include "FieldInfo.h"
+// #include "MethodInfo.h"
+// #include "AttributeInfo.h"
+// #include "InterfaceInfo.h"
+
+
+// class ClassFilePrinter;
 
 class ConstantValueAttribute{
     public:

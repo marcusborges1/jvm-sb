@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Instruction.h"
 #include "AttributeInfo.h"
+#include "ClassFilePrinter.h"
 #include "ReadBytes.h"
 
 
@@ -110,25 +111,25 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
     attribute_info.attribute_name_index = read_2_bytes(fp);
     // read_2_bytes(fp);
     attribute_info.attribute_length = read_4_bytes(fp);
-    std::string attribute_name = printer->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
+    // std::string attribute_name = printer->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
 
-    if(attribute_name == "Code"){
-        attribute_info.code = CodeAttribute::read(class_file, fp, attribute_info);
-        return attribute_info;
-    }
+    // if(attribute_name == "Code"){
+    //     attribute_info.code = CodeAttribute::read(class_file, fp, attribute_info);
+    //     return attribute_info;
+    // }
 
-    if(attribute_name == "ConstantValue"){
-        attribute_info.constant_value = ConstantValueAttribute::read(class_file, fp, attribute_info);
-    }
+    // if(attribute_name == "ConstantValue"){
+    //     attribute_info.constant_value = ConstantValueAttribute::read(class_file, fp, attribute_info);
+    // }
 
-    else {
+    // else {
 
-        attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
+    //     attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
 
-        for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
-            attribute_info.info[j] = read_1_byte(fp);
-        }
-    }
+    //     for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
+    //         attribute_info.info[j] = read_1_byte(fp);
+    //     }
+    // }
 
     return attribute_info;
 }

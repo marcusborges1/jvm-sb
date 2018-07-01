@@ -163,7 +163,8 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
       printf("Não implementado");
       break;
     case 5:
-      printf("Não implementado");
+      print_attributes(class_file, class_file.attributes);
+      // printf("Não implementado");
       break;
     case 0:
       printf("Até mais!\n");
@@ -420,6 +421,38 @@ std::string ClassFilePrinter::get_utf8_constant_pool(CpInfo *cp_info, u2 pos_inf
 
   return utf8_const;
 }
+
+
+
+
+/** @brief Printa os atributos contidas no .class
+ *  @param class_file
+ *  @return void
+ */
+void ClassFilePrinter::print_attributes(JavaClass class_file, AttributeInfo *info)
+{
+//     interface_info = class_file.attributes;
+
+    printf("attribute_name_index: cp info #%d ", info->attribute_name_index-1);
+//     get_utf8_constant_pool(class_file->constant_pool, info->attribute_name_index - 1);
+
+//     printf("attribute length: %d\n", info->attribute_length) ;
+
+    // strcpy(stringValue, (char*)class_file->constant_pool[(info->attribute_name_index)- 1].UTF8.bytes);
+    // printf("%s\n", stringValue);
+
+    // if(!(strcmp("Code", stringValue)))
+    // {
+    //   print_attr_code(class_file, info->code);
+    // }
+    // else if (!(strcmp("LineNumberTable", stringValue)))
+    // {
+    //   print_attr_number_table(class_file, info->line_number_table);
+    // }
+    // else printf("didnt enter\n" );
+}
+
+
 
 /** @brief Printa as interfaces contidas no .class
  *  @param class_file

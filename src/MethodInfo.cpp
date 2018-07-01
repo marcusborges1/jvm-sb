@@ -4,7 +4,7 @@
 
 
 void MethodInfo::read(JavaClass class_file, FILE * fp) {
-    int i = 0, j =0;
+    int i = 0, contador_method =0;
     AttributeInfo *attributeinfo = new AttributeInfo();
     for(i = 0; i < class_file.methods_count; i++){
 
@@ -14,8 +14,8 @@ void MethodInfo::read(JavaClass class_file, FILE * fp) {
        class_file.methods[i].attributes_count = read_2_bytes(fp);
 
         class_file.methods[i].attributes = (AttributeInfo*)malloc(class_file.methods[i].attributes_count * sizeof(AttributeInfo));
-        for (j = 0; j < class_file.methods[i].attributes_count; j++){
-            class_file.methods[i].attributes[j] = attributeinfo->get_attribute_info(fp, class_file.methods[i].attributes[j], class_file);
+        for (contador_method = 0; contador_method < class_file.methods[i].attributes_count; contador_method++){
+            class_file.methods[i].attributes[contador_method] = attributeinfo->get_attribute_info(fp, class_file.methods[i].attributes[contador_method], class_file);
         }
     }
 }
