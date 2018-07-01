@@ -154,7 +154,7 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
       break;
     case 2:
       // exibe as interfaces implementadas pela classe
-      // print_interfaces(class_file);
+      print_interfaces(class_file);
       break;
     case 3:
       // print_fields_info(class_file);
@@ -182,15 +182,15 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
  *  @return void
  */
 void ClassFilePrinter::print_interfaces(JavaClass class_file){
-  printf("\n--------------- Interfaces Info ---------------\n");
+  std::cout << std::endl << "--------------- Interfaces Info ---------------"<< std::endl;
 
-  // interface_info = class_file.interfaces;
-
-  for (int i = 0; i < class_file.interfaces_count-1; i++)
+  for (int i = 0; i < class_file.interfaces_count; i++)
   {
-    // printf("Interface: cp info #%d <", class_file.interfaces[i].interface_table);
-    // std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
-                                    // class_file->interfaces.interface_count[i]-1);
+    std::cout << "Interfaces"<< std::endl;
+
+    std::cout << "\tInterface #"<< std::dec << class_file.interfaces[i].interface_table;
+    std::cout << "\t" << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                    (class_file.interfaces->interface_table +i)-1)<< std::endl;
     printf("\n");
   }
 }
