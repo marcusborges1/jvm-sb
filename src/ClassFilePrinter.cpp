@@ -109,7 +109,8 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
 /** @brief Mostra informações básicas do Class File.
 *  @return void
 */
-void ClassFilePrinter::print_general_info(JavaClass class_file, std::string filename) {
+void ClassFilePrinter::print_general_info(JavaClass class_file,
+                                          std::string filename) {
   std::cout << "Filename:             " << filename << std::endl;
   printf("Magic Number:         0x%0X\n", class_file.magic_number);
   printf("Minor Version:        %d\n", class_file.minor_version);

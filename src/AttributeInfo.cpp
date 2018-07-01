@@ -50,24 +50,24 @@ CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo 
 }
 
 // void CodeAttribute::print(JavaClass class_file, AttributeInfo attribute) {
-//   CpInfo *cpinfo = new CpInfo();
+//
 //     printf("Max stack: %d\n", attribute.code.max_stack);
 //     printf("Max locals: %d\n",attribute.code.max_locals);
 //     printf("Code Length: %d\n", attribute.code.code_length);
 //     Instruction instructions[256];
 //     Instruction::setup_instructions(instructions);
 //     printf("Code: \n");
-//     for (int i = 0; (unsigned)i < attribute.code.code_length; i++) {
+//     for (int i = 0; i < attribute.code.code_length; i++) {
 //         u1 op_code = attribute.code.code[i];
 //         std::cout << "\t"<< i << ": " << instructions[op_code].name;
-//         for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
+//         for (int j = 0; j < instructions[op_code].bytes; j++) {
 //             i++;
 //             if (op_code == anewarray || op_code == checkcast || op_code == getfield || op_code == getstatic || op_code == instanceof || op_code == invokespecial || op_code == invokestatic || op_code == invokevirtual || op_code == ldc_w || op_code == ldc2_w || op_code == NEW || op_code == putfield || op_code == putstatic){
 // //                u2 index = attribute.code.code[j] << 8 ;
 //                 u1 byte1 = attribute.code.code[i];
 //                 u1 byte2 = attribute.code.code[i+1];
 //                 u2 index = (byte1<<8)|byte2;
-//                 std::cout << " " << printer->get_utf8_constant_pool(class_file.constant_pool, index - 1);
+//                 std::cout << " " << CpInfo::get_utf8_string(class_file.constant_pool, index - 1);
 //                 j++;
 // //                i++;
 //             }
@@ -77,6 +77,15 @@ CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp, AttributeInfo 
 //                 u1 branchbyte2 = attribute.code.code[i+1];
 //                 u2 address = (branchbyte1 << 8) | branchbyte2;
 //                 printf(" %08X ", address);
+//             }
+//
+//             else if(op_code == goto_w || opcode == jsw_r) {
+//                 u1 branchbyte1 = attribute.code.code[i];
+//                 u1 branchbyte2 = attribute.code.code[i+1];
+//                 u1 branchbyte3 = attribute.code.code[i+2];
+//                 u1 branchbyte4 = attribute.code.code[i+3];
+//                 u2 address = (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4);
+//                 printf("%08X ", address);
 //             }
 //
 //             else {
