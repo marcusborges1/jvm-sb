@@ -65,3 +65,6 @@ html/*
 latex/*
 
 .DS_Store
+
+# IDE trash files
+.idea

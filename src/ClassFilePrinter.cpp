@@ -387,7 +387,7 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
             u2 index = (byte1<<8)|byte2;
             std::cout << " #" << index << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
-                                      class_file.constant_pool, index);
+                                      class_file.constant_pool, index-1);
             j++;
         }
         else if (op_code == GOTO || op_code == if_acmpeq ||
