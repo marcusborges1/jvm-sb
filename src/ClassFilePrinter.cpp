@@ -359,10 +359,25 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
   printf("Code length: %d\n", info_code.code_length);
   printf("Exception table length: %d\n", info_code.exception_table_length);
 
+  printf("Code: \n");
+  print_instructions(class_file, info_code);
+
+  printf("Attributes count: %d\n", info_code.attributes_count);
+  for (int i = 0; i < info_code.attributes_count; ++i) {
+    print_attributes_methods(class_file, info_code.attributes[i]);
+  }
+}
+
+/** @brief Mostra cada instruções do .class
+ *  @param class_file ...
+ *  @param info_code ...
+ *  @return void
+ */
+void ClassFilePrinter::print_instructions(JavaClass class_file,
+                                          CodeAttribute info_code) {
   Instruction instructions[256];
   Instruction::setup_instructions(instructions);
 
-  printf("Code: \n");
   for (int i = 0; (unsigned)i < info_code.code_length; i++) {
     int op_code = (int)info_code.code[i];
     std::cout << "\t"<< i << ": " << instructions[op_code].name;
@@ -387,6 +402,19 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
             case T_SHORT : std::cout << " (short)"; break;
             case T_INT : std::cout << " (int)"; break;
             case T_LONG : std::cout << " (long)"; break;
+          }
+          j++;
+        }
+        else if (op_code == multianewarray) {
+          u1 byte1 = info_code.code[i];
+          u1 byte2 = info_code.code[i+1];
+          u1 dim = info_code.code[i+2];
+          u2 index = (byte1<<8)|byte2;
+          std::string str = class_file.constant_pool->get_utf8_constant_pool(
+                          class_file.constant_pool, index-1);
+          if (!str.empty()) {
+            std::cout << " #" << index << " " << str;
+            std::cout << " dim " << (int)dim;
           }
           j++;
         }
@@ -425,11 +453,6 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
     std::cout << std::endl;
   }
   printf("\n");
-
-  printf("Attributes count: %d\n", info_code.attributes_count);
-  for (int i = 0; i < info_code.attributes_count; ++i) {
-    print_attributes_methods(class_file, info_code.attributes[i]);
-  }
 }
 
 /** @brief Mostra os atributos ConstantValue dentro de métodos

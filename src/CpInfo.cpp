@@ -126,8 +126,7 @@ std::string CpInfo::get_utf8_constant_pool(CpInfo *cp_info, u2 pos_info) {
                                           cp_info[pos_info].String.bytes-1);
       break;
     default:
-      printf("Tag %d. Wrong tag number. Shutting down.\n", tag);
-      exit(1);
+      return "";
   }
   return utf8_const;
 }
