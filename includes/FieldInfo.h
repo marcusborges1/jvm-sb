@@ -8,6 +8,10 @@
 #include "JavaClass.h"
 #include "AttributeInfo.h"
 
+
+/**
+ * @brief ...
+ **/
 class FieldInfo {
 	public:
     u2  access_flag; // CONSTANT_UTf8, field name

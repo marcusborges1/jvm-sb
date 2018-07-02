@@ -9,6 +9,10 @@
 #include "InterfaceInfo.h"
 #include "AttributeInfo.h"
 
+
+/**
+ * @brief ...
+ **/
 class ClassFilePrinter {
 public:
     CpInfo *cpinfo = new CpInfo();

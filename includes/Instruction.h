@@ -1,9 +1,16 @@
+/** @file Instruction.h
+ *  @brief ...
+ */
 #ifndef JVM_CPP_INSTRUCTION_H
 #define JVM_CPP_INSTRUCTION_H
 
 #include <string>
 #include "JavaClass.h"
 
+
+/**
+ * @brief ...
+ **/
 class Instruction {
 public:
     std::string name;

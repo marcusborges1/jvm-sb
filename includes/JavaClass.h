@@ -99,6 +99,9 @@ class MethodInfo;
 class AttributeInfo;
 class InterfaceInfo;
 
+/**
+ * @brief ...
+ **/
 class JavaClass{
 public:
   u4 magic_number;
