@@ -346,10 +346,43 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
   printf("Max stack: %d\n", info_code.max_stack);
   printf("Max locals: %d\n", info_code.max_locals);
   printf("Code length: %d\n", info_code.code_length);
-  printf("CODE\n");
   printf("Exception table length: %d\n", info_code.exception_table_length);
-  printf("Attributes count: %d\n", info_code.attributes_count);
 
+  Instruction instructions[256];
+    Instruction::setup_instructions(instructions);
+    printf("Code: \n");
+    for (int i = 0; i < info_code.code_length; i++) {
+        u1 op_code = info_code.code[i];
+        std::cout << "\t"<< i << ": " << instructions[op_code].name;
+        for (int j = 0; j < instructions[op_code].bytes; j++) {
+            i++;
+            if (op_code == anewarray || op_code == checkcast || op_code == getfield || op_code == getstatic || op_code == instanceof || op_code == invokespecial || op_code == invokestatic || op_code == invokevirtual || op_code == ldc_w || op_code == ldc2_w || op_code == NEW || op_code == putfield || op_code == putstatic){
+//                u2 index = info_code.code[j] << 8 ;
+                u1 byte1 = info_code.code[i];
+                u1 byte2 = info_code.code[i+1];
+                u2 index = (byte1<<8)|byte2;
+                std::cout << " " << class_file.constant_pool->get_utf8_constant_pool(class_file.constant_pool, index - 1);
+                j++;
+//                i++;
+            }
+
+            else if( op_code == GOTO || op_code == if_acmpeq || op_code == if_acmpne || op_code == if_icmpeq || op_code == if_icmpne || op_code == if_icmplt || op_code == if_icmpge || op_code == if_icmpgt || op_code == if_icmple || op_code == iifeq || op_code == ifne || op_code == iflt || op_code == ifge || op_code == ifgt || op_code == ifle || op_code == ifnonull || op_code == ifnull || op_code == jsr ) {
+                u1 branchbyte1 = info_code.code[i];
+                u1 branchbyte2 = info_code.code[i+1];
+                u2 address = (branchbyte1 << 8) | branchbyte2;
+                printf(" %08X ", address);
+            }
+
+            else {
+
+                printf(" %x ", info_code.code[j]);
+            }
+        }
+        std::cout << std::endl;
+    }
+    printf("\n");
+
+  printf("Attributes count: %d\n", info_code.attributes_count);
   for (int i = 0; i < info_code.attributes_count; ++i) {
     print_attributes_methods(class_file, info_code.attributes[i]);
   }
