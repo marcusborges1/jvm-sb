@@ -12,8 +12,6 @@ void InterfaceInfo::read(JavaClass class_file, FILE* file) {
                                                           class_file);
 };
 
-
-
 InterfaceInfo InterfaceInfo::get_interface_info(FILE *fp,
                                                 InterfaceInfo interface_info,
                                                 JavaClass class_file)  {

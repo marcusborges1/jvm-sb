@@ -1,3 +1,6 @@
+/** @file MethodInfo.h
+ *  @brief ...
+ */
 #ifndef JVM_CPP_METHODINFO_H
 #define JVM_CPP_METHODINFO_H
 
@@ -16,10 +19,8 @@ public:
     u2  attributes_count; // JVM implementation should ignore in silence each attribute unrecognized
     AttributeInfo *attributes;
 
-    void print(JavaClass);
     void read(JavaClass, FILE*);
     std::string test_methods_flags(u2);
 };
 
-
-#endif //JVM_CPP_METHODINFO_H
+#endif

@@ -258,47 +258,37 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
 {
 
     attribute_info.attribute_name_index = read_2_bytes(fp);
-    printf("NAME_INDEX--->>%d\n", attribute_info.attribute_name_index);
     attribute_info.attribute_length = read_4_bytes(fp);
     std::string attribute_name = cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
 
-    printf("ATT_TYPE-->>%s\n", attribute_name.c_str());
-
-    if(attribute_name == "Code"){
+    if (attribute_name == "Code") {
         attribute_info.code = code_info->read(class_file, fp, attribute_info);
         return attribute_info;
     }
-    else if(attribute_name == "ConstantValue"){
+    else if (attribute_name == "ConstantValue") {
         attribute_info.constant_value = constant_info->read(class_file, fp, attribute_info);
     }
-    else if (attribute_name == "Exceptions")
-    {
+    else if (attribute_name == "Exceptions") {
         attribute_info.execptions = exp_info->read(fp, attribute_info);
     }
-    else if (attribute_name =="InnerClasses")
-    {
+    else if (attribute_name =="InnerClasses") {
         attribute_info.inner_class = inner_info->read(fp, attribute_info);
     }
-    else if (attribute_name == "Synthetic")
-    {
-        //não fazer nada
+    else if (attribute_name == "Synthetic") {
+        // não fazer nada
     }
-    else if (attribute_name =="SourceFile")
-    {
+    else if (attribute_name =="SourceFile") {
         // attribute_info.source_file = (attribute_source_file*)malloc(sizeof(attribute_source_file));
         attribute_info.source_file = source_info->read(fp, attribute_info);
     }
-    else if (attribute_name == "LineNumberTable")
-    {
+    else if (attribute_name == "LineNumberTable") {
         attribute_info.line_number_table = line_number_info->read(fp, attribute_info);
     }
-    else if (attribute_name == "LocalVariableTable")
-    {
+    else if (attribute_name == "LocalVariableTable") {
         attribute_info.local_variable_table = local_info->read(fp, attribute_info);
 
     }
-    else
-    {
+    else {
         //ignora silenciosamente os outros atributos
         // attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
 

@@ -1,3 +1,6 @@
+/** @file AttributeInfo.h
+ *  @brief ...
+ */
 #ifndef JVM_CPP_ATTRIBUTEINFO_H
 #define JVM_CPP_ATTRIBUTEINFO_H
 
@@ -49,7 +52,7 @@ class CodeAttribute {
     u2 attributes_count;
     AttributeInfo* attributes;
 
-    
+
     CodeAttribute read(JavaClass, FILE*, AttributeInfo);
     void print(JavaClass, AttributeInfo);
 
@@ -65,7 +68,7 @@ class InnerClassDataAttribute {
     u2 inner_class_access_flag;
 
 
-    
+
     InnerClassDataAttribute read(FILE*, AttributeInfo);
     void print(JavaClass, AttributeInfo);
 
@@ -77,7 +80,7 @@ class InnerClassAttribute {
     u2 number_of_classes;
     InnerClassDataAttribute *inner_class_data;
 
-    
+
     InnerClassAttribute read(FILE*, AttributeInfo);
     void print(JavaClass, AttributeInfo);
 
@@ -88,7 +91,7 @@ class SourceFileAttribute {
     public:
     u2 source_file_index;
 
-    
+
     SourceFileAttribute read(FILE*, AttributeInfo);
     void print(JavaClass, AttributeInfo);
 
@@ -100,7 +103,7 @@ class LineNumberTableDataAttribute {
     u2 start_pc;
     u2 line_pc;
 
-    
+
     LineNumberTableDataAttribute read(FILE*, AttributeInfo);
     void print(JavaClass, AttributeInfo);
 
@@ -112,7 +115,7 @@ class LineNumberTableAttribute {
     u2 line_number_table_length;
     LineNumberTableDataAttribute *table;
 
-    
+
     LineNumberTableAttribute read(FILE*, AttributeInfo);
      void print(JavaClass, AttributeInfo);
 
@@ -127,7 +130,7 @@ class LocalVariableTableDataAttribute {
     u2 descriptor_index;
     u2 index;
 
-    
+
         LocalVariableTableDataAttribute read(FILE*, AttributeInfo);
         void print(JavaClass, AttributeInfo);
 
@@ -140,7 +143,7 @@ class LocalVariableTableAttribute {
     u2 local_variable_table_length;
     LocalVariableTableDataAttribute *table_data;
 
-   
+
     LocalVariableTableAttribute read(FILE*, AttributeInfo);
     void print(JavaClass, AttributeInfo);
 
@@ -183,4 +186,4 @@ public:
 };
 
 
-#endif //JVM_CPP_ATTRIBUTEINFO_H
+#endif

@@ -119,6 +119,8 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
 }
 
 /** @brief Mostra informações básicas do Class File.
+*  @param class_file ponteiro com as informações lidas do .class
+*  @param filename ...
 *  @return void
 */
 void ClassFilePrinter::print_general_info(JavaClass class_file,
@@ -215,20 +217,22 @@ void ClassFilePrinter::print_method(JavaClass class_file){
   for(int i = 0; i < class_file.methods_count; i++) {
     printf("\nMETHOD INFO[%d]\n", i);
     MethodInfo* cp = class_file.methods+i;
-    printf("Access Flag: 0x%04x ", cp->access_flag);
 
     printf("Name Index: cp info #%d ",cp->name_index);
-    cpinfo->get_utf8_constant_pool(class_file.constant_pool, cp->name_index -1);
-    printf("\n");
+    std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                                cp->name_index -1)
+                                                << std::endl;
 
     printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
-    cpinfo->get_utf8_constant_pool(class_file.constant_pool, cp->descriptor_index - 1);
-    printf("\n");
+    std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                              cp->descriptor_index - 1)
+                                              << std::endl;
+
+    printf("Access Flag: 0x%04x\n", cp->access_flag);
 
     printf("Attributes Count: %d\n",cp->attributes_count);
-    printf("Attributes: \n");
-    for (int j = 0; j < cp->attributes_count; j++)
-    {
+    printf("\nATTRIBUTES:\n");
+    for (int j = 0; j < cp->attributes_count; j++) {
       printf("\nATTRIBUTE[%d]\n", j);
       print_attributes_methods(class_file, cp->attributes[j]);
     }
@@ -335,7 +339,6 @@ void ClassFilePrinter::print_attr_number_table(JavaClass class_file, LineNumberT
     printf("Line Number: %d\n", info_number_table.table[contador_number_table].line_pc);
   }
 }
-
 
 /** @brief Mostra informações das constant_pools.
  *  Tabela de estruturas representando string, nomes de classes ou interfaces,
@@ -499,47 +502,29 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
   }
 }
 
-/** @brief Printa as interfaces contidas no .class
- *  @param class_file
- *  @return void
- */
-// void ClassFilePrinter::print_interfaces(JavaClass class_file) {
-//   int i;
-
-//   if (class_file.interface_count != 0) {
-//     for(i = 0; i < class_file.interface_count; i++) {
-//       int index = class_file.constant_pool[class_file.interfaces[i] - 1].Class.type_class_info;
-
-//       printf("\tInterface %d:     cp_info_#%d   %d", i, class_file.interfaces[i], index);
-//       // READ UTF 8
-//       printf("\n");
-//     }
-//   }
-// }
-
 /*  @brief Printa os fields contidos no .class
- *  @param class_file
+ *  @param class_file ...
  *  @return void
  */
-void ClassFilePrinter::print_fields_info(JavaClass class_file)
-{
+void ClassFilePrinter::print_fields_info(JavaClass class_file) {
   int i, j;
 
-  if (class_file.fields_count != 0)
-  {
-    for (i = 0; i < class_file.fields_count; i++)
-    {
+  if (class_file.fields_count != 0) {
+    for (i = 0; i < class_file.fields_count; i++) {
       printf("FIELDS_INFO[%d]\n", i);
-      printf("\tAccess Flag:      0x%04x      \n", class_file.fields[i].access_flag);
-      printf("\tName:             cp_info_#%d \n", class_file.fields[i].name_index);
-      printf("\tDescriptor:       cp_info_#%d \n", class_file.fields[i].descriptor_index);
-      printf("\tAttributes count: %d        \n\n", class_file.fields[i].atributes_count);
+      printf("\tAccess Flag:      0x%04x      \n",
+            class_file.fields[i].access_flag);
+      printf("\tName:             cp_info_#%d \n",
+            class_file.fields[i].name_index);
+      printf("\tDescriptor:       cp_info_#%d \n",
+            class_file.fields[i].descriptor_index);
+      printf("\tAttributes count: %d        \n\n",
+            class_file.fields[i].atributes_count);
 
       FieldInfo info_fields = class_file.fields[i];
 
       //TODO:IMPLEMENTAR O ATRIBUTOS DO FIELDS
-      for (j = 0; j < info_fields.atributes_count; j++)
-      {
+      for (j = 0; j < info_fields.atributes_count; j++) {
         this->print_attributes_methods(class_file, info_fields.attributes[j]);
 
       }
