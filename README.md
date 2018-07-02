@@ -4,8 +4,6 @@ A Java Virtual Machine for Basic Software's course.
 
 This program checks the following in a ``.class`` file:
 - Constant pools
-
-Future additions:
 - Fields
 - Methods
 - Attributes

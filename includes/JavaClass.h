@@ -1,13 +1,12 @@
-// uint64_t : unsigned integer type with width of exactly 64
+/** @file JavaClass.h
+ *  @brief ...
+ */
+#ifndef JAVA_CLASS_H
+#define JAVA_CLASS_H
+
 #include <cstdint>
-// #include "CpInfo.h"
-// #include "InterfaceInfo.h"
-// #include "FieldInfo.h"
-// #include "MethodInfo.h"
-// #include "ClassFilePrinter.h"
-// #include "AttributeInfo.h"
 
-
+// uint64_t : unsigned integer type with width of exactly 64
 #define u8 uint64_t
 // uint32_t : unsigned integer type with width of exactly 32
 #define u4 uint32_t
@@ -52,8 +51,6 @@
 #define ifnull 198
 #define jsr 168
 
-
-
 #define CONSTANT_Class                7
 #define CONSTANT_Fieldref             9
 #define CONSTANT_Methodref           10
@@ -96,39 +93,36 @@
 // strictfp, float point mode FP-strict (not normalized)
 #define ACC_STRICT      0x0800
 
-
-#ifndef JVM_CPP_JAVACLASS_H
-#define JVM_CPP_JAVACLASS_H
-
 class CpInfo;
 class FieldInfo;
 class MethodInfo;
 class AttributeInfo;
 class InterfaceInfo;
 
-
+/**
+ * @brief ...
+ **/
 class JavaClass{
-    public:
-        u4 magic_number;
-        u2  minor_version;
-        u2  major_version;
-        // format version M.m, defined by Sun
+public:
+  u4 magic_number;
+  u2  minor_version;
+  u2  major_version;
+  // format version M.m, defined by Sun
 
-        u2 constant_pool_count; // Quantidade de elementos CpInfo
-        CpInfo* constant_pool; // Ponteiro para início do vetor de CpInfo
+  u2 constant_pool_count; // Quantidade de elementos CpInfo
+  CpInfo* constant_pool; // Ponteiro para início do vetor de CpInfo
 
-        u2  access_flags;
-        u2 this_class;
-        u2 super_class;
-        u2 interfaces_count;
-        InterfaceInfo *interfaces;
-        u2  fields_count;
-        FieldInfo* fields;
-        u2  methods_count;
-        MethodInfo  *methods;
-        u2  attributes_count;
-        AttributeInfo  *attributes;
+  u2  access_flags;
+  u2 this_class;
+  u2 super_class;
+  u2 interfaces_count;
+  InterfaceInfo *interfaces;
+  u2  fields_count;
+  FieldInfo* fields;
+  u2  methods_count;
+  MethodInfo  *methods;
+  u2  attributes_count;
+  AttributeInfo  *attributes;
 };
 
-
-#endif //JVM_CPP_JAVACLASS_H
+#endif

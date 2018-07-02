@@ -7,6 +7,10 @@
 #include <cstdio>
 #include "JavaClass.h"
 
+
+/**
+ * @brief ...
+ **/
 class InterfaceInfo {
 public:
 	u2	interface_table;

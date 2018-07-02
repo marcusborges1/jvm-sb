@@ -7,7 +7,8 @@
 #include "ReadBytes.h"
 
 
-/** @brief Faz a leitura sequencial do arquivo .Class indicado pelo parâmetro filename.
+/** @brief Faz a leitura sequencial do arquivo .class indicado pelo parâmetro
+*     filename.
 *  @param filename ...
 *  @return JavaClass ...
 */
@@ -28,8 +29,10 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     class_file.minor_version =  read_2_bytes(file);
     class_file.major_version = read_2_bytes(file);
 
-    class_file.constant_pool_count = read_2_bytes(file); // lê quantos constat_pool existem neste arquivo
-    class_file.constant_pool = (CpInfo*)malloc((class_file.constant_pool_count-1)*sizeof(CpInfo));
+    // lê quantos constat_pool existem neste arquivo
+    class_file.constant_pool_count = read_2_bytes(file);
+    class_file.constant_pool = (CpInfo*)malloc(
+                          (class_file.constant_pool_count-1)*sizeof(CpInfo));
     cpinfo->read(file, class_file);
 
     class_file.access_flags = read_2_bytes(file);
@@ -37,19 +40,23 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     class_file.super_class = read_2_bytes(file);
 
     class_file.interfaces_count = read_2_bytes(file);
-    class_file.interfaces = (InterfaceInfo*)malloc(class_file.interfaces_count * sizeof(InterfaceInfo));
+    class_file.interfaces = (InterfaceInfo*)malloc(
+                          class_file.interfaces_count * sizeof(InterfaceInfo));
     interface_info->read(class_file, file);
 
     class_file.fields_count = read_2_bytes(file);
-    class_file.fields = (FieldInfo*)malloc(class_file.fields_count * sizeof(FieldInfo));
+    class_file.fields = (FieldInfo*)malloc(
+                                  class_file.fields_count * sizeof(FieldInfo));
     field_info->read(class_file, file);
 
     class_file.methods_count = read_2_bytes(file);
-    class_file.methods = (MethodInfo*) malloc(class_file.methods_count * sizeof(MethodInfo));
+    class_file.methods = (MethodInfo*) malloc(
+                                class_file.methods_count * sizeof(MethodInfo));
     method_info->read(class_file, file);
 
     class_file.attributes_count = read_2_bytes(file);
-    class_file.attributes = (AttributeInfo*)malloc(class_file.attributes_count * sizeof(AttributeInfo));
+    class_file.attributes = (AttributeInfo*)malloc(
+                          class_file.attributes_count * sizeof(AttributeInfo));
     attribute_info->read(class_file, file);
 
     return class_file;

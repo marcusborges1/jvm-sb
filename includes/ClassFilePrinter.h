@@ -8,8 +8,11 @@
 #include "MethodInfo.h"
 #include "InterfaceInfo.h"
 #include "AttributeInfo.h"
-#include "Instruction.h"
 
+
+/**
+ * @brief ...
+ **/
 class ClassFilePrinter {
 public:
     CpInfo *cpinfo = new CpInfo();

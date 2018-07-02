@@ -10,6 +10,9 @@
 #include "InterfaceInfo.h"
 
 
+/**
+ * @brief ...
+ **/
 class ClassFileReader {
 public:
   CpInfo *cpinfo = new CpInfo();

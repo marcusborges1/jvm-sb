@@ -1,5 +1,14 @@
+/** @file Instruction.cpp
+ *  @brief ...
+ *  @bug No know bugs.
+ */
 #include "Instruction.h"
 
+
+/** @brief ...
+*  @param instructions ...
+*  @return void
+*/
 void Instruction::setup_instructions(Instruction* instructions) {
     instructions[0].name = "nop";
     instructions[0].bytes = 0;

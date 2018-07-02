@@ -1,3 +1,7 @@
+/** @file CpInfo.h
+ *  @brief ...
+ *  @bug No know bugs.
+ */
 #ifndef JVM_CPP_CONSTANTPOOLINFO_H
 #define JVM_CPP_CONSTANTPOOLINFO_H
 
@@ -6,7 +10,7 @@
 #include "JavaClass.h"
 
 /**
- * @brief Estrutura de Classe para unidade da Constant Pool.
+ * @brief Estrutura de classe para unidade da Constant Pool.
  **/
 class CpInfo {
 
@@ -87,4 +91,4 @@ public:
 };
 
 
-#endif //JVM_CPP_CONSTANTPOOLINFO_H
+#endif 

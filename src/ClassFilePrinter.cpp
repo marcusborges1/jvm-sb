@@ -8,7 +8,7 @@
 #include <cstring>
 #include <cstdio>
 #include "ClassFilePrinter.h"
-#include "JavaClass.h"
+#include "Instruction.h"
 #include "ReadBytes.h"
 
 /** @brief Mostra menu inicial para escolher tipo de arquivo java de teste.
@@ -215,16 +215,27 @@ void ClassFilePrinter::print_interfaces(JavaClass class_file){
  */
 void ClassFilePrinter::print_fields_info(JavaClass class_file) {
   int i, j;
+  std::cout << "\n------------- Methods Info:  -------------\n";
+  std::cout << "Member count: " << class_file.fields_count << std::endl;
 
   if (class_file.fields_count != 0) {
     for (i = 0; i < class_file.fields_count; i++) {
       printf("FIELDS_INFO[%d]\n", i);
-      printf("\tAccess Flag:      0x%04x      \n",
-            class_file.fields[i].access_flag);
-      printf("\tName:             cp_info_#%d \n",
+      printf("\tName:             cp_info_#%d ",
             class_file.fields[i].name_index);
-      printf("\tDescriptor:       cp_info_#%d \n",
+      std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                          class_file.fields[i].name_index - 1)
+                                          << std::endl;
+      printf("\tDescriptor:       cp_info_#%d ",
             class_file.fields[i].descriptor_index);
+      std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                    class_file.fields[i].descriptor_index - 1)
+                                    << std::endl;
+
+      printf("\tAccess Flag:      0x%04x ",
+            class_file.fields[i].access_flag);
+      printf("%d\n", class_file.fields[i].access_flag);
+      
       printf("\tAttributes count: %d        \n\n",
             class_file.fields[i].atributes_count);
 
@@ -349,38 +360,46 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
   printf("Exception table length: %d\n", info_code.exception_table_length);
 
   Instruction instructions[256];
-    Instruction::setup_instructions(instructions);
-    printf("Code: \n");
-    for (int i = 0; i < info_code.code_length; i++) {
-        u1 op_code = info_code.code[i];
-        std::cout << "\t"<< i << ": " << instructions[op_code].name;
-        for (int j = 0; j < instructions[op_code].bytes; j++) {
-            i++;
-            if (op_code == anewarray || op_code == checkcast || op_code == getfield || op_code == getstatic || op_code == instanceof || op_code == invokespecial || op_code == invokestatic || op_code == invokevirtual || op_code == ldc_w || op_code == ldc2_w || op_code == NEW || op_code == putfield || op_code == putstatic){
-//                u2 index = info_code.code[j] << 8 ;
-                u1 byte1 = info_code.code[i];
-                u1 byte2 = info_code.code[i+1];
-                u2 index = (byte1<<8)|byte2;
-                std::cout << " " << class_file.constant_pool->get_utf8_constant_pool(class_file.constant_pool, index - 1);
-                j++;
-//                i++;
-            }
-
-            else if( op_code == GOTO || op_code == if_acmpeq || op_code == if_acmpne || op_code == if_icmpeq || op_code == if_icmpne || op_code == if_icmplt || op_code == if_icmpge || op_code == if_icmpgt || op_code == if_icmple || op_code == iifeq || op_code == ifne || op_code == iflt || op_code == ifge || op_code == ifgt || op_code == ifle || op_code == ifnonull || op_code == ifnull || op_code == jsr ) {
-                u1 branchbyte1 = info_code.code[i];
-                u1 branchbyte2 = info_code.code[i+1];
-                u2 address = (branchbyte1 << 8) | branchbyte2;
-                printf(" %08X ", address);
-            }
-
-            else {
-
-                printf(" %x ", info_code.code[j]);
-            }
+  Instruction::setup_instructions(instructions);
+  printf("Code: \n");
+  for (int i = 0; (unsigned)i < info_code.code_length; i++) {
+    u1 op_code = info_code.code[i];
+    std::cout << "\t"<< i << ": " << instructions[op_code].name;
+    for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
+        i++;
+        if (op_code == anewarray || op_code == checkcast ||
+            op_code == getfield || op_code == getstatic ||
+            op_code == instanceof || op_code == invokespecial ||
+            op_code == invokestatic || op_code == invokevirtual ||
+            op_code == ldc_w || op_code == ldc2_w || op_code == NEW ||
+            op_code == putfield || op_code == putstatic) {
+            u1 byte1 = info_code.code[i];
+            u1 byte2 = info_code.code[i+1];
+            u2 index = (byte1<<8)|byte2;
+            std::cout << " "
+                      << class_file.constant_pool->get_utf8_constant_pool(
+                                      class_file.constant_pool, index - 1);
+            j++;
         }
-        std::cout << std::endl;
+
+        else if (op_code == GOTO || op_code == if_acmpeq ||
+                op_code == if_acmpne || op_code == if_icmpeq ||
+                op_code == if_icmpne || op_code == if_icmplt ||
+                op_code == if_icmpge || op_code == if_icmpgt ||
+                op_code == if_icmple || op_code == iifeq ||
+                op_code == ifne || op_code == iflt || op_code == ifge ||
+                op_code == ifgt || op_code == ifle || op_code == ifnonull ||
+                op_code == ifnull || op_code == jsr) {
+            u1 branchbyte1 = info_code.code[i];
+            u1 branchbyte2 = info_code.code[i+1];
+            u2 address = (branchbyte1 << 8) | branchbyte2;
+            printf(" %08X ", address);
+        }
+        else printf(" %x ", info_code.code[j]);
     }
-    printf("\n");
+    std::cout << std::endl;
+  }
+  printf("\n");
 
   printf("Attributes count: %d\n", info_code.attributes_count);
   for (int i = 0; i < info_code.attributes_count; ++i) {
@@ -426,7 +445,7 @@ void ClassFilePrinter::print_attr_number_table(JavaClass class_file,
  */
 void ClassFilePrinter::print_attr_source_file(JavaClass class_file,
                                               SourceFileAttribute info_code) {
-  printf("Sourcefile index: %d ", info_code.source_file_index);
+  printf("Sourcefile index: cp info #%d ", info_code.source_file_index);
   std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
                                             info_code.source_file_index - 1);
 }
