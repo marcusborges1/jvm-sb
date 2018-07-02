@@ -46,10 +46,12 @@ This system covers ``.java`` files that contains:
 - Float [FloatDemo.class](test/FloatDemo.class)
 - Double [DoubleDemo.class](test/DoubleDemo.class)
 - Métodos dinâmicos [MethodDynamicDemo.class](test/MethodDynamicDemo.class)
+- Long [LongDemo.class](test/LongDemo.class)
+- Classe Abstrata [AbstractClassDemo.class](test/AbstractClassDemo.class)
 
 Future additions:
 - Objetos [ObjDemo.class](test/ObjDemo.class)
-- Long [LongDemo.class](test/LongDemo.class)
+
 
 
 ## Run

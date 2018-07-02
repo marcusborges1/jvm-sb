@@ -4,7 +4,7 @@
 #include "ReadBytes.h"
 
 
-ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE * fp, AttributeInfo attribute_info) 
+ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE * fp, AttributeInfo attribute_info)
 {
     printf("ENTREI AQUI\n");
     // attribute_info.constant_value.attribute_name_index = read_2_bytes(fp);
@@ -107,9 +107,9 @@ LineNumberTableAttribute LineNumberTableAttribute::read(FILE *arquivo_class, Att
     for (i = 0; i < info_line_number_table.line_number_table_length; i++)
     {
         info_line_number_table.table[i] = info_data->read(arquivo_class, attribute_struct);
-        
+
         printf("START_PC---->%d\n", info_line_number_table.table[i].start_pc);
-        printf("LINE_PC---->%d\n", info_line_number_table.table[i].line_pc);  
+        printf("LINE_PC---->%d\n", info_line_number_table.table[i].line_pc);
     }
 
     printf("---------------------------------------LT\n");
@@ -186,9 +186,9 @@ Exception Exception::read(FILE *arquivo_class, AttributeInfo attribute_struct)
 SourceFileAttribute SourceFileAttribute::read(FILE *arquivo_class, AttributeInfo attribute_struct)
 {
     SourceFileAttribute info_source_file;
-    
+
     info_source_file.source_file_index = read_2_bytes(arquivo_class);
-    
+
     return info_source_file;
 }
 
@@ -254,16 +254,16 @@ void AttributeInfo::read(JavaClass class_file, FILE *fp) {
 
 }
 
-AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribute_info, JavaClass class_file) 
+AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribute_info, JavaClass class_file)
 {
 
     attribute_info.attribute_name_index = read_2_bytes(fp);
     printf("NAME_INDEX--->>%d\n", attribute_info.attribute_name_index);
     attribute_info.attribute_length = read_4_bytes(fp);
     std::string attribute_name = cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
-   
+
     printf("ATT_TYPE-->>%s\n", attribute_name.c_str());
-   
+
     if(attribute_name == "Code"){
         attribute_info.code = code_info->read(class_file, fp, attribute_info);
         return attribute_info;
@@ -297,12 +297,12 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
         attribute_info.local_variable_table = local_info->read(fp, attribute_info);
 
     }
-    else 
+    else
     {
         //ignora silenciosamente os outros atributos
         // attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
 
-        for (int j = 0; j < attribute_info.attribute_length; j++) {
+        for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
             attribute_info.info[j] = read_1_byte(fp);
         }
     }
