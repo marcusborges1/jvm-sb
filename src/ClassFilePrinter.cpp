@@ -160,10 +160,10 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
       // print_fields_info(class_file);
       break;
     case 4:
-      printf("Não implementado");
+      print_method(class_file);
       break;
     case 5:
-      printf("Não implementado");
+      print_attributes(class_file);
       break;
     case 0:
       printf("Até mais!\n");
@@ -195,6 +195,119 @@ void ClassFilePrinter::print_interfaces(JavaClass class_file){
   }
 }
 
+
+
+void ClassFilePrinter::print_method(JavaClass class_file){
+  printf(" ------------- Methods Info:  -------------\n");
+
+  for(int i = 0; i < class_file.methods_count; i++) {
+    printf("\nMETHOD INFO[%d]\n", i);
+    MethodInfo* cp = class_file.methods+i;
+    printf("Access Flag: 0x%04x ", cp->access_flag);
+
+    printf("Name Index: cp info #%d ",cp->name_index);
+    cpinfo->get_utf8_constant_pool(class_file.constant_pool, cp->name_index -1);
+    printf("\n");
+
+    printf("Descriptor Index: cp info #%d ",cp->descriptor_index);
+    cpinfo->get_utf8_constant_pool(class_file.constant_pool, cp->descriptor_index - 1);
+    printf("\n");
+
+    printf("Attributes Count: %d\n",cp->attributes_count);
+    printf("Attributes: \n");
+    for (int j = 0; j < cp->attributes_count; j++)
+    {
+      printf("\nATTRIBUTE[%d]\n", j);
+      print_attributes_methods(class_file, cp->attributes[j]);
+    }
+    printf("\n");
+  }
+}
+
+
+void ClassFilePrinter::print_attributes_methods(JavaClass class_file, AttributeInfo attribute_info) 
+{
+  std::cout << std::endl << "--------------- Attributtes Info ---------------"<< std::endl;
+  
+  printf("attribute_name_index: cp info #%d ", attribute_info.attribute_name_index);
+  std::string attribute_type = cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
+  std::cout << attribute_type << std::endl;
+
+  printf("attribute length: %d\n", attribute_info.attribute_length) ;
+
+  if(!attribute_type.compare("Code"))
+  {
+    print_attr_code(class_file, attribute_info.code);
+  }
+  else if (!attribute_type.compare("LineNumberTable"))
+  {
+    print_attr_number_table(class_file, attribute_info.line_number_table);
+  }
+  else if (!attribute_type.compare("SourceFile"))
+  {
+    print_attr_source_file(class_file, attribute_info.source_file);
+  }
+  else printf("didnt enter\n" );
+}
+
+
+void ClassFilePrinter::print_attributes(JavaClass class_file) 
+{
+  std::cout << std::endl << "--------------- Attributtes Info ---------------"<< std::endl;
+  
+  printf("attribute_name_index: cp info #%d ", class_file.attributes->attribute_name_index);
+  std::string attribute_type = cpinfo->get_utf8_constant_pool(class_file.constant_pool, class_file.attributes->attribute_name_index - 1);
+  std::cout << attribute_type << std::endl;
+
+  printf("attribute length: %d\n", class_file.attributes->attribute_length) ;
+
+  if(!attribute_type.compare("Code"))
+  {
+    print_attr_code(class_file, class_file.attributes->code);
+  }
+  else if (!attribute_type.compare("LineNumberTable"))
+  {
+    print_attr_number_table(class_file, class_file.attributes->line_number_table);
+  }
+  else if (!attribute_type.compare("SourceFile"))
+  {
+    print_attr_source_file(class_file, attribute_info->source_file);
+  }
+  else printf("didnt enter\n" );
+}
+
+void ClassFilePrinter::print_attr_source_file(JavaClass class_file, SourceFileAttribute info_code)
+{
+  printf("Sourcefile index: %d\n", info_code.source_file_index); 
+}
+
+void ClassFilePrinter::print_attr_code(JavaClass class_file, CodeAttribute info_code)
+{
+  printf("Max stack: %d\n", info_code.max_stack); 
+  printf("Max locals: %d\n", info_code.max_locals);
+  printf("Code length: %d\n", info_code.code_length);
+  printf("CODE\n");
+  printf("Exception table length: %d\n", info_code.exception_table_length);
+  printf("Attributes count: %d\n", info_code.attributes_count);
+
+  for (int i = 0; i < info_code.attributes_count; ++i)
+  {
+    print_attributes_methods(class_file, info_code.attributes[i]);
+  }
+}
+
+
+void ClassFilePrinter::print_attr_number_table(JavaClass class_file, LineNumberTableAttribute info_number_table)
+{
+  int contador_number_table;
+
+  printf("Line number table length: %d\n", info_number_table.line_number_table_length); 
+  for (contador_number_table = 0; contador_number_table < info_number_table.line_number_table_length; contador_number_table++)
+  {
+    printf("Start PC: %d\n", info_number_table.table[contador_number_table].start_pc);
+    printf("Line Number: %d\n", info_number_table.table[contador_number_table].line_pc);
+  }
+}
 
 
 /** @brief Mostra informações das constant_pools.
