@@ -1,8 +1,17 @@
+/** @file FieldInfo.cpp
+ *  @brief ...
+ *  @bug No know bugs.
+ */
 #include <iostream>
 #include "FieldInfo.h"
 #include "ReadBytes.h"
 
 
+/** @brief ...
+*  @param class_file ...
+*  @param fp ...
+*  @return void
+*/
 void FieldInfo::read(JavaClass class_file, FILE * fp) {
   AttributeInfo *attributeinfo = new AttributeInfo();
   for (int i = 0; i < class_file.fields_count; i++) {
@@ -21,21 +30,3 @@ void FieldInfo::read(JavaClass class_file, FILE * fp) {
         attributeinfo->get_attribute_info(fp, class_file.fields[i].attributes[j], class_file);
   }
 }
-
-// void FieldInfo::print(JavaClass class_file) {
-//   printf("\n----------------- Field Info:  ----------------------- \n");
-//
-//   for (int i = 0; i < class_file.fields_count; i++){
-//       printf("Name: cp info #%d ", class_file.fields[i].name_index);
-//       printf("<<");
-//
-//       std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool, class_file.fields[i].name_index - 1);
-//
-//       printf("Descriptor: cp info #%d ", class_file.fields[i].descriptor_index);
-//       std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool, class_file.fields[i].descriptor_index - 1);
-//
-//       printf("Access Flag: 0x%04x ", class_file.fields[i].access_flag);
-//       printf("%d\n", class_file.fields[i].access_flag);
-//   }
-//
-// }

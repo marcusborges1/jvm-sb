@@ -8,7 +8,6 @@
 #include "MethodInfo.h"
 #include "InterfaceInfo.h"
 #include "AttributeInfo.h"
-#include "Instruction.h"
 
 class ClassFilePrinter {
 public:

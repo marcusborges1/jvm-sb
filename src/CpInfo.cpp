@@ -1,9 +1,19 @@
+/** @file CpInfo.cpp
+ *  @brief ...
+ *  @bug No know bugs.
+ */
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
 #include "ReadBytes.h"
 #include "CpInfo.h"
 
+
+/** @brief ...
+*  @param fp ...
+*  @param class_file ...
+*  @return void
+*/
 void CpInfo::read(FILE * fp, JavaClass class_file) {
     for (int i = 0; i < class_file.constant_pool_count -1  ; i++) {
       class_file.constant_pool[i].tag = read_1_byte(fp);
@@ -49,19 +59,21 @@ void CpInfo::read(FILE * fp, JavaClass class_file) {
               break;
           case CONSTANT_Utf8:
               class_file.constant_pool[i].UTF8.size = read_2_bytes(fp);
-              class_file.constant_pool[i].UTF8.bytes = (u1*) calloc((class_file.constant_pool[i].UTF8.size) +1, sizeof(u1));
-              fread(class_file.constant_pool[i].UTF8.bytes, 1, class_file.constant_pool[i].UTF8.size, fp);
-              class_file.constant_pool[i].UTF8.bytes[class_file.constant_pool[i].UTF8.size] = '\0';
+              class_file.constant_pool[i].UTF8.bytes = (u1*) calloc(
+                      (class_file.constant_pool[i].UTF8.size) +1, sizeof(u1));
+              fread(class_file.constant_pool[i].UTF8.bytes, 1,
+                    class_file.constant_pool[i].UTF8.size, fp);
+              class_file.constant_pool[i].UTF8.bytes[
+                                  class_file.constant_pool[i].UTF8.size] = '\0';
               break;
         }
     }
 };
 
-
 /** @brief Mostra nome no formato UTF8.
  *  @param cp_info ...
  *  @param pos_info ...
- *  @return void
+ *  @return ...
  */
 std::string CpInfo::get_utf8_constant_pool(CpInfo *cp_info, u2 pos_info) {
   std::string utf8_const;
@@ -116,6 +128,5 @@ std::string CpInfo::get_utf8_constant_pool(CpInfo *cp_info, u2 pos_info) {
       printf("Tag %d. Wrong tag number. Shutting down.\n", tag);
       exit(1);
   }
-
   return utf8_const;
 }
