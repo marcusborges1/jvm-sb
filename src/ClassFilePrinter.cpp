@@ -361,9 +361,10 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
 
   Instruction instructions[256];
   Instruction::setup_instructions(instructions);
+
   printf("Code: \n");
   for (int i = 0; (unsigned)i < info_code.code_length; i++) {
-    u1 op_code = info_code.code[i];
+    int op_code = (int)info_code.code[i];
     std::cout << "\t"<< i << ": " << instructions[op_code].name;
     for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
         ++i;
@@ -373,6 +374,20 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
           std::cout << " #" << (int)index << " "
                     << class_file.constant_pool->get_utf8_constant_pool(
                                     class_file.constant_pool, index_utf8-1);
+          j++;
+        }
+        else if (op_code == newarray) {
+          printf(" %x", info_code.code[j]);
+          switch (info_code.code[j]) {
+            case T_BOOLEAN: std::cout << " (bool)"; break;
+            case T_CHAR : std::cout << " (char)"; break;
+            case T_FLOAT : std::cout << " (float)"; break;
+            case T_DOUBLE : std::cout << " (double)"; break;
+            case T_BYTE : std::cout << " (byte)"; break;
+            case T_SHORT : std::cout << " (short)"; break;
+            case T_INT : std::cout << " (int)"; break;
+            case T_LONG : std::cout << " (long)"; break;
+          }
           j++;
         }
         else if (op_code == anewarray || op_code == checkcast ||
