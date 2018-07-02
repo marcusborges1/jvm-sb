@@ -40,6 +40,7 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
   printf("14. Atributo de classe\n");
   printf("15. Metodos Dinamicos\n");
   printf("16. Attributos\n");
+  printf("17. Fields\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -91,6 +92,9 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
       break;
     case 16:
       filename = "test/AttributesDemo.class";
+      break;
+    case 17:
+      filename = "test/a.class";
       break;
     case 0:
       printf("Até mais!\n");
@@ -157,7 +161,7 @@ void ClassFilePrinter::print_menu_exhibitor(JavaClass class_file) {
       print_interfaces(class_file);
       break;
     case 3:
-      // print_fields_info(class_file);
+      print_fields_info(class_file);
       break;
     case 4:
       print_method(class_file);
@@ -239,6 +243,10 @@ void ClassFilePrinter::print_attributes_methods(JavaClass class_file, AttributeI
   {
     print_attr_code(class_file, attribute_info.code);
   }
+  else if(attribute_type == "ConstantValue"){
+    print_attr_constant_value(class_file, attribute_info.constant_value);
+    // attribute_info.constant_value = constant_info->read(class_file, fp, attribute_info);
+  }
   else if (!attribute_type.compare("LineNumberTable"))
   {
     print_attr_number_table(class_file, attribute_info.line_number_table);
@@ -255,7 +263,7 @@ void ClassFilePrinter::print_attributes(JavaClass class_file)
 {
   std::cout << std::endl << "--------------- Attributtes Info ---------------"<< std::endl;
   
-  printf("attribute_name_index: cp info #%d ", class_file.attributes->attribute_name_index);
+  printf("attribute_name_index: cp info #%d ", class_file.attributes[0].attribute_name_index);
   std::string attribute_type = cpinfo->get_utf8_constant_pool(class_file.constant_pool, class_file.attributes->attribute_name_index - 1);
   std::cout << attribute_type << std::endl;
 
@@ -265,13 +273,17 @@ void ClassFilePrinter::print_attributes(JavaClass class_file)
   {
     print_attr_code(class_file, class_file.attributes->code);
   }
+  else if(attribute_type == "ConstantValue"){
+    print_attr_constant_value(class_file, class_file.attributes->constant_value);
+    // attribute_info.constant_value = constant_info->read(class_file, fp, attribute_info);
+  }
   else if (!attribute_type.compare("LineNumberTable"))
   {
     print_attr_number_table(class_file, class_file.attributes->line_number_table);
   }
   else if (!attribute_type.compare("SourceFile"))
   {
-    print_attr_source_file(class_file, attribute_info->source_file);
+    print_attr_source_file(class_file, class_file.attributes->source_file);
   }
   else printf("didnt enter\n" );
 }
@@ -280,6 +292,13 @@ void ClassFilePrinter::print_attr_source_file(JavaClass class_file, SourceFileAt
 {
   printf("Sourcefile index: %d\n", info_code.source_file_index); 
 }
+
+
+void ClassFilePrinter::print_attr_constant_value(JavaClass class_file, ConstantValueAttribute info_constant)
+{
+  printf("Constant value index: %d\n", info_constant.constantvalue_index); 
+}
+
 
 void ClassFilePrinter::print_attr_code(JavaClass class_file, CodeAttribute info_code)
 {
@@ -490,28 +509,38 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
 //   }
 // }
 
-// /*  @brief Printa os fields contidos no .class
-//  *  @param class_file
-//  *  @return void
-//  */
-// void ClassFilePrinter::print_fields_info(JavaClass class_file) {
-//   int i, j;
-//
-//   if (class_file.field_count != 0) {
-//     for (i = 0; i < class_file.field_count; i++) {
-//       printf("\tName:             cp_info_#%d \n", class_file.fields[i].type_class_info);
-//       printf("\tDescriptor:       cp_info_#%d \n", class_file.fields[i].descriptor_index);
-//       printf("\tAccess Flag:      0x%04X      \n", class_file.fields[i].access_flag);
-//       printf("\tAttributes count: %d        \n\n", class_file.fields[i].atributes_count);
-//
-//       for (j = 0; j < class_file.fields[i].atributes_count; j++) {
-//         printf("\tGeneric Info\n");
-//         printf("\t\tattribute_type_class_info:     cp_info_#%d\n", class_file.fields[i].attributes->attribute_type_class_info);
-//         printf("\t\tattribute_length:         %u        \n\n", class_file.fields[i].attributes->attribute_length);
-//         printf("\tSpecific Info:\n");
-//         printf("\t\tconstant_value_index:     cp_info_#%d\n", class_file.fields[i].attributes->constant_value_index - 1);
-//         printf("\n\n\n");
-//       }
-//     }
-//   }
-// }
+/*  @brief Printa os fields contidos no .class
+ *  @param class_file
+ *  @return void
+ */
+void ClassFilePrinter::print_fields_info(JavaClass class_file) 
+{
+  int i, j;
+
+  if (class_file.fields_count != 0) 
+  {
+    for (i = 0; i < class_file.fields_count; i++) 
+    {
+      printf("FIELDS_INFO[%d]\n", i);
+      printf("\tAccess Flag:      0x%04x      \n", class_file.fields[i].access_flag);
+      printf("\tName:             cp_info_#%d \n", class_file.fields[i].name_index);
+      printf("\tDescriptor:       cp_info_#%d \n", class_file.fields[i].descriptor_index);
+      printf("\tAttributes count: %d        \n\n", class_file.fields[i].atributes_count);
+
+      FieldInfo info_fields = class_file.fields[i];
+
+      //TODO:IMPLEMENTAR O ATRIBUTOS DO FIELDS
+      for (j = 0; j < info_fields.atributes_count; j++) 
+      {
+        this->print_attributes_methods(class_file, info_fields.attributes[j]);
+
+      }
+    }
+  }
+}
+
+
+
+
+
+

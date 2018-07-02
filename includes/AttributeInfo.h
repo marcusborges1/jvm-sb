@@ -11,8 +11,8 @@
 
 class ConstantValueAttribute{
     public:
-        u2 attribute_name_index;
-        u4 attribute_length;
+        // u2 attribute_name_index;
+        // u4 attribute_length;
         u2 constantvalue_index;
 
         ConstantValueAttribute read(JavaClass,FILE*, AttributeInfo);

@@ -28,6 +28,8 @@ public:
     void print_method(JavaClass class_file);
     void print_attributes_methods(JavaClass class_file, AttributeInfo attribute_info);
     void print_attr_source_file(JavaClass class_file, SourceFileAttribute info_code);
+    void print_fields_info(JavaClass class_file);
+    void print_attr_constant_value(JavaClass class_file, ConstantValueAttribute info_constant);
 };
 
 #endif

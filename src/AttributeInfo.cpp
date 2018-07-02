@@ -4,10 +4,15 @@
 #include "ReadBytes.h"
 
 
-ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE * fp, AttributeInfo attribute_info) {
-    attribute_info.constant_value.attribute_name_index = read_2_bytes(fp);
-    attribute_info.constant_value.attribute_length = read_4_bytes(fp);
+ConstantValueAttribute ConstantValueAttribute::read(JavaClass class_file, FILE * fp, AttributeInfo attribute_info) 
+{
+    printf("ENTREI AQUI\n");
+    // attribute_info.constant_value.attribute_name_index = read_2_bytes(fp);
+    // printf("CONSTANT_NAME-->>%d\n", attribute_info.constant_value.attribute_name_index);
+    // attribute_info.constant_value.attribute_length = read_4_bytes(fp);
+    // printf("CONSTANT_LENGTH-->>%d\n", attribute_info.constant_value.attribute_length);
     attribute_info.constant_value.constantvalue_index = read_2_bytes(fp);
+    printf("CONSTANT_INDEX-->>%d\n",attribute_info.constant_value.constantvalue_index);
     return  attribute_info.constant_value;
 }
 
@@ -59,6 +64,7 @@ LocalVariableTableAttribute LocalVariableTableAttribute::read(FILE *arquivo_clas
 
     info_local_variable_table.local_variable_table_length = read_2_bytes(arquivo_class);
 
+    info_local_variable_table.table_data = (LocalVariableTableDataAttribute*)malloc(info_local_variable_table.local_variable_table_length * sizeof(LocalVariableTableDataAttribute));
     for (i = 0; i < attribute_struct.local_variable_table.local_variable_table_length; i++)
     {
         info_local_variable_table.table_data[i] = info_data->read(arquivo_class, attribute_struct);
@@ -97,7 +103,7 @@ LineNumberTableAttribute LineNumberTableAttribute::read(FILE *arquivo_class, Att
     info_line_number_table.line_number_table_length = read_2_bytes(arquivo_class);
     printf("LINE_TABLE_LENGTH --->%d\n", info_line_number_table.line_number_table_length);
 
-
+    info_line_number_table.table = (LineNumberTableDataAttribute*)malloc(info_line_number_table.line_number_table_length * sizeof(LineNumberTableDataAttribute));
     for (i = 0; i < info_line_number_table.line_number_table_length; i++)
     {
         info_line_number_table.table[i] = info_data->read(arquivo_class, attribute_struct);
@@ -134,6 +140,7 @@ InnerClassAttribute InnerClassAttribute::read(FILE *arquivo_class, AttributeInfo
 
     info_inner_class.number_of_classes = read_2_bytes(arquivo_class);
 
+    info_inner_class.inner_class_data = (InnerClassDataAttribute*)malloc(info_inner_class.number_of_classes * sizeof(InnerClassDataAttribute));
     for (i = 0; i < info_inner_class.number_of_classes; i++)
     {
         info_inner_class.inner_class_data[i] = info_data->read(arquivo_class, attribute_struct);
@@ -181,7 +188,6 @@ SourceFileAttribute SourceFileAttribute::read(FILE *arquivo_class, AttributeInfo
     SourceFileAttribute info_source_file;
     
     info_source_file.source_file_index = read_2_bytes(arquivo_class);
-    printf("SOUCE_FILE_INDEX--->>>%d\n", info_source_file.source_file_index);
     
     return info_source_file;
 }
@@ -255,7 +261,9 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp, AttributeInfo attribut
     printf("NAME_INDEX--->>%d\n", attribute_info.attribute_name_index);
     attribute_info.attribute_length = read_4_bytes(fp);
     std::string attribute_name = cpinfo->get_utf8_constant_pool(class_file.constant_pool, attribute_info.attribute_name_index - 1);
-
+   
+    printf("ATT_TYPE-->>%s\n", attribute_name.c_str());
+   
     if(attribute_name == "Code"){
         attribute_info.code = code_info->read(class_file, fp, attribute_info);
         return attribute_info;
