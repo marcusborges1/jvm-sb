@@ -426,7 +426,9 @@ void ClassFilePrinter::print_attr_number_table(JavaClass class_file,
  */
 void ClassFilePrinter::print_attr_source_file(JavaClass class_file,
                                               SourceFileAttribute info_code) {
-  printf("Sourcefile index: %d\n", info_code.source_file_index);
+  printf("Sourcefile index: %d ", info_code.source_file_index);
+  std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                            info_code.source_file_index - 1);
 }
 
 /** @brief Mostra informações das constant_pools.
