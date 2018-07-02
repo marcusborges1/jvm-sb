@@ -75,7 +75,8 @@ LocalVariableTableAttribute LocalVariableTableAttribute::read(FILE *class_file,
     LocalVariableTableDataAttribute *info_data = new LocalVariableTableDataAttribute();
     LocalVariableTableAttribute info_local_variable_table;
 
-    info_local_variable_table.local_variable_table_length = read_2_bytes(class_file);
+    info_local_variable_table.local_variable_table_length = read_2_bytes(
+                                                                  class_file);
 
     info_local_variable_table.table_data = (
               LocalVariableTableDataAttribute*)malloc(
@@ -85,7 +86,8 @@ LocalVariableTableAttribute LocalVariableTableAttribute::read(FILE *class_file,
     for (i = 0;
         i < attribute_struct.local_variable_table.local_variable_table_length;
         i++)
-        info_local_variable_table.table_data[i] = info_data->read(class_file, attribute_struct);
+        info_local_variable_table.table_data[i] = info_data->read(class_file,
+                                                            attribute_struct);
 
     return info_local_variable_table;
 }
@@ -95,7 +97,8 @@ LocalVariableTableAttribute LocalVariableTableAttribute::read(FILE *class_file,
  *  @param attribute_struct ...
  *  @return ...
  */
-LocalVariableTableDataAttribute LocalVariableTableDataAttribute::read(FILE *class_file,
+LocalVariableTableDataAttribute LocalVariableTableDataAttribute::read(
+                                              FILE *class_file,
                                               AttributeInfo attribute_struct) {
     LocalVariableTableDataAttribute info_local_variable;
 
@@ -140,7 +143,8 @@ LineNumberTableAttribute LineNumberTableAttribute::read(FILE *class_file,
  *  @param attribute_struct ...
  *  @return ...
  */
-LineNumberTableDataAttribute LineNumberTableDataAttribute::read(FILE *class_file,
+LineNumberTableDataAttribute LineNumberTableDataAttribute::read(
+                                              FILE *class_file,
                                               AttributeInfo attribute_struct) {
     LineNumberTableDataAttribute info_line_number_table_data;
 
@@ -254,7 +258,8 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp,
         return attribute_info;
     }
     else if (attribute_name == "ConstantValue") {
-        attribute_info.constant_value = constant_info->read(class_file, fp, attribute_info);
+        attribute_info.constant_value = constant_info->read(class_file, fp,
+                                                            attribute_info);
     }
     else if (attribute_name == "Exceptions") {
         attribute_info.execptions = exp_info->read(fp, attribute_info);
@@ -266,18 +271,18 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp,
         // não fazer nada
     }
     else if (attribute_name =="SourceFile") {
-        // attribute_info.source_file = (attribute_source_file*)malloc(sizeof(attribute_source_file));
         attribute_info.source_file = source_info->read(fp, attribute_info);
     }
     else if (attribute_name == "LineNumberTable") {
-        attribute_info.line_number_table = line_number_info->read(fp, attribute_info);
+        attribute_info.line_number_table = line_number_info->read(fp,
+                                                              attribute_info);
     }
     else if (attribute_name == "LocalVariableTable") {
-        attribute_info.local_variable_table = local_info->read(fp, attribute_info);
+        attribute_info.local_variable_table = local_info->read(fp,
+                                                              attribute_info);
     }
     else {
         //ignora silenciosamente os outros atributos
-        // attribute_info.info = (u1*)malloc(sizeof(u1)*attribute_info.attribute_length);
         for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
             attribute_info.info[j] = read_1_byte(fp);
         }

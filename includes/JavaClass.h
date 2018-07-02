@@ -1,5 +1,5 @@
 /** @file JavaClass.h
- *  @brief ...
+ *  @brief Estruturas de dados de um arquivo ".class".
  */
 #ifndef JAVA_CLASS_H
 #define JAVA_CLASS_H
@@ -25,6 +25,7 @@
 #define invokespecial 183
 #define invokestatic 184
 #define invokevirtual 182
+#define ldc 18
 #define ldc_w 19
 #define ldc2_w 20
 #define multianewarray 197

@@ -22,7 +22,6 @@ class ConstantValueAttribute{
         u2 constantvalue_index;
 
         ConstantValueAttribute read(JavaClass,FILE*, AttributeInfo);
-        void print(JavaClass, AttributeInfo);
 };
 
 /**
@@ -34,7 +33,6 @@ public:
     u2 *exception_index_table;
 
     Exception read(FILE*, AttributeInfo);
-    void print(JavaClass, AttributeInfo);
 };
 
 /**
@@ -65,8 +63,6 @@ public:
   AttributeInfo* attributes;
 
   CodeAttribute read(JavaClass, FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -80,7 +76,6 @@ public:
   u2 inner_class_access_flag;
 
   InnerClassDataAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
 
 };
 
@@ -93,8 +88,6 @@ public:
   InnerClassDataAttribute *inner_class_data;
 
   InnerClassAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -105,8 +98,6 @@ public:
   u2 source_file_index;
 
   SourceFileAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -118,8 +109,6 @@ public:
   u2 line_pc;
 
   LineNumberTableDataAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -131,8 +120,6 @@ public:
   LineNumberTableDataAttribute *table;
 
   LineNumberTableAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -147,8 +134,6 @@ public:
   u2 index;
 
   LocalVariableTableDataAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -160,8 +145,6 @@ public:
   LocalVariableTableDataAttribute *table_data;
 
   LocalVariableTableAttribute read(FILE*, AttributeInfo);
-  void print(JavaClass, AttributeInfo);
-
 };
 
 /**
@@ -193,8 +176,6 @@ public:
 
   void read(JavaClass, FILE*);
   AttributeInfo get_attribute_info(FILE*, AttributeInfo, JavaClass);
-  void print(JavaClass);
-  void print_attribute_info(JavaClass, AttributeInfo);
 };
 
 #endif

@@ -235,7 +235,7 @@ void ClassFilePrinter::print_fields_info(JavaClass class_file) {
       printf("\tAccess Flag:      0x%04x ",
             class_file.fields[i].access_flag);
       printf("%d\n", class_file.fields[i].access_flag);
-      
+
       printf("\tAttributes count: %d        \n\n",
             class_file.fields[i].atributes_count);
 
@@ -366,8 +366,16 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
     u1 op_code = info_code.code[i];
     std::cout << "\t"<< i << ": " << instructions[op_code].name;
     for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
-        i++;
-        if (op_code == anewarray || op_code == checkcast ||
+        ++i;
+        if (op_code == ldc) {
+          u1 index = info_code.code[i];
+          u2 index_utf8 = 0x00|index;
+          std::cout << " #" << (int)index << " "
+                    << class_file.constant_pool->get_utf8_constant_pool(
+                                    class_file.constant_pool, index_utf8-1);
+          j++;
+        }
+        else if (op_code == anewarray || op_code == checkcast ||
             op_code == getfield || op_code == getstatic ||
             op_code == instanceof || op_code == invokespecial ||
             op_code == invokestatic || op_code == invokevirtual ||
@@ -376,12 +384,11 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
             u1 byte1 = info_code.code[i];
             u1 byte2 = info_code.code[i+1];
             u2 index = (byte1<<8)|byte2;
-            std::cout << " "
+            std::cout << " #" << index << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
                                       class_file.constant_pool, index - 1);
             j++;
         }
-
         else if (op_code == GOTO || op_code == if_acmpeq ||
                 op_code == if_acmpne || op_code == if_icmpeq ||
                 op_code == if_icmpne || op_code == if_icmplt ||
