@@ -373,12 +373,13 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
             op_code == invokestatic || op_code == invokevirtual ||
             op_code == ldc_w || op_code == ldc2_w || op_code == NEW ||
             op_code == putfield || op_code == putstatic) {
+
             u1 byte1 = info_code.code[i];
             u1 byte2 = info_code.code[i+1];
             u2 index = (byte1<<8)|byte2;
             std::cout << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
-                                      class_file.constant_pool, index - 1);
+                                      class_file.constant_pool, index);
             j++;
         }
 
@@ -390,10 +391,12 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
                 op_code == ifne || op_code == iflt || op_code == ifge ||
                 op_code == ifgt || op_code == ifle || op_code == ifnonull ||
                 op_code == ifnull || op_code == jsr) {
+
             u1 branchbyte1 = info_code.code[i];
             u1 branchbyte2 = info_code.code[i+1];
             u2 address = (branchbyte1 << 8) | branchbyte2;
             printf(" %08X ", address);
+            j++;
         }
         else printf(" %x ", info_code.code[j]);
     }
