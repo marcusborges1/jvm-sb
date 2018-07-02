@@ -1,3 +1,7 @@
+/** @file ReadBytes.cpp
+ *  @brief ...
+ *  @bug No know bugs.
+ */
 #include "ReadBytes.h"
 
 /** @brief Lê 1 byte.
