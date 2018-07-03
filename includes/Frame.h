@@ -23,6 +23,9 @@ class Frame {
 
     Frame* caller;
     MethodInfo* method;
+    u4 pc;
+    CodeAttribute code;
+    void execute_frame();
 };
 
 

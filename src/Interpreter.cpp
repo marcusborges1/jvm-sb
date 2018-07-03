@@ -9,8 +9,6 @@
 * @param JavaClass class_file
 */
 void Interpreter::execute(JavaClass class_file ) {
-    Instruction instructions[256];
-    Instruction::setup_instructions(instructions);
 
     MethodInfo *method = method->find_main(class_file);
     std::stack<Frame*> frame_stack;
@@ -25,8 +23,7 @@ void Interpreter::execute(JavaClass class_file ) {
       printf("=========================================\n");
       while(!(frame_stack.empty())){
         current_frame = frame_stack.top();
-        printf("TEM COISA NO STACK\n");
-        printf("EXECUTA\n");
+        current_frame->execute_frame();
         frame_stack.pop();
       }
       printf("=========================================\n");
