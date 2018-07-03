@@ -1,5 +1,5 @@
 /** @file JavaClass.h
- *  @brief ...
+ *  @brief Estruturas de dados de um arquivo ".class".
  */
 #ifndef JAVA_CLASS_H
 #define JAVA_CLASS_H
@@ -15,7 +15,9 @@
 // uint8_t : unsigned integer type with width of exactly 8
 #define u1 uint8_t
 
+#define newarray 188
 #define anewarray 189
+#define multianewarray 197
 #define checkcast 192
 #define getfield 180
 #define getstatic 178
@@ -25,9 +27,9 @@
 #define invokespecial 183
 #define invokestatic 184
 #define invokevirtual 182
+#define ldc 18
 #define ldc_w 19
 #define ldc2_w 20
-#define multianewarray 197
 #define NEW 187
 #define putfield 181
 #define putstatic 179
@@ -63,6 +65,16 @@
 #define CONSTANT_NameAndType         12
 #define CONSTANT_Utf8                 1
 #define CONSTANT_EmptySpace           0
+
+// atype for newarray
+#define T_BOOLEAN 0x4
+#define T_CHAR    0x5
+#define T_FLOAT	  0x6
+#define T_DOUBLE	0x7
+#define T_BYTE    0x8
+#define T_SHORT	  0x9
+#define T_INT     0x10
+#define T_LONG    0x11
 
 // access flags
 // public declaration, can be accessed outside the package

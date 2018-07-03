@@ -235,7 +235,7 @@ void ClassFilePrinter::print_fields_info(JavaClass class_file) {
       printf("\tAccess Flag:      0x%04x ",
             class_file.fields[i].access_flag);
       printf("%d\n", class_file.fields[i].access_flag);
-      
+
       printf("\tAttributes count: %d        \n\n",
             class_file.fields[i].atributes_count);
 
@@ -359,15 +359,66 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
   printf("Code length: %d\n", info_code.code_length);
   printf("Exception table length: %d\n", info_code.exception_table_length);
 
+  printf("Code: \n");
+  print_instructions(class_file, info_code);
+
+  printf("Attributes count: %d\n", info_code.attributes_count);
+  for (int i = 0; i < info_code.attributes_count; ++i) {
+    print_attributes_methods(class_file, info_code.attributes[i]);
+  }
+}
+
+/** @brief Mostra cada instruções do .class
+ *  @param class_file ...
+ *  @param info_code ...
+ *  @return void
+ */
+void ClassFilePrinter::print_instructions(JavaClass class_file,
+                                          CodeAttribute info_code) {
   Instruction instructions[256];
   Instruction::setup_instructions(instructions);
-  printf("Code: \n");
+
   for (int i = 0; (unsigned)i < info_code.code_length; i++) {
-    u1 op_code = info_code.code[i];
+    int op_code = (int)info_code.code[i];
     std::cout << "\t"<< i << ": " << instructions[op_code].name;
     for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
-        i++;
-        if (op_code == anewarray || op_code == checkcast ||
+        ++i;
+        if (op_code == ldc) {
+          u1 index = info_code.code[i];
+          u2 index_utf8 = 0x00|index;
+          std::cout << " #" << (int)index << " "
+                    << class_file.constant_pool->get_utf8_constant_pool(
+                                    class_file.constant_pool, index_utf8-1);
+          j++;
+        }
+        else if (op_code == newarray) {
+          printf(" %x", info_code.code[j]);
+          switch (info_code.code[j]) {
+            case T_BOOLEAN: std::cout << " (bool)"; break;
+            case T_CHAR : std::cout << " (char)"; break;
+            case T_FLOAT : std::cout << " (float)"; break;
+            case T_DOUBLE : std::cout << " (double)"; break;
+            case T_BYTE : std::cout << " (byte)"; break;
+            case T_SHORT : std::cout << " (short)"; break;
+            case T_INT : std::cout << " (int)"; break;
+            case T_LONG : std::cout << " (long)"; break;
+          }
+          j++;
+        }
+        else if (op_code == multianewarray) {
+          u1 byte1 = info_code.code[i];
+          u1 byte2 = info_code.code[i+1];
+          u1 dim = info_code.code[i+2];
+          u2 index = (byte1<<8)|byte2;
+          std::string str = class_file.constant_pool->get_utf8_constant_pool(
+                          class_file.constant_pool, index-1);
+          if (!str.empty()) {
+            std::cout << " #" << index << " " << str;
+            std::cout << " dim " << (int)dim;
+          }
+          j++;
+        }
+        else if (op_code == anewarray || op_code == checkcast ||
             op_code == getfield || op_code == getstatic ||
             op_code == instanceof || op_code == invokespecial ||
             op_code == invokestatic || op_code == invokevirtual ||
@@ -377,12 +428,11 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
             u1 byte1 = info_code.code[i];
             u1 byte2 = info_code.code[i+1];
             u2 index = (byte1<<8)|byte2;
-            std::cout << " "
+            std::cout << " #" << index << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
-                                      class_file.constant_pool, index);
+                                      class_file.constant_pool, index-1);
             j++;
         }
-
         else if (op_code == GOTO || op_code == if_acmpeq ||
                 op_code == if_acmpne || op_code == if_icmpeq ||
                 op_code == if_icmpne || op_code == if_icmplt ||
@@ -403,11 +453,6 @@ void ClassFilePrinter::print_attr_code(JavaClass class_file,
     std::cout << std::endl;
   }
   printf("\n");
-
-  printf("Attributes count: %d\n", info_code.attributes_count);
-  for (int i = 0; i < info_code.attributes_count; ++i) {
-    print_attributes_methods(class_file, info_code.attributes[i]);
-  }
 }
 
 /** @brief Mostra os atributos ConstantValue dentro de métodos

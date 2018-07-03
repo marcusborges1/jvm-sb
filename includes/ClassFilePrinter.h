@@ -37,6 +37,7 @@ public:
                                 SourceFileAttribute info_code);
     void print_attr_constant_value(JavaClass class_file,
                                   ConstantValueAttribute info_constant);
+    void print_instructions(JavaClass class_file, CodeAttribute info_code); 
 };
 
 #endif
