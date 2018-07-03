@@ -35,6 +35,7 @@ CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp,
     attribute_info.code.max_stack = read_2_bytes(fp);
     attribute_info.code.max_locals = read_2_bytes(fp);
     attribute_info.code.code_length = read_4_bytes(fp);
+
     attribute_info.code.code = (u1*)malloc(
                                   sizeof(u1)*attribute_info.code.code_length);
 
@@ -77,14 +78,13 @@ LocalVariableTableAttribute LocalVariableTableAttribute::read(FILE *class_file,
 
     info_local_variable_table.local_variable_table_length = read_2_bytes(
                                                                   class_file);
-
     info_local_variable_table.table_data = (
               LocalVariableTableDataAttribute*)malloc(
                 info_local_variable_table.local_variable_table_length * sizeof(
               LocalVariableTableDataAttribute));
 
     for (i = 0;
-        i < attribute_struct.local_variable_table.local_variable_table_length;
+        i < info_local_variable_table.local_variable_table_length;
         i++)
         info_local_variable_table.table_data[i] = info_data->read(class_file,
                                                             attribute_struct);
@@ -107,6 +107,7 @@ LocalVariableTableDataAttribute LocalVariableTableDataAttribute::read(
     info_local_variable.name_index = read_2_bytes(class_file);
     info_local_variable.descriptor_index = read_2_bytes(class_file);
     info_local_variable.index = read_2_bytes(class_file);
+    
 
 
     return info_local_variable;
@@ -233,9 +234,12 @@ SourceFileAttribute SourceFileAttribute::read(FILE *class_file,
  *  @return ...
  */
 void AttributeInfo::read(JavaClass class_file, FILE *fp) {
-    for (int i = 0; i < class_file.attributes_count ; i++)
+    for (int i = 0; i < class_file.attributes_count ; i++){
         class_file.attributes[i] = this->get_attribute_info(fp,
                                         class_file.attributes[i], class_file);
+    }
+
+
 }
 
 /** @brief ...
@@ -245,8 +249,9 @@ void AttributeInfo::read(JavaClass class_file, FILE *fp) {
  *  @return ...
  */
 AttributeInfo AttributeInfo::get_attribute_info(FILE *fp,
-                                                AttributeInfo attribute_info,
+                                                AttributeInfo attributeinfo,
                                                 JavaClass class_file) {
+    AttributeInfo attribute_info;
 
     attribute_info.attribute_name_index = read_2_bytes(fp);
     attribute_info.attribute_length = read_4_bytes(fp);
@@ -255,7 +260,7 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp,
 
     if (attribute_name == "Code") {
         attribute_info.code = code_info->read(class_file, fp, attribute_info);
-        return attribute_info;
+        // return attribute_info;
     }
     else if (attribute_name == "ConstantValue") {
         attribute_info.constant_value = constant_info->read(class_file, fp,

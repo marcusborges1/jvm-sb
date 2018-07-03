@@ -27,6 +27,8 @@ void FieldInfo::read(JavaClass class_file, FILE * fp) {
 
     class_file.fields[i].attributes = (AttributeInfo*)malloc(class_file.fields[i].atributes_count*sizeof(AttributeInfo));
     for (int j = 0;  j < class_file.fields[i].atributes_count; j++)
-        attributeinfo->get_attribute_info(fp, class_file.fields[i].attributes[j], class_file);
+    {
+        class_file.fields[i].attributes[j] = attributeinfo->get_attribute_info(fp, class_file.fields[i].attributes[j], class_file);
+    }
   }
 }
