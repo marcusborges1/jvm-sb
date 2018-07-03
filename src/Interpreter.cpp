@@ -30,7 +30,8 @@ void Interpreter::execute(JavaClass class_file ) {
         while(current_frame->pc < current_frame->code.code_length) {
           u1 op_code = current_frame->code.code[current_frame->pc];
           std::cout << instructions[op_code].name << std::endl;
-          current_frame->pc++;
+          execute_instruction(op_code);
+          // current_frame->pc++;
         }
 
         frame_stack.pop();
