@@ -31,6 +31,7 @@ class Frame {
     std::stack<u4> operand_stack;
     Frame* caller;
     void execute_frame();
+    static void setup_instructions_func();
 };
 
 #endif

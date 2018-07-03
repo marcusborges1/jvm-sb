@@ -19,6 +19,7 @@ std::stack<Frame*> frame_stack;
 void Interpreter::execute(JavaClass class_file) {
   Instruction instructions[256];
   Instruction::setup_instructions(instructions);
+  Frame::setup_instructions_func();
 
   MethodInfo *method = new MethodInfo();
   method->find_main(class_file);
@@ -35,17 +36,7 @@ void Interpreter::execute(JavaClass class_file) {
   while (!(frame_stack.empty())) {
     // coleta frame do topo (FIFO)
     current_frame = frame_stack.top();
-
-    std::cout << current_frame->method_code.code_length << std::endl;
-    // enquanto frame não chegar ao final
-    while(current_frame->pc < current_frame->method_code.code_length) {
-      // coleta o primeiro opcode
-      u1 op_code = current_frame->method_code.code[current_frame->pc];
-      std::cout << instructions[op_code].name << std::endl;
-      // execute_instruction(op_code);
-      current_frame->pc++;
-    }
-
+    current_frame->execute_frame();
     frame_stack.pop();
   }
   printf("=========================================\n");
