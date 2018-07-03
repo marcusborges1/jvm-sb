@@ -7,6 +7,22 @@
 #include "ReadBytes.h"
 
 
+MethodInfo* MethodInfo::find_main(JavaClass class_file){
+    for (int i = 0; i < class_file.methods_count; i++) {
+        MethodInfo *method = class_file.methods + i;
+        std::string name = class_file.constant_pool->get_utf8_constant_pool(class_file.constant_pool,
+                                                                            method->name_index - 1);
+        if (name == "main") {
+            return method;
+        }
+    }
+
+    std::cout << "Class File inserido não possui método main." << std::endl;
+    exit(1);
+
+}
+
+
 /** @brief ...
 *  @param class_file ...
 *  @param fp ...

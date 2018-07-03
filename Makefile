@@ -7,7 +7,7 @@ C_SRCS := $(wildcard *.cpp)
 DIR_SRC=src/
 DIR_OBJ=build/
 
-_OBJ= main.o ClassFileReader.o ClassFilePrinter.o CpInfo.o FieldInfo.o MethodInfo.o AttributeInfo.o ReadBytes.o InterfaceInfo.o Instruction.o
+_OBJ= main.o Interpreter.o ClassFileReader.o ClassFilePrinter.o CpInfo.o FieldInfo.o MethodInfo.o AttributeInfo.o ReadBytes.o InterfaceInfo.o Instruction.o
 OBJ = $(patsubst %,$(DIR_OBJ)%,$(_OBJ))
 
 all : clean cppcheck compile gcov exec
