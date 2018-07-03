@@ -18,6 +18,26 @@
  *  operandos e uma referência para o pool de constantes da classe do método
  *  corrente.
  **/
+
+ #define type_bool 1
+ #define type_byte 2
+ #define type_char 3
+ #define type_short 4
+ #define type_int 5
+ #define type_float 6
+ #define type_long 7
+ #define type_double 8
+ #define type_string 9
+ #define type_reference 10
+ #define type_array 11
+
+
+ struct Operand{
+     u1 tag;
+     u4 variable;
+ };
+
+
 class Frame {
   public:
     Frame(MethodInfo*, CpInfo*);
@@ -28,7 +48,7 @@ class Frame {
     u4 pc;
     std::vector<u4> local_variables_array;
 
-    std::stack<u4> operand_stack;
+    std::stack<Operand> operand_stack;
     Frame* caller;
     void execute_frame();
     static void setup_instructions_func();

@@ -29,3 +29,7 @@ void fsub(Frame *curr_frame){
 
   curr_frame->pc++;
 }
+
+void getfield(Frame *curr_frame){
+  
+}
