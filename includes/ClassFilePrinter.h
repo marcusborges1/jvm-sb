@@ -19,7 +19,9 @@ public:
     InterfaceInfo *interface_info = new InterfaceInfo();
     AttributeInfo *attribute_info = new AttributeInfo();
 
-    std::string print_menu_choose_type_file();
+    void print_menu_init();
+
+    std::string print_menu_choose_type_file(std::string title);
     void print_general_info(JavaClass class_file, std::string filename);
     void print_menu_exhibitor(JavaClass class_file);
     void print_constant_pool_info(JavaClass class_file);
@@ -37,7 +39,7 @@ public:
                                 SourceFileAttribute info_code);
     void print_attr_constant_value(JavaClass class_file,
                                   ConstantValueAttribute info_constant);
-    void print_instructions(JavaClass class_file, CodeAttribute info_code); 
+    void print_instructions(JavaClass class_file, CodeAttribute info_code);
 };
 
 #endif

@@ -8,19 +8,71 @@
 #include <cstring>
 #include <cstdio>
 #include "ClassFilePrinter.h"
+#include "ClassFileReader.h"
+#include "Interpreter.h"
 #include "Instruction.h"
 #include "ReadBytes.h"
+
+
+/** @brief Mostra menu de escolhas entre leitor/exibidor e JVM
+ *  @param class_file ponteiro com as informações lidas do .class
+ *  @return void
+ */
+void ClassFilePrinter::print_menu_init() {
+  ClassFileReader *reader = new ClassFileReader();
+  Interpreter *interpreter = new Interpreter();
+  JavaClass class_file;
+  std::string filename;
+  int option = 0;
+
+  printf("\n\nO que deseja executar:\n");
+  printf("1. Leitor/Exibidor\n");
+  printf("2. JVM\n");
+  printf("0. Sair\n");
+  scanf("%d", &option);
+
+  switch (option) {
+    case 1:
+      // escolhe o tipo de arquivo que deseja ler/exibir
+      filename = print_menu_choose_type_file("Leitor/Exibidor");
+      // passa o nome do arquivo .class como argumento para função de leitura
+      class_file = reader->read_class_file(filename);
+      // exibe os dados gerais do arquivo .class informado pelo usuário
+      print_general_info(class_file, filename);
+      // menu de escolhas do exibidor
+      print_menu_exhibitor(class_file);
+      break;
+    case 2:
+      // escolhe o tipo de arquivo que deseja executar
+      filename = print_menu_choose_type_file("JVM");
+      // passa o nome do arquivo .class como argumento para função de leitura
+      class_file = reader->read_class_file(filename);
+      printf("Interpreting...\n");
+      interpreter->execute(class_file);
+      break;
+    case 0:
+      printf("Até mais!\n");
+      exit(0);
+    default:
+      printf("Opção não existe, tente novamente. Pressione enter...\n");
+      char command;
+      scanf("%c", &command);
+      while ((command = getchar()) != '\n' && command != EOF) { };
+      print_menu_init();
+  }
+}
+
 
 /** @brief Mostra menu inicial para escolher tipo de arquivo java de teste.
 *  @return ...
 */
-std::string ClassFilePrinter::print_menu_choose_type_file() {
+std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   int option = 0;
   std::string filename;
 
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-  printf("\n\nLeitor/Exibidor: \n");
+  std::cout << "\n\n" << title << "\n";
   printf("---------------------\n");
 
   printf("Insira qual tipo de arquivo java gostaria de testar:\n");
@@ -43,7 +95,6 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
   printf("17. Long\n");
   printf("18. Classe Abstrata\n");
   printf("19. Geral\n");
-  printf("20. Test File\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -105,9 +156,6 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
     case 19:
       filename = "test/a.class";
       break;
-    case 20:
-      filename = "test/Teste.class";
-      break;
     case 0:
       printf("Até mais!\n");
       exit(0);
@@ -116,7 +164,7 @@ std::string ClassFilePrinter::print_menu_choose_type_file() {
       char command;
       scanf("%c", &command);
       while ((command = getchar()) != '\n' && command != EOF) { };
-      print_menu_choose_type_file();
+      print_menu_choose_type_file(title);
   }
 
   return filename;
