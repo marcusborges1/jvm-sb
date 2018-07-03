@@ -19,15 +19,3 @@ Frame::Frame(MethodInfo* method, CpInfo* cp_info){
 }
 
 Frame::Frame(){}
-
-void Frame::execute_frame(){
-  Instruction instructions[256];
-  Instruction::setup_instructions(instructions);
-
-  std::cout << instructions[this->pc].name << std::endl;
-  // for (int i = 0; i < this->code.code_length ; i++) {
-  //   std::cout <<
-  // }
-
-
-}
