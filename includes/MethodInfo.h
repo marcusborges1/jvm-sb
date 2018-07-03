@@ -25,7 +25,7 @@ public:
 
   void read(JavaClass, FILE*);
   std::string test_methods_flags(u2);
-  MethodInfo * find_main(JavaClass);
+  MethodInfo *find_main(JavaClass);
 };
 
 #endif

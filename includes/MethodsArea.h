@@ -1,5 +1,5 @@
 /** @file MethodsArea.h
- *  @brief Área creada na inicialização da JVM e compartilhada por todas as threads da JVM.
+ *  @brief Área criada na inicialização da JVM, uma área por JVM.
  */
 #ifndef JVM_CPP_METHODSAREA_H
 #define JVM_CPP_METHODSAREA_H

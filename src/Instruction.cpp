@@ -10,25 +10,25 @@
 *  @return void
 */
 void Instruction::setup_instructions(Instruction* instructions) {
-    case "nop":
+    // case "nop":
     instructions[0].bytes = 0;
 
-    case "aconst_null":
+    // case "aconst_null":
     instructions[1].bytes = 0;
 
-    case "iconst_m1":
+    // case "iconst_m1":
     instructions[2].bytes = 0;
 
-    case "iconst_0":
+    // case "iconst_0":
     instructions[3].bytes = 0;
 
-    case "iconst_1":
+    // case "iconst_1":
     instructions[4].bytes = 0;
 
-    case "iconst_2":
+    // case "iconst_2":
     instructions[5].bytes = 0;
 
-    case "iconst_3":
+    // case "iconst_3":
     instructions[6].bytes = 0;
 
     instructions[7].name = "iconst_4";

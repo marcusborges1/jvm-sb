@@ -25,8 +25,8 @@
 #include "ClassFilePrinter.h"
 
 
-/** @brief Função principal do sistema leitor/exibidor.
- *  @return ...
+/** @brief Função principal do sistema leitor/exibidor e JVM.
+ *  @return int que notifica saída com sucesso do sistema
  */
 int main() {
   ClassFilePrinter *printer = new ClassFilePrinter();

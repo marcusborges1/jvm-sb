@@ -7,26 +7,30 @@
 
 #include "JavaClass.h"
 #include "AttributeInfo.h"
-#include "stack"
+#include <stack>
+#include <vector>
+
 
 /**
- * @brief ...
+ * @brief O Frame armazena dados e resultados parciais, para executar
+ *  ligação dinâmica,retornar valores para métodos e disparar exceções.
+ *  Cada frame possui seu próprio array de variáveis locais, sua pilha de
+ *  operandos e uma referência para o pool de constantes da classe do método
+ *  corrente.
  **/
-
 class Frame {
   public:
-    Frame();
     Frame(MethodInfo*, CpInfo*);
-    u4* local_variables_array;
-    std::stack<u4> operand_stack;
-    CpInfo* constant_pool_reference;
 
-    Frame* caller;
-    MethodInfo* method;
+    CpInfo* constant_pool_reference;
+    MethodInfo* method_info;
+    CodeAttribute method_code;
     u4 pc;
-    CodeAttribute code;
+    std::vector<u4> local_variables_array;
+
+    std::stack<u4> operand_stack;
+    Frame* caller;
     void execute_frame();
 };
-
 
 #endif
