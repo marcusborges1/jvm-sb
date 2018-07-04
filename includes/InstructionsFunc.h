@@ -48,4 +48,20 @@ void fload_1(Frame*);
 void fload_2(Frame*);
 void fload_3(Frame*);
 void lload(Frame*);
+void dload(Frame*);
+void dload_0(Frame*);
+void dload_1(Frame*);
+void dload_2(Frame*);
+void dload_3(Frame*);
+void dstore(Frame*);
+void dstore_0(Frame*);
+void dstore_1(Frame*);
+void dstore_2(Frame*);
+void dstore_3(Frame*);
+void fstore(Frame*);
+void fstore_0(Frame*);
+void fstore_1(Frame*);
+void fstore_2(Frame*);
+void fstore_3(Frame*);
+
 #endif

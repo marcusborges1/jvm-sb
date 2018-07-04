@@ -819,7 +819,7 @@ void fload_3  (Frame *curr_frame) {
 }
 
 /**
- * @brief Empilha float indicado no indice 3 do array de variáveis locais na pilha de operandos
+ * @brief Empilha float indicado no indice index do array de variáveis locais na pilha de operandos
  * @param Frame *curr_frame Ponteiro para o frame atual
  * @return void
  */
@@ -828,6 +828,181 @@ void lload(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[index]);
   curr_frame->pc++;
 }
+
+
+/**
+ * @brief empilha double  indicado no indice 0 do array de variaveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dload_0(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[0]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief empilha double  indicado no indice 1 do array de variaveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dload_1(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[1]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief empilha double  indicado no indice 2 do array de variaveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dload_2(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[2]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief empilha double  indicado no indice 3 do array de variaveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dload_3(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[3]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice index
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dstore(Frame* curr_frame) {
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  Operand *op = curr_frame->operand_stack.top();
+  curr_frame->operand_stack.pop();
+
+  curr_frame->local_variables_array[index] = op;
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 0
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dstore_0(Frame* curr_frame) {
+  Operand *op = curr_frame->operand_stack.top();
+  curr_frame->operand_stack.pop();
+
+  curr_frame->local_variables_array[0] = op;
+  curr_frame->pc++;
+}
+
+
+/**
+ * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 1
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dstore_1(Frame* curr_frame) {
+  Operand *op = curr_frame->operand_stack.top();
+  curr_frame->operand_stack.pop();
+
+  curr_frame->local_variables_array[1] = op;
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 2
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dstore_2(Frame* curr_frame) {
+  Operand *op = curr_frame->operand_stack.top();
+  curr_frame->operand_stack.pop();
+
+  curr_frame->local_variables_array[2] = op;
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 3
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dstore_3(Frame* curr_frame) {
+  Operand *op = curr_frame->operand_stack.top();
+  curr_frame->operand_stack.pop();
+
+  curr_frame->local_variables_array[3] = op;
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena float do topo da pilha de operandos no array de variaveis locais
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+ void fstore(Frame* curr_frame) {
+   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+   Operand *op = curr_frame->operand_stack.top();
+   curr_frame->operand_stack.pop();
+
+   curr_frame->local_variables_array[index] = op;
+   curr_frame->pc++;
+ }
+
+
+ /**
+ * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+ void fstore_0(Frame* curr_frame) {
+   Operand *op = curr_frame->operand_stack.top();
+   curr_frame->operand_stack.pop();
+
+   curr_frame->local_variables_array[0] = op;
+   curr_frame->pc++;
+ }
+
+ /**
+  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
+  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @return void
+  */
+ void fstore_1(Frame* curr_frame) {
+   Operand *op = curr_frame->operand_stack.top();
+   curr_frame->operand_stack.pop();
+
+   curr_frame->local_variables_array[1] = op;
+   curr_frame->pc++;
+ }
+
+ /**
+  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
+  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @return void
+  */
+ void fstore_2(Frame* curr_frame) {
+   Operand *op = curr_frame->operand_stack.top();
+   curr_frame->operand_stack.pop();
+
+   curr_frame->local_variables_array[2] = op;
+   curr_frame->pc++;
+ }
+
+ /**
+  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
+  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @return void
+  */
+ void fstore_3(Frame* curr_frame) {
+   Operand *op = curr_frame->operand_stack.top();
+   curr_frame->operand_stack.pop();
+
+   curr_frame->local_variables_array[3] = op;
+   curr_frame->pc++;
+ }
 
 /**
  * @brief Cria novo array do tipo definido
