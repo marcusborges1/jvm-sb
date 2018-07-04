@@ -1367,67 +1367,115 @@ void ldiv(Frame *curr_frame) {
 }
 
 /**
- * @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice index
+ * @brief Divisão de float. Retira os dois operandos do topo da pilha, divide-os
+ * e coloca o resultado no topo da pilha.
  * @param Frame *curr_frame Ponteiro para o frame atual
  * @return void
  */
- void lstore(Frame* curr_frame) {
-   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+void fdiv(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  float value_1, value_2;
+  memcpy(&value_1, &operand_1->type_float, sizeof(float));
+  memcpy(&value_2, &operand_2->type_float, sizeof(float));
+  value_2 /= value_1;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Float;
+  memcpy(&result->type_float, &value_2, sizeof(u4));
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Divisão de double. Retira os dois operandos do topo da pilha, divide-os
+ * e coloca o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void ddiv(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  double value_1, value_2;
+  memcpy(&value_1, &operand_1->type_double, sizeof(double));
+  memcpy(&value_2, &operand_2->type_double, sizeof(double));
+  value_2 /= value_1;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Double;
+  memcpy(&result->type_double, &value_2, sizeof(u8));
+
+  curr_frame->push_operand(result);
+}
+
+/*
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice index
+* @param Frame *curr_frame Ponteiro para o frame atual
+* @return void
+*/
+void lstore(Frame* curr_frame) {
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  Operand *op = curr_frame->operand_stack.top();
+  curr_frame->operand_stack.pop();
+
+  curr_frame->local_variables_array[index] = op;
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+ void lstore_0(Frame* curr_frame) {
    Operand *op = curr_frame->operand_stack.top();
    curr_frame->operand_stack.pop();
 
-   curr_frame->local_variables_array[index] = op;
+   curr_frame->local_variables_array[0] = op;
    curr_frame->pc++;
  }
 
  /**
-  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
+  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
   * @param Frame *curr_frame Ponteiro para o frame atual
   * @return void
   */
-  void lstore_0(Frame* curr_frame) {
+  void lstore_1(Frame* curr_frame) {
     Operand *op = curr_frame->operand_stack.top();
     curr_frame->operand_stack.pop();
 
-    curr_frame->local_variables_array[0] = op;
+    curr_frame->local_variables_array[1] = op;
     curr_frame->pc++;
   }
 
   /**
-   * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
+   * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
    * @param Frame *curr_frame Ponteiro para o frame atual
    * @return void
    */
-   void lstore_1(Frame* curr_frame) {
+   void lstore_2(Frame* curr_frame) {
      Operand *op = curr_frame->operand_stack.top();
      curr_frame->operand_stack.pop();
 
-     curr_frame->local_variables_array[1] = op;
+     curr_frame->local_variables_array[2] = op;
      curr_frame->pc++;
    }
 
    /**
-    * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
+    * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
     * @param Frame *curr_frame Ponteiro para o frame atual
     * @return void
     */
-    void lstore_2(Frame* curr_frame) {
+    void lstore_3(Frame* curr_frame) {
       Operand *op = curr_frame->operand_stack.top();
       curr_frame->operand_stack.pop();
 
-      curr_frame->local_variables_array[2] = op;
+      curr_frame->local_variables_array[3] = op;
       curr_frame->pc++;
     }
-
-    /**
-     * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
-     * @param Frame *curr_frame Ponteiro para o frame atual
-     * @return void
-     */
-     void lstore_3(Frame* curr_frame) {
-       Operand *op = curr_frame->operand_stack.top();
-       curr_frame->operand_stack.pop();
-
-       curr_frame->local_variables_array[3] = op;
-       curr_frame->pc++;
-     }
