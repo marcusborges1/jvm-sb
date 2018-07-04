@@ -84,7 +84,7 @@ void Frame::setup_instructions_func(){
     // func[15] = dconst_1;
     // func[16] = bipush;
     // func[17] = sipush;
-    // func[18] = ldc;
+    func[18] = ldc;
     // func[19] = ldc_w;
     // func[20] = ldc2_w;
     // func[21] = iload;
@@ -108,7 +108,7 @@ void Frame::setup_instructions_func(){
     // func[39] = dload_1;
     // func[40] = dload_2;
     // func[41] = dload_3;
-    // func[42] = aload_0;
+    func[42] = aload_0;
     // func[43] = aload_1;
     // func[44] = aload_2;
     // func[45] = aload_3;
@@ -142,7 +142,7 @@ void Frame::setup_instructions_func(){
     // func[73] = dstore_2;
     // func[74] = dstore_3;
     // func[75] = astore_0;
-    // func[76] = astore_1;
+    func[76] = astore_1;
     // func[77] = astore_2;
     // func[78] = astore_3;
     // func[79] = iastore;
@@ -246,10 +246,10 @@ void Frame::setup_instructions_func(){
     // func[177] = void_return;
     // func[178] = getstatic;
     // func[179] = putstatic;
-    // func[180] = getfield;
+    func[180] = getfield;
     // func[181] = putfield;
     // func[182] = invokevirtual;
-    // func[183] = invokespecial;
+    func[183] = invokespecial;
     // func[184] = invokestatic;
     // func[185] = invokeinterface;
     //

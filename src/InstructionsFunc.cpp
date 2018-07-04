@@ -197,7 +197,7 @@ void iconst_5(Frame* curr_frame) {
  * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
-void get_field(Frame *curr_frame) {
+void getfield(Frame *curr_frame) {
   u1 byte1 = curr_frame->method_code.code[curr_frame->pc++];
   u1 byte2 = curr_frame->method_code.code[curr_frame->pc++];
 
