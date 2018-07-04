@@ -1604,3 +1604,19 @@ void ineg(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Calcula o valor negativo de long. Retira o operando do topo da pilha, nega o valor do
+ * operando e o salva o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lneg(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  u8 l_value = operand->type_long;
+  u8 l_result = -l_value;
+
+  curr_frame->push_operand(result);
+}
