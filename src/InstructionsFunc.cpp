@@ -1587,3 +1587,19 @@ void drem(Frame *curr_frame) {
   memcpy(&result->type_double, &result, sizeof(u8));
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Calcula o valor negativo de int. Retira o operando do topo da pilha, nega o valor do
+ * operando e o salva o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void ineg(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *result = check_string_create_type("I");
+  result->type_int = -(u4)operand->type_int;
+
+  curr_frame->push_operand(result);
+}
