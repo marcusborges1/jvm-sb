@@ -1085,3 +1085,22 @@ void imul(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Multiplicação de long. Retira os dois operando do topo da pilha, multiplica-os
+ * e coloca o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lmul(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Long;
+  result->type_long = (operand_1->type_long) * (operand_2->type_long);
+
+  curr_frame->push_operand(result);
+}
