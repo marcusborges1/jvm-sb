@@ -1618,6 +1618,9 @@ void lneg(Frame *curr_frame) {
   u8 l_value = operand->type_long;
   u8 l_result = -l_value;
 
+  Operand *result = check_string_create_type("J");
+  result->type_long = l_result;
+
   curr_frame->push_operand(result);
 }
 
@@ -1638,6 +1641,26 @@ void fneg(Frame *curr_frame) {
 
   Operand *result = check_string_create_type("F");
   memcpy(&result->type_float, &f_value, sizeof(u4));
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Calcula o valor negativo de double. Retira o operando do topo da pilha, nega o valor do
+ * operando e o salva o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dneg(Frame *curr_frame) {
+  double d_value;
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  memcpy(&d_value, &operand->type_double, sizeof(double));
+  d_value = -d_value;
+
+  Operand *result = check_string_create_type("D");
+  memcpy(&result->type_double, &d_value, sizeof(u8));
 
   curr_frame->push_operand(result);
 }
