@@ -549,3 +549,14 @@ void void_return(Frame *curr_frame){
     curr_frame->pc++;
     pop_frame();
 }
+
+/**
+ * @brief Pusha um inteiro, indicado por um indice, na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iload(Frame *curr_frame) {
+    curr_frame->pc++;
+    u1 index = curr_frame->method_code.code[curr_frame->pc++];
+    curr_frame->push_operand(curr_frame->local_variables_array.at(index));
+}
