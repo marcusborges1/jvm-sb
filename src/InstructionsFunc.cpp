@@ -1720,3 +1720,28 @@ void ishr(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Salta para outro endereço caso  parametro 1 for maior ou igual ao parametro 2
+ * @param Frame *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+
+void if_icmpge(Frame *curr_frame){
+    Operand *op1 = curr_frame->pop_operand();
+    Operand *op2 = curr_frame->pop_operand();
+
+    u4 value_param2 = op1->type_int;
+    u4 value_param1 = op2->type_int;
+
+    if(value_param1 >= value_param2){
+        u2 jump;
+
+        jump = curr_frame->method_code.code[curr_frame->pc + 1];
+        jump = (jump << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+
+        curr_frame->pc += jump;
+    }else{
+        curr_frame->pc +=3;
+    }
+}
