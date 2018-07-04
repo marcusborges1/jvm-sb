@@ -572,3 +572,43 @@ void iload(Frame *curr_frame) {
     curr_frame->push_operand(curr_frame->local_variables_array.at(index));
     curr_frame->pc++;
 }
+
+/**
+ * @brief Pusha o inteiro do indice 0 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iload_0(Frame *curr_frame) {
+    curr_frame->push_operand(curr_frame->local_variables_array.at(0));
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Pusha o inteiro do indice 1 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iload_1(Frame *curr_frame) {
+    curr_frame->push_operand(curr_frame->local_variables_array.at(1));
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Pusha o inteiro do indice 2 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iload_2(Frame *curr_frame) {
+    curr_frame->push_operand(curr_frame->local_variables_array.at(2));
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Pusha o inteiro do indice 3 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iload_3(Frame *curr_frame) {
+    curr_frame->push_operand(curr_frame->local_variables_array.at(3));
+    curr_frame->pc++;
+}
