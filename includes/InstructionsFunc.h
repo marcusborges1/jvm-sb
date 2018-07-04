@@ -4,5 +4,6 @@
 #include "Frame.h"
 
 void nop(Frame *curr_frame);
+void get_field(Frame *curr_frame);
 
 #endif
