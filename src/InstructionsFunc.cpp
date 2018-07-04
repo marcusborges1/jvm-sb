@@ -1620,3 +1620,24 @@ void lneg(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Calcula o valor negativo de float. Retira o operando do topo da pilha, nega o valor do
+ * operando e o salva o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fneg(Frame *curr_frame) {
+  float f_value;
+
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  memcpy(&f_value, &operand->type_float, sizeof(float));
+  f_value = -f_value;
+
+  Operand *result = check_string_create_type("F");
+  memcpy(&result->type_float, &f_value, sizeof(u4));
+
+  curr_frame->push_operand(result);
+}
