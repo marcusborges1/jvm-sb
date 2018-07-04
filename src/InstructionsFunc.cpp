@@ -1260,3 +1260,75 @@ void imul(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+//
+
+/**
+ * @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice index
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+ void lstore(Frame* curr_frame) {
+   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+   Operand *op = curr_frame->operand_stack.top();
+   curr_frame->operand_stack.pop();
+
+   curr_frame->local_variables_array[index] = op;
+   curr_frame->pc++;
+ }
+
+ /**
+  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
+  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @return void
+  */
+  void lstore_0(Frame* curr_frame) {
+    u1 index = curr_frame->method_code.code[curr_frame->pc++];
+    Operand *op = curr_frame->operand_stack.top();
+    curr_frame->operand_stack.pop();
+
+    curr_frame->local_variables_array[0] = op;
+    curr_frame->pc++;
+  }
+
+  /**
+   * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
+   * @param Frame *curr_frame Ponteiro para o frame atual
+   * @return void
+   */
+   void lstore_1(Frame* curr_frame) {
+     u1 index = curr_frame->method_code.code[curr_frame->pc++];
+     Operand *op = curr_frame->operand_stack.top();
+     curr_frame->operand_stack.pop();
+
+     curr_frame->local_variables_array[1] = op;
+     curr_frame->pc++;
+   }
+
+   /**
+    * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
+    * @param Frame *curr_frame Ponteiro para o frame atual
+    * @return void
+    */
+    void lstore_2(Frame* curr_frame) {
+      u1 index = curr_frame->method_code.code[curr_frame->pc++];
+      Operand *op = curr_frame->operand_stack.top();
+      curr_frame->operand_stack.pop();
+
+      curr_frame->local_variables_array[2] = op;
+      curr_frame->pc++;
+    }
+
+    /**
+     * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
+     * @param Frame *curr_frame Ponteiro para o frame atual
+     * @return void
+     */
+     void lstore_3(Frame* curr_frame) {
+       u1 index = curr_frame->method_code.code[curr_frame->pc++];
+       Operand *op = curr_frame->operand_stack.top();
+       curr_frame->operand_stack.pop();
+
+       curr_frame->local_variables_array[3] = op;
+       curr_frame->pc++;
+     }

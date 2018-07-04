@@ -63,5 +63,11 @@ void fstore_0(Frame*);
 void fstore_1(Frame*);
 void fstore_2(Frame*);
 void fstore_3(Frame*);
+void lstore(Frame*);
+void lstore_0(Frame*);
+void lstore_1(Frame*);
+void lstore_2(Frame*);
+void lstore_3(Frame*);
+
 
 #endif
