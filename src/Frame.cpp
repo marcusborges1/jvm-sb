@@ -90,7 +90,7 @@ void Frame::setup_instructions_func() {
     // func[20] = ldc2_w;
     func[21] = iload;
     func[22] = lload;
-    // func[23] = fload;
+    func[23] = fload;
     // func[24] = dload;
     // func[25] = aload;
     func[26] = iload_0;
@@ -122,7 +122,7 @@ void Frame::setup_instructions_func() {
     // func[52] = caload;
     // func[53] = saload;
     // func[54] = istore;
-    // func[55] = lstore;
+    func[55] = lstore;
     func[56] = fstore;
     func[57] = dstore;
     // func[58] = astore;
@@ -130,10 +130,10 @@ void Frame::setup_instructions_func() {
     // func[60] = istore_1;
     // func[61] = istore_2;
     // func[62] = istore_3;
-    // func[63] = lstore_0;
-    // func[64] = lstore_1;
-    // func[65] = lstore_2;
-    // func[66] = lstore_3;
+    func[63] = lstore_0;
+    func[64] = lstore_1;
+    func[65] = lstore_2;
+    func[66] = lstore_3;
     func[67] = fstore_0;
     func[68] = fstore_1;
     func[69] = fstore_2;
