@@ -828,3 +828,63 @@ void lload(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[index]);
   curr_frame->pc++;
 }
+
+/**
+ * @brief Cria novo array do tipo definido
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void newarray(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  u4 index = operand_1->type_int;
+
+  Operand *operand_2 = check_string_create_type("[");
+  u1 array_type = curr_frame->method_code.code[curr_frame->pc++];
+
+  switch (array_type) {
+    case CONSTANT_Boolean:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("Z"));
+      }
+      break;
+    case CONSTANT_Char:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("C"));
+      }
+      break;
+    case CONSTANT_Float:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("F"));
+      }
+      break;
+    case CONSTANT_Double:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("D"));
+      }
+      break;
+    case CONSTANT_Byte:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("B"));
+      }
+      break;
+    case CONSTANT_Short:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("S"));
+      }
+      break;
+    case CONSTANT_Integer:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("I"));
+      }
+      break;
+    case CONSTANT_Long:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("J"));
+      }
+      break;
+  }
+
+  curr_frame->push_operand(operand_2);
+}
