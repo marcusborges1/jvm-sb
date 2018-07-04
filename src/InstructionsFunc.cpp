@@ -1303,3 +1303,27 @@ void fmul(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Multiplicação de double. Retira os dois operando do topo da pilha, multiplica-os
+ * e coloca o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dmul(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  double value_1, value_2;
+  memcpy(&value_1, &operand_1->type_double, sizeof(double));
+  memcpy(&value_2, &operand_2->type_double, sizeof(double));
+  value_2 *= value_1;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Double;
+  memcpy(&result->type_double, &value_2, sizeof(u8));
+
+  curr_frame->push_operand(result);
+}
