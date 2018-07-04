@@ -49,6 +49,7 @@ void ClassFilePrinter::print_menu_init() {
       // passa o nome do arquivo .class como argumento para função de leitura
       class_file = reader->read_class_file(filename);
       printf("Interpreting...\n");
+      interpreter->current_path_folder = "tests";
       interpreter->execute(class_file);
       break;
     case 0:

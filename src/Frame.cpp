@@ -277,10 +277,10 @@ void Frame::setup_instructions_func(){
  * @param type_string string que varia de acordo com o tipo
  * @return Operand* novo ponteiro para Operand
  */
-Operand* Frame::check_string_create_type(std::string type_string) {
+Operand* check_string_create_type(std::string type_string) {
     Operand *new_type = (Operand*)malloc(sizeof(Operand));
 
-    switch (type_string.c_str()[0]){
+    switch (type_string.c_str()[0]) {
         case 'I':
             new_type->tag = CONSTANT_Integer;
             new_type->type_int = 0;

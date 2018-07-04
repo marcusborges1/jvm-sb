@@ -85,23 +85,23 @@ class InterfaceInfo;
 class JavaClass{
 public:
   u4 magic_number;
-  u2  minor_version;
-  u2  major_version;
+  u2 minor_version;
+  u2 major_version;
   // format version M.m, defined by Sun
 
   u2 constant_pool_count; // Quantidade de elementos CpInfo
   CpInfo* constant_pool; // Ponteiro para início do vetor de CpInfo
 
-  u2  access_flags;
+  u2 access_flags;
   u2 this_class;
   u2 super_class;
   u2 interfaces_count;
   InterfaceInfo *interfaces;
-  u2  fields_count;
+  u2 fields_count;
   FieldInfo* fields;
-  u2  methods_count;
+  u2 methods_count;
   MethodInfo  *methods;
-  u2  attributes_count;
+  u2 attributes_count;
   AttributeInfo  *attributes;
 };
 

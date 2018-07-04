@@ -49,14 +49,14 @@ void ldc(Frame *curr_frame) {
 
 /** @brief Coloca na pilha de operandos a variável da posição 0 do vetor de
  *          variáveis locais.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void aload_0(Frame *curr_frame) {
 	// incrementa pc
 	curr_frame->pc++;
 	// coloca variável na pilha
-	curr_frame->operand_stack.push(curr_frame->local_variables_array.at(0));
+	curr_frame->push_operand(curr_frame->local_variables_array.at(0));
 }
 
 /** @brief Guarda referência do object ou array do operando na variável local 1.
@@ -70,7 +70,7 @@ void astore_1(Frame *curr_frame) {
 }
 
 /** @brief ...
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void invokespecial(Frame *curr_frame) {

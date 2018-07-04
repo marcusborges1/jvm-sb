@@ -34,7 +34,7 @@ typedef struct Operand Operand;
      // ponteiro com o nome da classe
      std::string *name_class;
      // ponteiro com informacoes da classe
-     JavaClass *info_class;
+     JavaClass info_class;
      // vetor com as referencias dos campos da classe
      std::map<std::string, Operand*> *fields_class;
  } ClassInstance;
@@ -62,7 +62,8 @@ class Frame {
     Operand* pop_operand();
     void push_operand(Operand* op);
     static void setup_instructions_func();
-    Operand* check_string_create_type(std::string string_tipo);
 };
+
+Operand* check_string_create_type(std::string string_tipo);
 
 #endif
