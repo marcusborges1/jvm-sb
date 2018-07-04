@@ -7,6 +7,10 @@
 #include "Instruction.h"
 #include "MethodInfo.h"
 
+// classes carregadas do arquivo .class
+std::map<std::string, ClassInstance*> loaded_classes;
+std::map<std::string, ClassInstance*> static_classes;
+std::string current_path_folder_inter;
 
 /**
 * @brief Função que executa a interpretação do arquivo .class.
@@ -15,7 +19,7 @@
 */
 void Interpreter::execute(JavaClass class_file) {
   load_class_memory(class_file);
-
+  current_path_folder_inter = current_path_folder;
   Instruction instructions[256];
   Instruction::setup_instructions(instructions);
   Frame::setup_instructions_func();
@@ -51,23 +55,25 @@ void Interpreter::execute(JavaClass class_file) {
  * @param *class_file informações do arquivo .class.
  * @return ClassInstance* ponteiro para instância de uma classe
  */
-ClassInstance* Interpreter::load_class_memory(JavaClass class_file) {
-    ClassInstance *c_instance = (ClassInstance*)malloc(
-                                                        sizeof(ClassInstance));
-    c_instance->info_class = class_file;
-    std::string utf8_s = cpinfo->get_utf8_constant_pool(class_file.constant_pool,
-                                                    class_file.this_class-1);
-    c_instance->name_class = &utf8_s;
-    loaded_classes.insert(
-                (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
+ClassInstance* load_class_memory(JavaClass class_file) {
+  CpInfo *cpinfo = new CpInfo();
 
-    static_classes.insert(
-                (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
-    load_class_var(c_instance);
+  ClassInstance *c_instance = (ClassInstance*)malloc(
+                                                      sizeof(ClassInstance));
+  c_instance->info_class = class_file;
+  std::string utf8_s = cpinfo->get_utf8_constant_pool(class_file.constant_pool,
+                                                  class_file.this_class-1);
+  c_instance->name_class = &utf8_s;
+  loaded_classes.insert(
+              (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
 
-    std::cout << "Classe carregada na memória...!\n";
+  static_classes.insert(
+              (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
+  load_class_var(c_instance);
 
-    return c_instance;
+  std::cout << "Classe carregada na memória...!\n";
+
+  return c_instance;
 }
 
 /**
@@ -75,7 +81,7 @@ ClassInstance* Interpreter::load_class_memory(JavaClass class_file) {
  * @param *class_instance ponteiro para instância de uma classe
  * @return void
  */
-void Interpreter::load_class_var(ClassInstance *class_instance) {
+void load_class_var(ClassInstance *class_instance) {
   class_instance->fields_class = new std::map<std::string, Operand*>();
 
   JavaClass current_class = class_instance->info_class;
@@ -109,16 +115,23 @@ void Interpreter::load_class_var(ClassInstance *class_instance) {
  * @param c_path nome do próximo arquivo .class a ser carregado
  * @return JavaClass estrutura de dados do arquivo .class a ser carregado
  */
-JavaClass Interpreter::get_class_info_and_load_not_exists(std::string c_path) {
+JavaClass get_class_info_and_load_not_exists(std::string c_path) {
   ClassInstance *c_instance = static_classes[c_path];
   ClassFileReader *reader = new ClassFileReader();
 
   std::cout << "Procurando .class de nome : " << c_path << std::endl;
   if (c_instance == NULL) {
     // verifica se a classe está no mesmo diretorio atual
-    std::string filepath = current_path_folder+c_path+ ".class";
+    std::string filepath = current_path_folder_inter+c_path+ ".class";
     JavaClass class_file = reader->read_class_file(filepath);
     c_instance = load_class_memory(class_file);
   }
   return c_instance->info_class;
+}
+
+Operand* get_static_field_of_class(std::string class_name,
+                                std::string field_name) {
+    ClassInstance *c_instance = static_classes.at(class_name);
+    if (c_instance != NULL) return c_instance->fields_class->at(field_name);
+    return NULL;
 }

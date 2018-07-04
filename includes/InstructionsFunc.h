@@ -8,6 +8,7 @@ void ldc(Frame *currentFrame);
 void invokespecial(Frame *currentFrame);
 void aload_0(Frame *currentFrame);
 void astore_1(Frame *currentFrame);
+void getstatic(Frame *currentFrame);
 void get_field(Frame *curr_frame);
 void aaload(Frame *curr_frame);
 void aconst_null(Frame *curr_frame);

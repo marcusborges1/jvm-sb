@@ -204,18 +204,51 @@ void getfield(Frame *curr_frame) {
   u2 index = (byte1<<8) | byte2;
 
   CpInfo field_ref = curr_frame->constant_pool_reference[index-1];
-  CpInfo nameAndType = curr_frame->constant_pool_reference[
+  CpInfo name_and_type = curr_frame->constant_pool_reference[
                                   field_ref.FieldRef.name_and_type_index-1];
 
   std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
         curr_frame->constant_pool_reference, field_ref.FieldRef.class_index-1);
   std::string field_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
-    curr_frame->constant_pool_reference, nameAndType.NameAndType.name_index-1);
+    curr_frame->constant_pool_reference, name_and_type.NameAndType.name_index-1);
 
   curr_frame->operand_stack.pop();
 
-  // currentFrame->pushOperand(classVariable);
+  // curr_frame->pushOperand(classVariable);
 }
+
+/**
+ * @brief Recebe um campo estático a partir de uma classe.
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void getstatic(Frame *curr_frame) {
+    curr_frame->pc++;
+
+    u2 index = curr_frame->method_code.code[curr_frame->pc++];
+    index = (index << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    CpInfo &field_info = curr_frame->constant_pool_reference[index-1];
+    CpInfo &name_and_type = curr_frame->constant_pool_reference[
+                                  field_info.FieldRef.name_and_type_index-1];
+    std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
+      curr_frame->constant_pool_reference, field_info.FieldRef.class_index-1);
+
+    if (class_name == "java/lang/System") {
+        // se for a classe System (default java) não coloca na pilha
+        return;
+    }
+
+    JavaClass class_info = get_class_info_and_load_not_exists(class_name);
+    std::string var_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
+                                      class_info.constant_pool,
+                                      name_and_type.NameAndType.name_index-1);
+
+    Operand *static_field = get_static_field_of_class(class_name, var_name);
+
+    curr_frame->push_operand(static_field);
+}
+
 
 // void fsub(Frame *curr_frame){
 //   float f1, f2, f3;

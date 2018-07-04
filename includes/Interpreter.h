@@ -20,20 +20,16 @@
 class Interpreter {
 public:
   std::string current_path_folder;
-  CpInfo *cpinfo = new CpInfo();
-  // classes carregadas do arquivo .class
-  std::map<std::string, ClassInstance*> loaded_classes;
-  std::map<std::string, ClassInstance*> static_classes;
 
   Frame *current_frame;
   std::stack<Frame*> frame_stack;
 
   void execute(JavaClass class_file);
-  ClassInstance* load_class_memory(JavaClass class_file);
-  void load_class_var(ClassInstance *class_instance);
-  JavaClass get_class_info_and_load_not_exists(std::string c_path);
-
-  void load_class(JavaClass**, JavaClass);
 };
 
+ClassInstance* load_class_memory(JavaClass class_file);
+void load_class_var(ClassInstance *class_instance);
+JavaClass get_class_info_and_load_not_exists(std::string c_path);
+Operand* get_static_field_of_class(std::string class_name,
+                                    std::string field_name);
 #endif
