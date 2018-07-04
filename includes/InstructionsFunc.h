@@ -32,5 +32,20 @@ void iload_2(Frame *curr_frame);
 void iload_3(Frame *curr_frame);
 void lconst_0(Frame*);
 void lconst_1(Frame*);
-
+void fconst_0(Frame*);
+void fconst_1(Frame*);
+void fconst_2(Frame*);
+void dconst_0(Frame*);
+void dconst_1(Frame*);
+void bipush(Frame*);
+void sipush(Frame*);
+void lload_0(Frame*);
+void lload_1(Frame*);
+void lload_2(Frame*);
+void lload_3(Frame*);
+void fload_0(Frame*);
+void fload_1(Frame*);
+void fload_2(Frame*);
+void fload_3(Frame*);
+void lload(Frame*);
 #endif

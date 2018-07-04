@@ -639,3 +639,192 @@ void lconst_1(Frame *curr_frame) {
     curr_frame->operand_stack.push(op);
     curr_frame->pc++;
 }
+
+/**
+ * @brief Empilha a constante float 0 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fconst_0(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Float;
+    op->type_long = 0.0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha a constante float 1 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fconst_1(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Float;
+    op->type_long = 1.0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha a constante float 0 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fconst_2(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Float;
+    op->type_long = 2.0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha a constante double 0 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dconst_0(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Double;
+
+    op->type_double = 0.0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha a constante double 1 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dconst_1(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Double;
+
+    op->type_double = 1.0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha int composto por byte de argumento na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void bipush(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    u1 byte = curr_frame->method_code.code[curr_frame->pc++];
+
+    op->tag = CONSTANT_Integer;
+    op->type_int = byte;
+    curr_frame->operand_stack.push(op);
+
+}
+
+/**
+ * @brief Empilha int composto por byte de argumento na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void sipush(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    u1 byte = curr_frame->method_code.code[curr_frame->pc++];
+    u1 byte2 = curr_frame->method_code.code[curr_frame->pc++];
+    op->tag = CONSTANT_Integer;
+    op->type_int = (byte<<8)|byte2;
+    curr_frame->operand_stack.push(op);
+
+}
+
+/**
+ * @brief Empilha long indicado no indice 0 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lload_0(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[0]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha long indicado no indice 1 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lload_1(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[1]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha long indicado no indice 2 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lload_2(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[2]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha long indicado no indice 3 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lload_3(Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[3]);
+  curr_frame->pc++;
+}
+
+
+/**
+ * @brief Empilha float indicado no indice 0 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fload_0  (Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[0]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha float indicado no indice 1 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fload_1  (Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[1]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha float indicado no indice 2 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fload_2 (Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[2]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha float indicado no indice 3 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fload_3  (Frame *curr_frame) {
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[3]);
+  curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha float indicado no indice 3 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lload(Frame *curr_frame) {
+  int index = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[index]);
+  curr_frame->pc++;
+}
