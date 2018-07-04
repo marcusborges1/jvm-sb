@@ -8,47 +8,50 @@
 
 
 /** @brief ...
-*  @param class_file ...
-*  @param MethodInfo*
-*/
-MethodInfo* MethodInfo::find_main(JavaClass class_file){
-    for (int i = 0; i < class_file.methods_count; i++) {
-        MethodInfo *method = class_file.methods + i;
-        std::string name = class_file.constant_pool->get_utf8_constant_pool(
-                                                      class_file.constant_pool,
-                                                      method->name_index - 1);
-        if (name == "main") return method;
+ *  @param class_file ...
+ *  @param MethodInfo*
+ */
+MethodInfo* MethodInfo::find_main(JavaClass class_file) {
+  for (int i = 0; i < class_file.methods_count; i++) {
+    MethodInfo *method = class_file.methods + i;
+    std::string name = class_file.constant_pool->get_utf8_constant_pool(
+                                                  class_file.constant_pool,
+                                                  method->name_index-1);
+    if (name == "main") {
+      std::string desc = class_file.constant_pool->get_utf8_constant_pool(
+                                                class_file.constant_pool,
+                                                method->descriptor_index-1);
+      if (desc == "([Ljava/lang/String;)V") return method;
     }
+  }
 
-    std::cout << "Class File inserido não possui método main." << std::endl;
-    exit(1);
-
+  std::cout << "Class File inserido não possui método main." << std::endl;
+  exit(1);
 }
 
 /** @brief ...
-*  @param class_file ...
-*  @param fp ...
-*  @return void
-*/
+ *  @param class_file ...
+ *  @param fp ...
+ *  @return void
+ */
 void MethodInfo::read(JavaClass class_file, FILE * fp) {
-    int i = 0, counter_method = 0;
-    AttributeInfo *attributeinfo = new AttributeInfo();
-    for (i = 0; i < class_file.methods_count; i++) {
+  int i = 0, counter_method = 0;
+  AttributeInfo *attributeinfo = new AttributeInfo();
+  for (i = 0; i < class_file.methods_count; i++) {
+   class_file.methods[i].access_flag = read_2_bytes(fp);
+   class_file.methods[i].name_index = read_2_bytes(fp);
+   class_file.methods[i].descriptor_index = read_2_bytes(fp);
+   class_file.methods[i].attributes_count = read_2_bytes(fp);
 
-       class_file.methods[i].access_flag = read_2_bytes(fp);
-       class_file.methods[i].name_index = read_2_bytes(fp);
-       class_file.methods[i].descriptor_index = read_2_bytes(fp);
-       class_file.methods[i].attributes_count = read_2_bytes(fp);
-
-        class_file.methods[i].attributes = (AttributeInfo*)malloc(
-              class_file.methods[i].attributes_count * sizeof(AttributeInfo));
-        for (counter_method = 0;
-            counter_method < class_file.methods[i].attributes_count;
-            counter_method++) {
-            class_file.methods[i].attributes[counter_method] = attributeinfo->get_attribute_info(
-            fp, class_file.methods[i].attributes[counter_method], class_file);
-        }
+    class_file.methods[i].attributes = (AttributeInfo*)malloc(
+          class_file.methods[i].attributes_count * sizeof(AttributeInfo));
+    for (counter_method = 0;
+        counter_method < class_file.methods[i].attributes_count;
+        counter_method++) {
+        class_file.methods[i].attributes[counter_method] = attributeinfo->get_attribute_info(
+        fp, class_file.methods[i].attributes[counter_method], class_file);
     }
+  }
 }
 
 /** @brief ...

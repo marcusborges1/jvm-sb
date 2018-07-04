@@ -9,8 +9,9 @@
 #include "JavaClass.h"
 #include "CpInfo.h"
 #include "Frame.h"
-#include  <map>
-#include  <string>
+#include <map>
+#include <stack>
+#include <string>
 
 
 /**
@@ -23,6 +24,9 @@ public:
   // classes carregadas do arquivo .class
   std::map<std::string, ClassInstance*> loaded_classes;
   std::map<std::string, ClassInstance*> static_classes;
+
+  Frame *current_frame;
+  std::stack<Frame*> frame_stack;
 
   void execute(JavaClass class_file);
   ClassInstance* load_class_memory(JavaClass class_file);

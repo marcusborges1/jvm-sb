@@ -20,27 +20,27 @@ void (*func[256])(Frame *curr_frame);
 *  @param *method ponteiro para informações do método
 *  @param *cp_info ponteiro para a pool de constantes
 */
-Frame::Frame(MethodInfo* method, CpInfo* cp_info) {
+Frame::Frame(MethodInfo *method, CpInfo *cp_info) {
   constant_pool_reference = cp_info;
   method_info = method;
   pc = 0;
 
   // coleta código do método
-  for (int i = 0; i < method_info->attributes_count; i++) {
-      AttributeInfo* attr = method_info->attributes + i;
-      std::string string_c = cp_info->get_utf8_constant_pool(cp_info,
-                                                attr->attribute_name_index-1);
-      if (string_c == "Code") method_code = attr->code_info;
+  for (int i = 0; i < method_info->attributes_count; ++i) {
+    AttributeInfo attr = method_info->attributes[i];
+    std::string string_c = cp_info->get_utf8_constant_pool(cp_info,
+                                              attr.attribute_name_index-1);
+    if (string_c == "Code") method_code = attr.code;
   }
 
-  local_variables_array.resize(method_code->max_locals);
+  local_variables_array.resize(method_code.max_locals);
 }
 
 void Frame::execute_frame() {
   // coleta o primeiro opcode
-  // u1 op_code = method_code.code[pc];
+  u1 op_code = method_code.code[pc];
   // substituir pelo op_code
-  func[0](this);
+  func[op_code](this);
 }
 
 /**
@@ -269,8 +269,6 @@ void Frame::setup_instructions_func(){
     // func[200] = goto_w;
     // func[201] = jsr_w;
 }
-
-
 
 /**
  * @brief Cria um ponteiro de Operand e o tipo é decidido pela string recebida

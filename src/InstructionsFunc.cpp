@@ -20,7 +20,7 @@ void ldc(Frame *curr_frame) {
   Operand *op = (Operand*)malloc(sizeof(Operand));
   curr_frame->pc++;
 
-  u1 index = curr_frame->method_code->code[curr_frame->pc];
+  u1 index = curr_frame->method_code.code[curr_frame->pc];
 
   CpInfo &cpinfo = curr_frame->constant_pool_reference[index-1];
   op->tag = cpinfo.tag;
@@ -77,8 +77,8 @@ void invokespecial(Frame *curr_frame) {
 	//incrementa pc
 	curr_frame->pc++;
 
-	u2 index_method = curr_frame->method_code->code[curr_frame->pc];
-	index_method = (index_method << 8) + curr_frame->method_code->code[
+	u2 index_method = curr_frame->method_code.code[curr_frame->pc];
+	index_method = (index_method << 8) + curr_frame->method_code.code[
                                                           ++curr_frame->pc];
 
 	CpInfo &ref_method = curr_frame->constant_pool_reference[index_method-1];
@@ -198,8 +198,8 @@ void iconst_5(Frame* curr_frame) {
  * @return void
  */
 void get_field(Frame *curr_frame) {
-  u1 byte1 = curr_frame->method_code->code[curr_frame->pc++];
-  u1 byte2 = curr_frame->method_code->code[curr_frame->pc++];
+  u1 byte1 = curr_frame->method_code.code[curr_frame->pc++];
+  u1 byte2 = curr_frame->method_code.code[curr_frame->pc++];
 
   u2 index = (byte1<<8) | byte2;
 

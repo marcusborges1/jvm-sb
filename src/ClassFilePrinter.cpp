@@ -48,7 +48,7 @@ void ClassFilePrinter::print_menu_init() {
       filename = print_menu_choose_type_file("JVM");
       // passa o nome do arquivo .class como argumento para função de leitura
       class_file = reader->read_class_file(filename);
-      printf("Interpreting...\n");
+      printf("Interpretando...\n");
       interpreter->current_path_folder = "tests";
       interpreter->execute(class_file);
       break;

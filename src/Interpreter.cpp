@@ -6,12 +6,7 @@
 #include "Interpreter.h"
 #include "Instruction.h"
 #include "MethodInfo.h"
-#include "Frame.h"
-#include "stack"
 
-
-Frame* current_frame = NULL;
-std::stack<Frame*> frame_stack;
 
 /**
 * @brief Função que executa a interpretação do arquivo .class.
@@ -19,17 +14,21 @@ std::stack<Frame*> frame_stack;
 * @return void
 */
 void Interpreter::execute(JavaClass class_file) {
+  load_class_memory(class_file);
+
   Instruction instructions[256];
   Instruction::setup_instructions(instructions);
   Frame::setup_instructions_func();
-  load_class_memory(class_file);
 
   MethodInfo *method = new MethodInfo();
-  method->find_main(class_file);
 
-  Frame *frame = new Frame(method, class_file.constant_pool);
-  current_frame = frame;
+  std::cout << "MÉTODO MAIN ENCONTRADO\n";
+
+  Frame *frame = new Frame(method->find_main(class_file),
+                          class_file.constant_pool);
   frame_stack.push(frame);
+
+  std::cout << "FRAME INCIADO\n";
 
   printf("=========================================\n");
   printf("======         JVM START          =======\n");
@@ -66,6 +65,8 @@ ClassInstance* Interpreter::load_class_memory(JavaClass class_file) {
                 (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
     load_class_var(c_instance);
 
+    std::cout << "Classe carregada na memória...!\n";
+
     return c_instance;
 }
 
@@ -85,34 +86,39 @@ void Interpreter::load_class_var(ClassInstance *class_instance) {
   std::string name_super_class = info_super_class.get_utf8_constant_pool(
       current_class.constant_pool, info_super_class.Class.type_class_info-1);
   do {
-      name_super_class = info_super_class.get_utf8_constant_pool(
-                  current_class.constant_pool, current_class.super_class-1);
-      for (int i = 0; i < current_class.fields_count; i++) {
-          FieldInfo &field_add = current_class.fields[i];
+    name_super_class = info_super_class.get_utf8_constant_pool(
+                current_class.constant_pool, current_class.super_class-1);
+    for (int i = 0; i < current_class.fields_count; i++) {
+        FieldInfo &field_add = current_class.fields[i];
 
-          std::string name_field = info_super_class.get_utf8_constant_pool(
-                      current_class.constant_pool, field_add.name_index-1);
-          std::string type_variable = info_super_class.get_utf8_constant_pool(
-                  current_class.constant_pool, field_add.descriptor_index-1);
+        std::string name_field = info_super_class.get_utf8_constant_pool(
+                    current_class.constant_pool, field_add.name_index-1);
+        std::string type_variable = info_super_class.get_utf8_constant_pool(
+                current_class.constant_pool, field_add.descriptor_index-1);
 
-          (*class_instance->fields_class)[
-                      name_field] = check_string_create_type(type_variable);
-      }
-      if (name_super_class != "java/lang/Object" && name_super_class != "")
-          current_class = get_class_info_and_load_not_exists(
-                                                          name_super_class);
+        (*class_instance->fields_class)[
+                    name_field] = check_string_create_type(type_variable);
+    }
+    if (name_super_class != "java/lang/Object" && name_super_class != "")
+        current_class = get_class_info_and_load_not_exists(name_super_class);
   } while (name_super_class != "java/lang/Object");
 }
 
+/**
+ * @brief Carrega outro .class se o arquivo estiver no mesmo diretório.
+ * @param c_path nome do próximo arquivo .class a ser carregado
+ * @return JavaClass estrutura de dados do arquivo .class a ser carregado
+ */
 JavaClass Interpreter::get_class_info_and_load_not_exists(std::string c_path) {
-    ClassInstance *c_instance = static_classes[c_path];
-    ClassFileReader *reader = new ClassFileReader();
+  ClassInstance *c_instance = static_classes[c_path];
+  ClassFileReader *reader = new ClassFileReader();
 
-    if (c_instance == NULL){
-        // verifica se a classe está no mesmo diretorio atual
-        std::string filepath = current_path_folder+c_path+ ".class";
-        JavaClass class_file = reader->read_class_file(filepath);
-        c_instance = load_class_memory(class_file);
-    }
-    return c_instance->info_class;
+  std::cout << "Procurando .class de nome : " << c_path << std::endl;
+  if (c_instance == NULL) {
+    // verifica se a classe está no mesmo diretorio atual
+    std::string filepath = current_path_folder+c_path+ ".class";
+    JavaClass class_file = reader->read_class_file(filepath);
+    c_instance = load_class_memory(class_file);
+  }
+  return c_instance->info_class;
 }

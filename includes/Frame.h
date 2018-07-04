@@ -47,21 +47,20 @@ typedef struct Operand Operand;
   *  corrente.
   **/
 class Frame {
-  public:
+public:
+  Frame(MethodInfo*, CpInfo*);
 
-    Frame(MethodInfo*, CpInfo*);
+  std::vector<Operand*> local_variables_array;
+  std::stack<Operand*> operand_stack;
+  CpInfo* constant_pool_reference;
+  CodeAttribute method_code;
+  MethodInfo* method_info;
+  u4 pc;
 
-    std::vector<Operand*> local_variables_array;
-    std::stack<Operand*> operand_stack;
-    CpInfo* constant_pool_reference;
-    CodeAttribute* method_code;
-    MethodInfo* method_info;
-    u4 pc;
-
-    void execute_frame();
-    Operand* pop_operand();
-    void push_operand(Operand* op);
-    static void setup_instructions_func();
+  void execute_frame();
+  Operand* pop_operand();
+  void push_operand(Operand* op);
+  static void setup_instructions_func();
 };
 
 Operand* check_string_create_type(std::string string_tipo);
