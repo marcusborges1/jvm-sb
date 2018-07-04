@@ -109,9 +109,9 @@ void Frame::setup_instructions_func(){
     // func[40] = dload_2;
     // func[41] = dload_3;
     func[42] = aload_0;
-    // func[43] = aload_1;
-    // func[44] = aload_2;
-    // func[45] = aload_3;
+    func[43] = aload_1;
+    func[44] = aload_2;
+    func[45] = aload_3;
     // func[46] = iaload;
     // func[47] = laload;
     // func[48] = faload;

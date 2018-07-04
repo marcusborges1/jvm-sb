@@ -8,7 +8,7 @@ Interpreter *interpreter = new Interpreter();
  * param *curr_frame ponteiro para o frame atual
  * @return void
  */
-void nop(Frame *curr_frame){
+void nop(Frame *curr_frame) {
   curr_frame->pc++;
 }
 
@@ -45,18 +45,6 @@ void ldc(Frame *curr_frame) {
     }
     curr_frame->push_operand(op);
     curr_frame->pc++;
-}
-
-/** @brief Coloca na pilha de operandos a variável da posição 0 do vetor de
- *          variáveis locais.
- * @param *curr_frame ponteiro para o frame atual
- * @return void
- */
-void aload_0(Frame *curr_frame) {
-	// incrementa pc
-	curr_frame->pc++;
-	// coloca variável na pilha
-	curr_frame->push_operand(curr_frame->local_variables_array.at(0));
 }
 
 /** @brief Guarda referência do object ou array do operando na variável local 1.
@@ -214,7 +202,7 @@ void getfield(Frame *curr_frame) {
 
   curr_frame->operand_stack.pop();
 
-  // curr_frame->pushOperand(classVariable);
+  // curr_frame->push_operand(classVariable);
 }
 
 /**
@@ -249,8 +237,47 @@ void getstatic(Frame *curr_frame) {
     curr_frame->push_operand(static_field);
 }
 
+/** @brief Coloca na pilha de operandos a variável da posição 0 do vetor de
+ *          variáveis locais.
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void aload_0(Frame *curr_frame) {
+    curr_frame->pc++;
+    curr_frame->push_operand(curr_frame->local_variables_array.at(0));
+}
 
-// void fsub(Frame *curr_frame){
+/** @brief Coloca na pilha de operandos a variável da posição 1 do vetor de
+ *          variáveis locais.
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void aload_1(Frame *curr_frame) {
+    curr_frame->pc++;
+    curr_frame->push_operand(curr_frame->local_variables_array.at(1));
+}
+
+/** @brief Coloca na pilha de operandos a variável da posição 2 do vetor de
+ *          variáveis locais.
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void aload_2(Frame *curr_frame) {
+    curr_frame->pc++;
+    curr_frame->push_operand(curr_frame->local_variables_array.at(2));
+}
+
+/** @brief Coloca na pilha de operandos a variável da posição 3 do vetor de
+ *          variáveis locais.
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void aload_3(Frame *curr_frame) {
+    curr_frame->pc++;
+    curr_frame->push_operand(curr_frame->local_variables_array.at(3));
+}
+
+// void fsub(Frame *curr_frame) {
 //   float f1, f2, f3;
 //   u4 a1,a2,a3;
 //
