@@ -53,13 +53,13 @@ void Frame::execute_frame() {
 void Frame::setup_instructions_func(){
     func[0] = nop;
     func[1] = aconst_null;
-    // func[2] = iconst_m1;
-    // func[3] = iconst_0;
-    // func[4] = iconst_1;
-    // func[5] = iconst_2;
-    // func[6] = iconst_3;
-    // func[7] = iconst_4;
-    // func[8] = iconst_5;
+    func[2] = iconst_m1;
+    func[3] = iconst_0;
+    func[4] = iconst_1;
+    func[5] = iconst_2;
+    func[6] = iconst_3;
+    func[7] = iconst_4;
+    func[8] = iconst_5;
     // func[9] = lconst_0;
     // func[10] = lconst_1;
     // func[11] = fconst_0;

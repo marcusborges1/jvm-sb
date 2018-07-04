@@ -96,6 +96,98 @@ void aconst_null(Frame* curr_frame) {
     curr_frame->operand_stack.push(op);
     curr_frame->pc++;
 }
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_m1(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = -1;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_0(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = 0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_1(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = 1;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_2(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = 2;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_3(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = 3;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_4(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = 4;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/** @brief Pusha int na pilha de operandos
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+
+void iconst_5(Frame* curr_frame) {
+    Operand op;
+    op.tag = var_type_int;
+    op.type_int = 5;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
 // void fsub(Frame *curr_frame){
 //   float f1, f2, f3;
 //   u4 a1,a2,a3;
