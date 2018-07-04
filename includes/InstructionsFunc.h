@@ -69,6 +69,7 @@ void lstore_1(Frame*);
 void lstore_2(Frame*);
 void lstore_3(Frame*);
 void fload(Frame*);
+void istore(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 
