@@ -9,6 +9,7 @@
 #include "AttributeInfo.h"
 #include <stack>
 #include <vector>
+#include <map>
 
 typedef struct Operand Operand;
 
@@ -27,6 +28,17 @@ typedef struct Operand Operand;
    };
  };
 
+ /** @brief Estrutura para instanciar a classe
+  */
+ typedef struct {
+     // ponteiro com o nome da classe
+     std::string *name_class;
+     // ponteiro com informacoes da classe
+     JavaClass *info_class;
+     // vetor com as referencias dos campos da classe
+     std::map<std::string, Operand*> *fields_class;
+ } ClassInstance;
+
  /**
   * @brief O Frame armazena dados e resultados parciais, para executar
   *  ligação dinâmica,retornar valores para métodos e disparar exceções.
@@ -36,6 +48,7 @@ typedef struct Operand Operand;
   **/
 class Frame {
   public:
+
     Frame(MethodInfo*, CpInfo*);
 
     std::vector<Operand*> local_variables_array;
@@ -49,6 +62,7 @@ class Frame {
     Operand* pop_operand();
     void push_operand(Operand* op);
     static void setup_instructions_func();
+    Operand* check_string_create_type(std::string string_tipo);
 };
 
 #endif

@@ -269,3 +269,80 @@ void Frame::setup_instructions_func(){
     // func[200] = goto_w;
     // func[201] = jsr_w;
 }
+
+
+
+/**
+ * @brief Cria um ponteiro de Operand e o tipo é decidido pela string recebida
+ * @param type_string string que varia de acordo com o tipo
+ * @return Operand* novo ponteiro para Operand
+ */
+Operand* Frame::check_string_create_type(std::string type_string) {
+    Operand *new_type = (Operand*)malloc(sizeof(Operand));
+
+    switch (type_string.c_str()[0]){
+        case 'I':
+            new_type->tag = CONSTANT_Integer;
+            new_type->type_int = 0;
+            break;
+        case 'F':
+            new_type->tag = CONSTANT_Float;
+            new_type->type_float = 0;
+            break;
+        case 'J':
+            new_type->tag = CONSTANT_Long;
+            new_type->type_long = 0;
+            break;
+        case 'D':
+            new_type->tag = CONSTANT_Double;
+            new_type->type_double = 0;
+            break;
+        case 'Z':
+            new_type->tag = CONSTANT_Boolean;
+            new_type->type_bool = 0;
+            break;
+        case 'B':
+            new_type->tag = CONSTANT_Byte;
+            new_type->type_byte = 0;
+            break;
+        case 'C':
+            new_type->tag = CONSTANT_Char;
+            new_type->type_char = 0;
+            break;
+        case 'S':
+            new_type->tag = CONSTANT_Short;
+            new_type->type_short = 0;
+            break;
+        case '[':
+            new_type->tag = CONSTANT_Array;
+            // new_type->arrayType = (ArrayType*)malloc(sizeof(ArrayType));
+            // new_type->arrayType->array = new std::vector<Types*>();
+            break;
+        case 'P':
+            new_type->tag = CONSTANT_EmptySpace;
+            break;
+        case CONSTANT_String:
+            new_type->tag = CONSTANT_String;
+            new_type->type_string = new std::string("");
+            break;
+        case 'L':
+            if (type_string == "Ljava/lang/String;") {
+                new_type->tag = CONSTANT_String;
+                new_type->type_string = new std::string("");
+            } else {
+                new_type->tag = CONSTANT_Class;
+                // new_type->classInstance = (ClassInstance*)malloc(
+                                                        // sizeof(ClassInstance));
+
+                // std::string classRealName = type_string.substr(1, type_string.size());
+                // JavaClassFormat *classInfo = Interpreter::getSingleton()->getClassInfoAndLoadIfNotExists(classRealName);
+
+                // new_type->classInstance->classInfo = classInfo;
+                // new_type->classInstance->className =  new std::string(classRealName);
+
+                // Interpreter::getSingleton()->carregaVariaveisClasse(novoType->classInstance);
+            }
+            break;
+    }
+    return new_type;
+}

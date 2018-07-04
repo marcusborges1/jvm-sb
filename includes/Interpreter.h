@@ -7,22 +7,17 @@
 
 #include "JavaClass.h"
 #include "AttributeInfo.h"
-
-
-//  struct MethodArea {
-//   JavaClass** class_array;
-//   int count;
-// } ;
+#include "Frame.h"
 
 
 /**
  * @brief ...
  **/
-
- class Interpreter {
-    public:
-      void execute(JavaClass);
-      void load_class(JavaClass**, JavaClass);
- };
+class Interpreter {
+public:
+  void execute(JavaClass);
+  void load_class(JavaClass**, JavaClass);
+  void load_class_var(ClassInstance *class_instance);
+};
 
 #endif

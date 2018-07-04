@@ -15,6 +15,12 @@
 // uint8_t : unsigned integer type with width of exactly 8
 #define u1 uint8_t
 
+#define CONSTANT_Boolean  90
+#define CONSTANT_Byte     91
+#define CONSTANT_Char     92
+#define CONSTANT_Short    93
+#define CONSTANT_Array    94
+
 #define CONSTANT_Class                7
 #define CONSTANT_Fieldref             9
 #define CONSTANT_Methodref           10
