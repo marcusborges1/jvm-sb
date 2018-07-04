@@ -12,6 +12,7 @@
 #include "Interpreter.h"
 #include "Instruction.h"
 #include "ReadBytes.h"
+#include "InstCode.h"
 
 
 /** @brief Mostra menu de escolhas entre leitor/exibidor e JVM

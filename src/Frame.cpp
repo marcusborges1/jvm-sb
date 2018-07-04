@@ -30,10 +30,10 @@ Frame::Frame(MethodInfo* method, CpInfo* cp_info) {
       AttributeInfo* attr = method_info->attributes + i;
       std::string string_c = cp_info->get_utf8_constant_pool(cp_info,
                                                 attr->attribute_name_index-1);
-      if (string_c == "Code") method_code = attr->code;
+      if (string_c == "Code") method_code = attr->code_info;
   }
 
-  local_variables_array.resize(method_code.max_locals);
+  local_variables_array.resize(method_code->max_locals);
 }
 
 void Frame::execute_frame() {
@@ -41,6 +41,25 @@ void Frame::execute_frame() {
   // u1 op_code = method_code.code[pc];
   // substituir pelo op_code
   func[0](this);
+}
+
+/**
+* @brief Retira um elemento do topo da pilha
+* @return Operand* ponteiro para operando retirado
+*/
+Operand* Frame::pop_operand() {
+    Operand *op = operand_stack.top();
+    operand_stack.pop();
+    return op;
+}
+
+/**
+* @brief Empilha um elemento na pilha de operandos
+* @return Operand* ponteiro para elemento a ser inserido
+* @return void
+*/
+void Frame::push_operand(Operand* op) {
+    operand_stack.push(op);
 }
 
 /** @brief Inicia vetor de funções das instruções assembly.
