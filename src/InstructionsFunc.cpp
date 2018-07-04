@@ -959,7 +959,7 @@ void fadd(Frame *curr_frame) {
 }
 
 /**
- * @brief Soma do tipo double Retira os dois operando do topo da pilha, soma-os e coloca o resultado
+ * @brief Soma do tipo double. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
  * @param Frame *curr_frame Ponteiro para o frame atual
  * @return void
@@ -978,6 +978,42 @@ void dadd(Frame *curr_frame) {
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Double;
   memcpy(&result->type_double, &value_1, sizeof(u8));
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Subtração do tipo inteiro. Retira os dois operando do topo da pilha, subtraí-os e coloca o
+ * resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void isub(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Integer;
+  result->type_long = operand_1->type_long - operand_2->type_long;
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Subtração do tipo long. Retira os dois operando do topo da pilha, subtraí-os e coloca o
+ * resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lsub(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Long;
+  result->type_long = operand_1->type_long - operand_2->type_long;
 
   curr_frame->push_operand(result);
 }
