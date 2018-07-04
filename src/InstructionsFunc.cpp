@@ -1745,3 +1745,27 @@ void if_icmpge(Frame *curr_frame){
         curr_frame->pc +=3;
     }
 }
+
+/**
+ * @brief Calcula o valor do shift right lógico para long. Retira dois operandos do topo da pilha
+ * e faz o shift right do primeiro operando por s posições, onde s são os 5 bits menos significativos
+ * do segundo operando. O resultado é colocado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lshr(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u8 l_value_1 = operand_1->type_long;
+  u8 l_value_2 = operand_2->type_long;
+
+  u8 l_result = (u8) (l_value_1 / pow(2, l_value_2 & 0x3f));
+
+  Operand *result = check_string_create_type("J");
+  result->type_long = (u8) l_result;
+
+  curr_frame->push_operand(result);
+}
