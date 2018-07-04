@@ -68,35 +68,6 @@ void astore_1(Frame *curr_frame) {
  * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
-void invokespecial(Frame *curr_frame) {
-	//incrementa pc
-	curr_frame->pc++;
-
-	u2 index_method = curr_frame->method_code.code[curr_frame->pc];
-	index_method = (index_method << 8) + curr_frame->method_code.code[
-                                                          ++curr_frame->pc];
-
-	CpInfo &ref_method = curr_frame->constant_pool_reference[index_method-1];
-	CpInfo &name_and_type = curr_frame->constant_pool_reference[
-                                      ref_method.MethodRef.name_and_type-1];
-
-	std::string class_name = ref_method.get_utf8_constant_pool(
-          curr_frame->constant_pool_reference, ref_method.MethodRef.index -1);
-	std::string method_name = ref_method.get_utf8_constant_pool(
-                                    curr_frame->constant_pool_reference,
-                                    name_and_type.NameAndType.name_index - 1);
-	std::string method_descriptor = ref_method.get_utf8_constant_pool(
-                                curr_frame->constant_pool_reference,
-                                name_and_type.NameAndType.descriptor_index -1);
-
-  //incrementa pc
-	curr_frame->pc++;
-}
-
-/** @brief ...
- * @param *curr_frame ponteiro para o frame atual
- * @return void
- */
 void iconst_1(Frame* curr_frame) {
     Operand *op = (Operand*)malloc(sizeof(Operand));
     op->tag = CONSTANT_Integer;
@@ -476,24 +447,94 @@ void invokevirtual(Frame *curr_frame) {
     }
 }
 
-// void fsub(Frame *curr_frame) {
-//   float f1, f2, f3;
-//   u4 a1,a2,a3;
-//
-//   // Get First Argument
-//   a2 = curr_frame->operand_stack.top();
-//   curr_frame->operand_stack.pop();
-//   // Get second Argument
-//   a1 = curr_frame->operand_stack.top();
-//   curr_frame->operand_stack.pop();
-//   // convert u4 to float
-//   memcpy(&f2, &a2, sizeof(f2));
-//   memcpy(&f1, &a1, sizeof(f1));
-//   f3 = f1 - f2;
-//   // convert float to u4
-//   memcpy(&a3, &f3, sizeof(a3));
-//   curr_frame->operand_stack.push(a3);
-//
-//   curr_frame->pc++;
-// }
-//
+/**
+* @brief Invoca o método de instância, e trata da inicialiação da superclasse
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
+void invokespecial(Frame *curr_frame) {
+	//incrementa pc
+	curr_frame->pc++;
+
+	u2 index_method = curr_frame->method_code.code[curr_frame->pc];
+	index_method = (index_method << 8) + curr_frame->method_code.code[
+                                                          ++curr_frame->pc];
+
+	CpInfo &ref_method = curr_frame->constant_pool_reference[index_method-1];
+	CpInfo &name_and_type = curr_frame->constant_pool_reference[
+                                      ref_method.MethodRef.name_and_type-1];
+
+	std::string class_name = ref_method.get_utf8_constant_pool(
+          curr_frame->constant_pool_reference, ref_method.MethodRef.index -1);
+	std::string method_name = ref_method.get_utf8_constant_pool(
+                                    curr_frame->constant_pool_reference,
+                                    name_and_type.NameAndType.name_index - 1);
+	std::string method_descriptor = ref_method.get_utf8_constant_pool(
+                                curr_frame->constant_pool_reference,
+                                name_and_type.NameAndType.descriptor_index -1);
+
+  //incrementa pc
+	curr_frame->pc++;
+
+	if ( ((class_name == "java/lang/Object" || class_name == "java/lang/String")
+      && method_name == "<init>") ||
+		(class_name == "java/lang/StringBuilder" && method_name == "<init>")) {
+		if (class_name == "java/lang/String" ||
+        class_name == "java/lang/StringBuilder") {
+			curr_frame->pop_operand();
+		}
+		else if (method_name == "<init>") {
+			Operand *variable_class = curr_frame->local_variables_array.at(0);
+			load_class_var(variable_class->c_instance);
+		}
+		return;
+
+    } else if (class_name.find("java/") != std::string::npos) {
+        printf("Classe java nao implementada.");
+        getchar();
+        exit(1); // caso seja algum outro tipo de classe java nao implementada
+    } else {
+        int count_args = 0;
+        u2 counter = 1;
+
+        while (method_descriptor[counter] != ')') {
+            char created_type = method_descriptor[counter];
+            if (created_type == 'L') { // tipo é um objeto
+                count_args++;
+                while (method_descriptor[++counter] != ';');
+            } else if (created_type == '[') {
+                count_args++;
+                while (method_descriptor[++counter] == '[');
+                if (method_descriptor[counter] == 'L')
+                    while (method_descriptor[++counter] != ';');
+            } else count_args++;
+            counter++;
+        }
+        std::vector<Operand*> arguments;
+
+        for (int i = 0; i < count_args; ++i) {
+            Operand *argument = curr_frame->pop_operand();
+            arguments.insert(arguments.begin(), argument);
+            if (argument->tag == CONSTANT_Double ||
+                argument->tag == CONSTANT_Long) {
+                arguments.insert(arguments.begin()+1,
+                                check_string_create_type("P"));
+            }
+        }
+
+        Operand *current_class = curr_frame->pop_operand();
+        arguments.insert(arguments.begin(), current_class);
+
+        ClassInstance *reference_class = current_class->c_instance;
+
+        MethodInfo *method_info_found = find_method(reference_class->info_class,
+                                              method_name, method_descriptor);
+        Frame *new_frame = new Frame(method_info_found,
+                                    reference_class->info_class.constant_pool);
+
+        for (int j = 0; (unsigned)j < arguments.size(); ++j)
+            new_frame->local_variables_array.at(j) = arguments.at(j);
+
+        push_frame(new_frame);
+    }
+}

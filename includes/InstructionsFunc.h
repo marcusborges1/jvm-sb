@@ -9,7 +9,6 @@ void invokespecial(Frame *curr_frame);
 void invokevirtual(Frame *curr_frame);
 void astore_1(Frame *curr_frame);
 void getstatic(Frame *curr_frame);
-void get_field(Frame *curr_frame);
 void aaload(Frame *curr_frame);
 void aconst_null(Frame *curr_frame);
 void iconst_m1(Frame *curr_frame);
