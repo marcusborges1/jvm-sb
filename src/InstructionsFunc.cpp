@@ -44,8 +44,9 @@ void ldc(Frame *curr_frame) {
                                           cpinfo.String.bytes-1);
         op->type_string = new std::string(utf8_s); }
         break;
+    case CONSTANT_Class:
+        break;
     default:
-        // CONSTANT_Class
         // Constant_Method_Handle
         // Constant_Method_Ref
         break;

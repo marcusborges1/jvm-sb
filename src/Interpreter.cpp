@@ -11,7 +11,6 @@
 std::map<std::string, ClassInstance*> loaded_classes;
 std::map<std::string, ClassInstance*> static_classes;
 std::string current_path_folder_inter;
-Frame *current_frame;
 std::stack<Frame*> frame_stack;
 
 /**
@@ -43,9 +42,7 @@ void Interpreter::execute(JavaClass class_file) {
   // se frame não estiver vazio
   while (!(frame_stack.empty())) {
     // coleta frame do topo (FIFO)
-    current_frame = frame_stack.top();
-    current_frame->execute_frame();
-    frame_stack.pop();
+    frame_stack.top()->execute_frame();
   }
   printf("=========================================\n");
   printf("======          JVM END           =======\n");

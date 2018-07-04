@@ -245,7 +245,7 @@ void Frame::setup_instructions_func() {
     // func[175] = dreturn;
     // func[176] = areturn;
     func[177] = void_return;
-    // func[178] = getstatic;
+    func[178] = getstatic;
     // func[179] = putstatic;
     func[180] = getfield;
     // func[181] = putfield;
