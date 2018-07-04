@@ -1665,6 +1665,13 @@ void dneg(Frame *curr_frame) {
   curr_frame->push_operand(result);
 }
 
+/**
+ * @brief Calcula o valor do shift left lógico para inteiro. Retira dois operandos do topo da pilha
+ * e faz o shift left do primeiro operando por s posições, onde s são os 5 bits menos significativos
+ * do segundo operando. O resultado é colocado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
 void ishl(Frame *curr_frame) {
   curr_frame->pc++;
 
