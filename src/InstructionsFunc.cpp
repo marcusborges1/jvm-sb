@@ -1208,11 +1208,11 @@ void fsub(Frame *curr_frame) {
   float value_1, value_2;
   memcpy(&value_1, &operand_1->type_float, sizeof(float));
   memcpy(&value_2, &operand_2->type_float, sizeof(float));
-  value_1 -= value_2;
+  value_2 -= value_1;
 
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Float;
-  memcpy(&result->type_float, &value_1, sizeof(u4));
+  memcpy(&result->type_float, &value_2, sizeof(u4));
 
   curr_frame->push_operand(result);
 }
@@ -1233,11 +1233,11 @@ void dsub(Frame *curr_frame) {
   double value_1, value_2;
   memcpy(&value_1, &operand_1->type_float, sizeof(double));
   memcpy(&value_2, &operand_2->type_float, sizeof(double));
-  value_1 -= value_2;
+  value_2 -= value_1;
 
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Double;
-  memcpy(&result->type_double, &value_1, sizeof(u8));
+  memcpy(&result->type_double, &value_2, sizeof(u8));
 
   curr_frame->push_operand(result);
 }
@@ -1276,6 +1276,30 @@ void lmul(Frame *curr_frame) {
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Long;
   result->type_long = (operand_1->type_long) * (operand_2->type_long);
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Multiplicação de float. Retira os dois operando do topo da pilha, multiplica-os
+ * e coloca o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fmul(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  float value_1, value_2;
+  memcpy(&value_1, &operand_1->type_float, sizeof(float));
+  memcpy(&value_2, &operand_2->type_float, sizeof(float));
+  value_2 *= value_1;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Float;
+  memcpy(&result->type_float, &value_2, sizeof(u4));
 
   curr_frame->push_operand(result);
 }
