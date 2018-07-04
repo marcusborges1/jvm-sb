@@ -933,3 +933,21 @@ void ladd(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+void fadd(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  float value_1, value_2;
+  memcpy(&value_1, &operand_1->type_float, sizeof(float));
+  memcpy(&value_2, &operand_2->type_float, sizeof(float));
+  value_1 += value_2;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Float;
+  memcpy(&result->type_float, &value_1, sizeof(Operand));
+
+  curr_frame->push_operand(result);
+}
