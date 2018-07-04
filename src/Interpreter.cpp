@@ -23,9 +23,10 @@ void Interpreter::execute(JavaClass class_file) {
   Instruction::setup_instructions(instructions);
   Frame::setup_instructions_func();
 
-  JavaClass** class_array;
-
+  JavaClass** class_array = (JavaClass**)malloc(sizeof(JavaClass*));
   interpreter->load_class(class_array, class_file);
+  
+
   MethodInfo *method = new MethodInfo();
   method->find_main(class_file);
 
@@ -52,12 +53,9 @@ void Interpreter::execute(JavaClass class_file) {
 
 void Interpreter::load_class(JavaClass** class_array, JavaClass class_file) {
     class_count++;
-    //
-    if (class_count == 1)
-      class_array = (JavaClass**)malloc(sizeof(JavaClass*));
-    else
+    if (class_count != 1)
       (JavaClass**)realloc(class_array, sizeof(JavaClass*)*class_count);
 
-    class_array[class_count] = &class_file;
+    class_array[(class_count - 1)] = &class_file;
     return;
 }
