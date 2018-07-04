@@ -11,6 +11,7 @@
 
 Frame* current_frame = NULL;
 std::stack<Frame*> frame_stack;
+int class_count = 0;
 
 /**
 * @brief Função executar interpretação do arquivo .class
@@ -18,8 +19,13 @@ std::stack<Frame*> frame_stack;
 */
 void Interpreter::execute(JavaClass class_file) {
   Instruction instructions[256];
+  Interpreter *interpreter = new Interpreter();
   Instruction::setup_instructions(instructions);
   Frame::setup_instructions_func();
+
+  JavaClass** class_array = (JavaClass**)malloc(sizeof(JavaClass*));
+  interpreter->load_class(class_array, class_file);
+  
 
   MethodInfo *method = new MethodInfo();
   method->find_main(class_file);
@@ -43,6 +49,7 @@ void Interpreter::execute(JavaClass class_file) {
   printf("======          JVM END           =======\n");
   printf("=========================================\n");
 }
+
 
 
 
@@ -71,4 +78,14 @@ void Interpreter::carrega_variavel_classe(InstanciaClasse *class_instance)
         }
     }while(name_super_class != "java/lang/Object");
 }
+
+
+
+void Interpreter::load_class(JavaClass** class_array, JavaClass class_file) {
+    class_count++;
+    if (class_count != 1)
+      (JavaClass**)realloc(class_array, sizeof(JavaClass*)*class_count);
+
+    class_array[(class_count - 1)] = &class_file;
+    return;
 }
