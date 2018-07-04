@@ -52,7 +52,7 @@ void Frame::execute_frame() {
 */
 void Frame::setup_instructions_func(){
     func[0] = nop;
-    // func[1] = aconst_null;
+    func[1] = aconst_null;
     // func[2] = iconst_m1;
     // func[3] = iconst_0;
     // func[4] = iconst_1;
@@ -263,72 +263,71 @@ void Frame::setup_instructions_func(){
 * @return Operand   novo ponteiro para Operand
 */
 
-Operand *verifica_string_cria_tipo(std::string string_tipo){
-    Operand *novo_tipo = (Operand*)malloc(sizeof(Operand));
-
-    switch (string_tipo.c_str()[0]){
-        case 'I':
-            novo_tipo->tag = CONSTANT_Integer;
-            novo_tipo->tpInt = 0;
-            break;
-        case 'F':
-            novo_tipo->tag = CONSTANT_Float;
-            novo_tipo->tpFloat = 0;
-            break;
-        case 'J':
-            novo_tipo->tag = CONSTANT_Long;
-            novo_tipo->tpLong = 0;
-            break;
-        case 'D':
-            novo_tipo->tag = CONSTANT_Double;
-            novo_tipo->tpDouble = 0;
-            break;
-        case 'Z':
-            novo_tipo->tag = CONSTANT_Boolean;
-            novo_tipo->tpBoolean = 0;
-            break;
-        case 'B':
-            novo_tipo->tag = CONSTANT_Byte;
-            novo_tipo->tpByte = 0;
-            break;
-        case 'C':
-            novo_tipo->tag = CONSTANT_Char;
-            novo_tipo->tpChar = 0;
-            break;
-        case 'S':
-            novo_tipo->tag = CONSTANT_Short;
-            novo_tipo->tpShort = 0;
-            break;
-        case '[':
-            novo_tipo->tag = CONSTANT_Array;
-            novo_tipo->arrayType = (ArrayType*)malloc(sizeof(ArrayType));
-            novo_tipo->arrayType->array = new std::vector<Types*>();
-            break;
-        case 'P':
-            novo_tipo->tag = CONSTANT_EmptySpace;
-            break;
-        case CONSTANT_String:
-            novo_tipo->tag = CONSTANT_String;
-            novo_tipo->tpString = new std::string("");
-            break;
-        case 'L':
-            if(tipo == "Ljava/lang/String;"){
-                novo_tipo->tag = CONSTANT_String;
-                novo_tipo->tpString = new std::string("");
-            }else{
-                novo_tipo->tag = CONSTANT_Class;
-                novo_tipo->classInstance = (ClassInstance*)malloc(sizeof(ClassInstance));
-
-                std::string classRealName = tipo.substr(1, tipo.size());
-                JavaClassFormat *classInfo = Interpreter::getSingleton()->getClassInfoAndLoadIfNotExists(classRealName);
-
-                novo_tipo->classInstance->classInfo = classInfo;
-                novo_tipo->classInstance->className =  new std::string(classRealName);
-
-                Interpreter::getSingleton()->carregaVariaveisClasse(novoType->classInstance);
-            }
-            break;
-    }
-    return novo_tipo;
-}
-
+// Operand *verifica_string_cria_tipo(std::string string_tipo){
+//     Operand *novo_tipo = (Operand*)malloc(sizeof(Operand));
+//
+//     switch (string_tipo.c_str()[0]){
+//         case 'I':
+//             novo_tipo->tag = CONSTANT_Integer;
+//             novo_tipo->tpInt = 0;
+//             break;
+//         case 'F':
+//             novo_tipo->tag = CONSTANT_Float;
+//             novo_tipo->tpFloat = 0;
+//             break;
+//         case 'J':
+//             novo_tipo->tag = CONSTANT_Long;
+//             novo_tipo->tpLong = 0;
+//             break;
+//         case 'D':
+//             novo_tipo->tag = CONSTANT_Double;
+//             novo_tipo->tpDouble = 0;
+//             break;
+//         case 'Z':
+//             novo_tipo->tag = CONSTANT_Boolean;
+//             novo_tipo->tpBoolean = 0;
+//             break;
+//         case 'B':
+//             novo_tipo->tag = CONSTANT_Byte;
+//             novo_tipo->tpByte = 0;
+//             break;
+//         case 'C':
+//             novo_tipo->tag = CONSTANT_Char;
+//             novo_tipo->tpChar = 0;
+//             break;
+//         case 'S':
+//             novo_tipo->tag = CONSTANT_Short;
+//             novo_tipo->tpShort = 0;
+//             break;
+//         case '[':
+//             novo_tipo->tag = CONSTANT_Array;
+//             novo_tipo->arrayType = (ArrayType*)malloc(sizeof(ArrayType));
+//             novo_tipo->arrayType->array = new std::vector<Types*>();
+//             break;
+//         case 'P':
+//             novo_tipo->tag = CONSTANT_EmptySpace;
+//             break;
+//         case CONSTANT_String:
+//             novo_tipo->tag = CONSTANT_String;
+//             novo_tipo->tpString = new std::string("");
+//             break;
+//         case 'L':
+//             if(tipo == "Ljava/lang/String;"){
+//                 novo_tipo->tag = CONSTANT_String;
+//                 novo_tipo->tpString = new std::string("");
+//             }else{
+//                 novo_tipo->tag = CONSTANT_Class;
+//                 novo_tipo->classInstance = (ClassInstance*)malloc(sizeof(ClassInstance));
+//
+//                 std::string classRealName = tipo.substr(1, tipo.size());
+//                 JavaClassFormat *classInfo = Interpreter::getSingleton()->getClassInfoAndLoadIfNotExists(classRealName);
+//
+//                 novo_tipo->classInstance->classInfo = classInfo;
+//                 novo_tipo->classInstance->className =  new std::string(classRealName);
+//
+//                 Interpreter::getSingleton()->carregaVariaveisClasse(novoType->classInstance);
+//             }
+//             break;
+//     }
+//     return novo_tipo;
+// }

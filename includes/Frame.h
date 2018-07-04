@@ -19,18 +19,18 @@
  *  corrente.
  **/
 
- #define type_bool 1
- #define type_byte 2
- #define type_char 3
- #define type_short 4
- #define type_int 5
- #define type_float 6
- #define type_long 7
- #define type_double 8
- #define type_string 9
- #define type_reference 10
- #define type_array 11
-
+ #define var_type_bool 1
+ #define var_type_byte 2
+ #define var_type_char 3
+ #define var_type_short 4
+ #define var_type_int 5
+ #define var_type_float 6
+ #define var_type_long 7
+ #define var_type_double 8
+ #define var_type_string 9
+ #define var_type_reference 10
+ #define var_type_array 11
+ #define var_type_NULL 12
 
 
 
@@ -42,8 +42,8 @@ typedef struct{
     std::string *name_class;
     //ponteiro com informacoes da classe
     JavaClass *info_class;
-    //vetor com as referencias dos campos da classe
-    std::map<std::string, Operand*> *campos_class;
+    // vetor com as referencias dos campos da classe
+    // std::map<std::string, Operand*> *campos_class;
 }ClassInstance;
 
 
@@ -60,7 +60,7 @@ typedef struct{
       u8 type_double; /// tipo double
       std::string* type_string; /// tipo string (ponteiro)
       ClassInstance *type_reference; /// ponteiro de instância da classe
-      ArrayType *type_array;
+      // ArrayType *type_array;
   };
  };
 

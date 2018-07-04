@@ -53,31 +53,31 @@ void Interpreter::execute(JavaClass class_file) {
 
 
 
-
-void Interpreter::carrega_variavel_classe(InstanciaClasse *class_instance)
-{
-  class_instance->campos_class = new std::map<std::string,Operand*>();
-
-    JavaClass *classe_carregada = class_instance->info_class;
-
-    CpInfo &info_super_class = classe_carregada->constant_pool[classe_carregada->super_class - 1];
-
-    std::string name_super_class = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, info_super_class.Class.type_class_info - 1);
-    do{
-        name_super_class = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, classe_carregada->super_class-1);
-        for (int i = 0; i < classe_carregada->fields_count; i++) {
-            FieldInfo &field_add = classe_carregada->fields[i];
-
-            std::string name_field = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, field_add.name_index - 1);
-            std::string type_variable = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, field_add.descriptor_index - 1);
-
-            (*class_instance->campos_class)[name_field] = criaTipoAPartirString(tpVariavel);
-        }
-        if(name_super_class != "java/lang/Object" && name_super_class != ""){
-            classe_carregada = this->getClassInfoAndLoadIfNotExists(name_super_class);
-        }
-    }while(name_super_class != "java/lang/Object");
-}
+//
+// void Interpreter::carrega_variavel_classe(InstanciaClasse *class_instance)
+// {
+//   class_instance->campos_class = new std::map<std::string,Operand*>();
+//
+//     JavaClass *classe_carregada = class_instance->info_class;
+//
+//     CpInfo &info_super_class = classe_carregada->constant_pool[classe_carregada->super_class - 1];
+//
+//     std::string name_super_class = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, info_super_class.Class.type_class_info - 1);
+//     do{
+//         name_super_class = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, classe_carregada->super_class-1);
+//         for (int i = 0; i < classe_carregada->fields_count; i++) {
+//             FieldInfo &field_add = classe_carregada->fields[i];
+//
+//             std::string name_field = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, field_add.name_index - 1);
+//             std::string type_variable = info_super_class->get_utf8_constant_pool(classe_carregada->constant_pool, field_add.descriptor_index - 1);
+//
+//             (*class_instance->campos_class)[name_field] = criaTipoAPartirString(tpVariavel);
+//         }
+//         if(name_super_class != "java/lang/Object" && name_super_class != ""){
+//             classe_carregada = this->getClassInfoAndLoadIfNotExists(name_super_class);
+//         }
+//     }while(name_super_class != "java/lang/Object");
+// }
 
 
 
