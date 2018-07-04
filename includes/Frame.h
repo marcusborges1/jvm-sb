@@ -13,7 +13,7 @@
 
 typedef struct Operand Operand;
 
- struct Operand{
+ struct Operand {
    u1 tag; // CONSTANT_Integer, CONSTANT_Float, etc
    union{
      u4 type_bool;

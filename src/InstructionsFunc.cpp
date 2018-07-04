@@ -1,8 +1,10 @@
 #include "InstructionsFunc.h"
+#include "Interpreter.h"
 #include "CpInfo.h"
 
+Interpreter *interpreter = new Interpreter();
 
-/** @brief ...
+/** @brief Não faz nada, só incrementa pc.
  * param *curr_frame ponteiro para o frame atual
  * @return void
  */
@@ -92,19 +94,127 @@ void invokespecial(Frame *curr_frame) {
                                 curr_frame->constant_pool_reference,
                                 name_and_type.NameAndType.descriptor_index -1);
 
+  //incrementa pc
 	curr_frame->pc++;
+}
 
-	if ( ((class_name == "java/lang/Object" || class_name == "java/lang/String")
-      && method_name == "<init>") ||
-      (class_name == "java/lang/StringBuilder" && method_name == "<init>")) {
-		if (class_name == "java/lang/String" ||
-        class_name == "java/lang/StringBuilder") {
-					curr_frame->pop_operand();
-		}
-		// else if (method_name == "<init>") {
-		// 	u4 variable_class = curr_frame->local_variables_array.at(0);
-		// }
-	}
+/** @brief ...
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_1(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = 1;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra o valor NULL na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void aconst_null(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_EmptySpace;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra int na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_m1(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = -1;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra int na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_0(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = 0;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra int na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_2(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = 2;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra int na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_3(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = 3;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra int na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_4(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = 4;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief Empurra int na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iconst_5(Frame* curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Integer;
+    op->type_int = 5;
+    curr_frame->push_operand(op);
+    curr_frame->pc++;
+}
+
+/** @brief ...
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void get_field(Frame *curr_frame) {
+  u1 byte1 = curr_frame->method_code->code[curr_frame->pc++];
+  u1 byte2 = curr_frame->method_code->code[curr_frame->pc++];
+
+  u2 index = (byte1<<8) | byte2;
+
+  CpInfo field_ref = curr_frame->constant_pool_reference[index-1];
+  CpInfo nameAndType = curr_frame->constant_pool_reference[
+                                  field_ref.FieldRef.name_and_type_index-1];
+
+  std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
+        curr_frame->constant_pool_reference, field_ref.FieldRef.class_index-1);
+  std::string field_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
+    curr_frame->constant_pool_reference, nameAndType.NameAndType.name_index-1);
+
+  curr_frame->operand_stack.pop();
+
+  // currentFrame->pushOperand(classVariable);
 }
 
 // void fsub(Frame *curr_frame){
@@ -128,6 +238,3 @@ void invokespecial(Frame *curr_frame) {
 //   curr_frame->pc++;
 // }
 //
-// void getfield(Frame *curr_frame){
-//
-// }

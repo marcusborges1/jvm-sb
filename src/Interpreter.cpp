@@ -12,6 +12,7 @@
 Frame* current_frame = NULL;
 std::stack<Frame*> frame_stack;
 int class_count = 0;
+JavaClass** class_array = (JavaClass**)malloc(sizeof(JavaClass*));
 
 /**
 * @brief Função executar interpretação do arquivo .class
