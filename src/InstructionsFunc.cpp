@@ -1538,3 +1538,29 @@ void lrem(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Calcula o resto da divisão entre dois float. Retira os dois operandos do topo da pilha,
+ * calcula o resto da divisão e coloca no topo.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void frem(Frame *curr_frame) {
+  float dividend, divisor, f_remainder;
+
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  memcpy(&divisor, &operand_1->type_float, sizeof(float));
+  memcpy(&dividend, &operand_2->type_float, sizeof(float));
+
+  f_remainder = std::fmod(dividend, divisor);
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Float;
+  memcpy(&result->type_float, &f_remainder, sizeof(u4));
+
+  curr_frame->push_operand(result);
+}
