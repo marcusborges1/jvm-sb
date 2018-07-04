@@ -1769,3 +1769,16 @@ void lshr(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/*
+* @brief Armazena um inteiro no array de variaveis locais no valor indicado pelo indice
+* @param Frame *curr_frame Ponteiro para o frame atual
+* @return void
+*/
+void istore(Frame *curr_frame) {
+   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+   Operand *value = curr_frame->pop_operand();
+   curr_frame->local_variables_array.at(index) = value;
+
+   curr_frame->pc++;
+ }
