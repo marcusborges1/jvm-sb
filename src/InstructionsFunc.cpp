@@ -538,3 +538,13 @@ void invokespecial(Frame *curr_frame) {
         push_frame(new_frame);
     }
 }
+
+/**
+* @brief Retorna void de uma instrução.
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
+void void_return(Frame *curr_frame){
+    curr_frame->pc++;
+    pop_frame();
+}
