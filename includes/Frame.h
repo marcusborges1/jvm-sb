@@ -39,16 +39,15 @@
  */
 typedef struct{
     //ponteiro com o nome da classe
-    std::string *name_class; 
+    std::string *name_class;
     //ponteiro com informacoes da classe
-    JavaClass *info_class; 
+    JavaClass *info_class;
     //vetor com as referencias dos campos da classe
     std::map<std::string, Operand*> *campos_class;
-}InstanciaClasse;
+}ClassInstance;
 
 
- struct Operand
- {
+ struct Operand  {
   u1 tag;
   union{
       u4 type_bool; /// tipo boleano
