@@ -551,12 +551,24 @@ void void_return(Frame *curr_frame){
 }
 
 /**
+ * @brief Incrementa uma variavel local em uma constante
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iinc(Frame *curr_frame) {
+    u1 index = curr_frame->method_code.code[curr_frame->pc++];
+    u1 constant_value = curr_frame->method_code.code[curr_frame->pc++];
+    curr_frame->local_variables_array.at(index) += constant_value;
+    curr_frame->pc++;
+}
+
+/**
  * @brief Pusha um inteiro, indicado por um indice, na pilha de operandos
  * @param Frame *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iload(Frame *curr_frame) {
-    curr_frame->pc++;
     u1 index = curr_frame->method_code.code[curr_frame->pc++];
     curr_frame->push_operand(curr_frame->local_variables_array.at(index));
+    curr_frame->pc++;
 }

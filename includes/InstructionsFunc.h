@@ -24,6 +24,7 @@ void aload_1(Frame *curr_frame);
 void aload_2(Frame *curr_frame);
 void aload_3(Frame *curr_frame);
 void void_return(Frame *curr_frame);
+void iinc(Frame *curr_frame);
 void iload(Frame *curr_frame);
 
 #endif
