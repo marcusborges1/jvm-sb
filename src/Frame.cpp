@@ -43,6 +43,10 @@ void Frame::execute_frame() {
   func[0](this);
 }
 
+
+
+
+
 /** @brief Inicia vetor de funções das instruções assembly.
 *  @return void
 */
@@ -250,3 +254,81 @@ void Frame::setup_instructions_func(){
     // func[200] = goto_w;
     // func[201] = jsr_w;
 }
+
+
+
+/**
+* @brief Função que cria um ponteiro de Operand e o tipo é decidido pela string recebida
+* @param std::string string que varia de acordo com o tipo
+* @return Operand   novo ponteiro para Operand
+*/
+
+Operand *verifica_string_cria_tipo(std::string string_tipo){
+    Operand *novo_tipo = (Operand*)malloc(sizeof(Operand));
+
+    switch (string_tipo.c_str()[0]){
+        case 'I':
+            novo_tipo->tag = CONSTANT_Integer;
+            novo_tipo->tpInt = 0;
+            break;
+        case 'F':
+            novo_tipo->tag = CONSTANT_Float;
+            novo_tipo->tpFloat = 0;
+            break;
+        case 'J':
+            novo_tipo->tag = CONSTANT_Long;
+            novo_tipo->tpLong = 0;
+            break;
+        case 'D':
+            novo_tipo->tag = CONSTANT_Double;
+            novo_tipo->tpDouble = 0;
+            break;
+        case 'Z':
+            novo_tipo->tag = CONSTANT_Boolean;
+            novo_tipo->tpBoolean = 0;
+            break;
+        case 'B':
+            novo_tipo->tag = CONSTANT_Byte;
+            novo_tipo->tpByte = 0;
+            break;
+        case 'C':
+            novo_tipo->tag = CONSTANT_Char;
+            novo_tipo->tpChar = 0;
+            break;
+        case 'S':
+            novo_tipo->tag = CONSTANT_Short;
+            novo_tipo->tpShort = 0;
+            break;
+        case '[':
+            novo_tipo->tag = CONSTANT_Array;
+            novo_tipo->arrayType = (ArrayType*)malloc(sizeof(ArrayType));
+            novo_tipo->arrayType->array = new std::vector<Types*>();
+            break;
+        case 'P':
+            novo_tipo->tag = CONSTANT_EmptySpace;
+            break;
+        case CONSTANT_String:
+            novo_tipo->tag = CONSTANT_String;
+            novo_tipo->tpString = new std::string("");
+            break;
+        case 'L':
+            if(tipo == "Ljava/lang/String;"){
+                novo_tipo->tag = CONSTANT_String;
+                novo_tipo->tpString = new std::string("");
+            }else{
+                novo_tipo->tag = CONSTANT_Class;
+                novo_tipo->classInstance = (ClassInstance*)malloc(sizeof(ClassInstance));
+
+                std::string classRealName = tipo.substr(1, tipo.size());
+                JavaClassFormat *classInfo = Interpreter::getSingleton()->getClassInfoAndLoadIfNotExists(classRealName);
+
+                novo_tipo->classInstance->classInfo = classInfo;
+                novo_tipo->classInstance->className =  new std::string(classRealName);
+
+                Interpreter::getSingleton()->carregaVariaveisClasse(novoType->classInstance);
+            }
+            break;
+    }
+    return novo_tipo;
+}
+
