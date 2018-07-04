@@ -2,6 +2,7 @@
 #include "Interpreter.h"
 #include "CpInfo.h"
 #include <sstream>
+#include <math.h>
 
 namespace patch {
   template < typename T > std::string to_string( const T& n ) {
@@ -1581,10 +1582,10 @@ void drem(Frame *curr_frame) {
 
   memcpy(&divisor, &operand_1->type_double, sizeof(double));
   memcpy(&dividend, &operand_2->type_double, sizeof(double));
-  result = std::fmod(dividend, divisor);
+  f_remainder = std::fmod(dividend, divisor);
 
   Operand *result = check_string_create_type("D");
-  memcpy(&result->type_double, &result, sizeof(u8));
+  memcpy(&result->type_double, &f_remainder, sizeof(u8));
   curr_frame->push_operand(result);
 }
 
