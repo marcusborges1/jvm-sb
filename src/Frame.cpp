@@ -90,7 +90,7 @@ void Frame::setup_instructions_func() {
     // func[20] = ldc2_w;
     func[21] = iload;
     func[22] = lload;
-    // func[23] = fload;
+    func[23] = fload;
     // func[24] = dload;
     // func[25] = aload;
     func[26] = iload_0;

@@ -68,6 +68,7 @@ void lstore_0(Frame*);
 void lstore_1(Frame*);
 void lstore_2(Frame*);
 void lstore_3(Frame*);
+void fload(Frame*);
 
 
 #endif

@@ -777,6 +777,17 @@ void lload_3(Frame *curr_frame) {
   curr_frame->pc++;
 }
 
+/**
+ * @brief Empilha float indicado no indice 0 do array de variáveis locais na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fload(Frame *curr_frame) {
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->operand_stack.push(curr_frame->local_variables_array[index]);
+  curr_frame->pc++;
+}
+
 
 /**
  * @brief Empilha float indicado no indice 0 do array de variáveis locais na pilha de operandos
