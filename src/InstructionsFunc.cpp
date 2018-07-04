@@ -1564,3 +1564,26 @@ void frem(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Calcula o resto da divisão entre dois double. Retira os dois operandos do topo da pilha,
+ * calcula o resto da divisão e coloca no topo.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void drem(Frame *curr_frame) {
+  double dividend, divisor, f_remainder;
+
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  memcpy(&divisor, &operand_1->type_double, sizeof(double));
+  memcpy(&dividend, &operand_2->type_double, sizeof(double));
+  result = std::fmod(dividend, divisor);
+
+  Operand *result = check_string_create_type("D");
+  memcpy(&result->type_double, &result, sizeof(u8));
+  curr_frame->push_operand(result);
+}
