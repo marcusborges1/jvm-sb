@@ -1782,3 +1782,15 @@ void istore(Frame *curr_frame) {
 
    curr_frame->pc++;
  }
+
+/**
+ * @brief Armazena um inteiro no array de variaveis locais no indice 0
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void istore_0(Frame *curr_frame) {
+    Operand *value = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(0) = value;
+
+    curr_frame->pc++;
+}
