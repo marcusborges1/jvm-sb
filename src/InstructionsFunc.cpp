@@ -1514,3 +1514,27 @@ void irem(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
 }
+
+/**
+ * @brief Calcula o resto da divisão entre dois long. Retira os dois operandos do topo da pilha,
+ * calcula o resto da divisão e coloca no topo.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lrem(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u8 divider = operand_1->type_int;
+  u8 dividend = operand_2->type_int;
+
+  u8 l_remainder = dividend - (dividend / divider) * divider;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Long;
+  result->type_int = l_remainder;
+
+  curr_frame->push_operand(result);
+}
