@@ -11,6 +11,8 @@
 std::map<std::string, ClassInstance*> loaded_classes;
 std::map<std::string, ClassInstance*> static_classes;
 std::string current_path_folder_inter;
+Frame *current_frame;
+std::stack<Frame*> frame_stack;
 
 /**
 * @brief Função que executa a interpretação do arquivo .class.
@@ -134,4 +136,11 @@ Operand* get_static_field_of_class(std::string class_name,
     ClassInstance *c_instance = static_classes.at(class_name);
     if (c_instance != NULL) return c_instance->fields_class->at(field_name);
     return NULL;
+}
+
+void push_frame(Frame *frame) {
+    frame_stack.push(frame);
+}
+void pop_frame() {
+    frame_stack.pop();
 }

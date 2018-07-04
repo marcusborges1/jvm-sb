@@ -13,6 +13,21 @@
 
 typedef struct Operand Operand;
 
+/** @brief Estrutura para instanciar a classe
+ */
+typedef struct {
+    // ponteiro com o nome da classe
+    std::string *name_class;
+    // ponteiro com informacoes da classe
+    JavaClass info_class;
+    // vetor com as referencias dos campos da classe
+    std::map<std::string, Operand*> *fields_class;
+} ClassInstance;
+
+typedef struct {
+    std::vector<Operand*>* array;
+} ArrayType;
+
  struct Operand {
    u1 tag; // CONSTANT_Integer, CONSTANT_Float, etc
    union{
@@ -25,19 +40,10 @@ typedef struct Operand Operand;
      u8 type_long;
      u8 type_double;
      std::string* type_string;
+     ClassInstance *c_instance;
+     ArrayType *array_type;
    };
  };
-
- /** @brief Estrutura para instanciar a classe
-  */
- typedef struct {
-     // ponteiro com o nome da classe
-     std::string *name_class;
-     // ponteiro com informacoes da classe
-     JavaClass info_class;
-     // vetor com as referencias dos campos da classe
-     std::map<std::string, Operand*> *fields_class;
- } ClassInstance;
 
  /**
   * @brief O Frame armazena dados e resultados parciais, para executar
@@ -63,6 +69,9 @@ public:
   static void setup_instructions_func();
 };
 
+Operand *copy_operand(Operand* original_operand);
 Operand* check_string_create_type(std::string string_tipo);
+MethodInfo *find_method(JavaClass class_file, std::string method_name,
+                      std::string method_desc);
 
 #endif

@@ -6,6 +6,7 @@
 void nop(Frame *curr_frame);
 void ldc(Frame *curr_frame);
 void invokespecial(Frame *curr_frame);
+void invokevirtual(Frame *curr_frame);
 void astore_1(Frame *curr_frame);
 void getstatic(Frame *curr_frame);
 void get_field(Frame *curr_frame);

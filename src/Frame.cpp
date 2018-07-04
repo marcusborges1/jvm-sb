@@ -8,6 +8,7 @@
 #include "AttributeInfo.h"
 #include "Instruction.h"
 #include "InstructionsFunc.h"
+#include "Interpreter.h"
 
 
 void (*func[256])(Frame *curr_frame);
@@ -65,7 +66,7 @@ void Frame::push_operand(Operand* op) {
 /** @brief Inicia vetor de funções das instruções assembly.
 *  @return void
 */
-void Frame::setup_instructions_func(){
+void Frame::setup_instructions_func() {
     func[0] = nop;
     func[1] = aconst_null;
     func[2] = iconst_m1;
@@ -248,7 +249,7 @@ void Frame::setup_instructions_func(){
     // func[179] = putstatic;
     func[180] = getfield;
     // func[181] = putfield;
-    // func[182] = invokevirtual;
+    func[182] = invokevirtual;
     func[183] = invokespecial;
     // func[184] = invokestatic;
     // func[185] = invokeinterface;
@@ -313,8 +314,8 @@ Operand* check_string_create_type(std::string type_string) {
             break;
         case '[':
             new_type->tag = CONSTANT_Array;
-            // new_type->arrayType = (ArrayType*)malloc(sizeof(ArrayType));
-            // new_type->arrayType->array = new std::vector<Types*>();
+            new_type->array_type = (ArrayType*)malloc(sizeof(ArrayType));
+            new_type->array_type->array = new std::vector<Operand*>();
             break;
         case 'P':
             new_type->tag = CONSTANT_EmptySpace;
@@ -329,18 +330,101 @@ Operand* check_string_create_type(std::string type_string) {
                 new_type->type_string = new std::string("");
             } else {
                 new_type->tag = CONSTANT_Class;
-                // new_type->classInstance = (ClassInstance*)malloc(
-                                                        // sizeof(ClassInstance));
+                new_type->c_instance = (ClassInstance*)malloc(
+                                                        sizeof(ClassInstance));
 
-                // std::string classRealName = type_string.substr(1, type_string.size());
-                // JavaClassFormat *classInfo = Interpreter::getSingleton()->getClassInfoAndLoadIfNotExists(classRealName);
+                std::string class_realname = type_string.substr(1,
+                                                          type_string.size());
+                JavaClass info_class = get_class_info_and_load_not_exists(
+                                                              class_realname);
 
-                // new_type->classInstance->classInfo = classInfo;
-                // new_type->classInstance->className =  new std::string(classRealName);
+                new_type->c_instance->info_class = info_class;
+                new_type->c_instance->name_class = new std::string(
+                                                              class_realname);
 
-                // Interpreter::getSingleton()->carregaVariaveisClasse(novoType->classInstance);
+                load_class_var(new_type->c_instance);
             }
             break;
     }
     return new_type;
+}
+
+/**
+* @brief Encontra um método pelo nome e descrição.
+* @param class_file ponteiro para o classfile atual
+* @param method_name string do nome do método a ser buscado
+* @param method_desc string da descrição do método
+* @return MethodInfo* ponteiro para as informações relacionadas ao método
+*/
+MethodInfo *find_method(JavaClass class_file, std::string method_name,
+                      std::string method_desc) {
+  for (int i = 0; i < class_file.methods_count; i++) {
+    MethodInfo *method_info = class_file.methods+i;
+
+    std::string m_name = class_file.constant_pool->get_utf8_constant_pool(
+                                                    class_file.constant_pool,
+                                                    method_info->name_index-1);
+    if (m_name == method_name) {
+      std::string d_name = class_file.constant_pool->get_utf8_constant_pool(
+                                              class_file.constant_pool,
+                                              method_info->descriptor_index-1);
+      if (d_name == method_desc) return method_info;
+    }
+  }
+
+  printf("Metodo nao encontrado\n");
+  getchar();
+  exit(5);
+}
+
+/**
+* @brief Cria um ponteiro de cópia do mesmo tipo que ele está recebendo para
+* não utilizar a mesma instância.
+* @param original_type ponteiro para tipo de entrada
+* @return Operand* ponteiro para cópia do tipo de entrada
+*/
+Operand* copy_operand(Operand* original_type) {
+    Operand* copy_type = (Operand*)malloc(sizeof(Operand));
+    copy_type->tag = original_type->tag;
+
+    switch (original_type->tag) {
+        case CONSTANT_Byte:
+            copy_type->type_byte = original_type->type_byte;
+            break;
+        case CONSTANT_Char:
+            copy_type->type_char = original_type->type_char;
+            break;
+        case CONSTANT_Short:
+            copy_type->type_short = original_type->type_short;
+            break;
+        case CONSTANT_Integer:
+            copy_type->type_int = original_type->type_int;
+            break;
+        case CONSTANT_Float:
+            copy_type->type_float = original_type->type_float;
+            break;
+        case CONSTANT_Long:
+            copy_type->type_long = original_type->type_long;
+            break;
+        case CONSTANT_Double:
+            copy_type->type_double = original_type->type_double;
+            break;
+        case CONSTANT_String:
+            copy_type->type_string = new std::string(*original_type->type_string);
+            break;
+        case CONSTANT_Class:
+            copy_type->c_instance = (ClassInstance*)malloc(sizeof(ClassInstance));
+            copy_type->c_instance->name_class = original_type->c_instance->name_class;
+            copy_type->c_instance->info_class = original_type->c_instance->info_class;
+            copy_type->c_instance->fields_class = new std::map<std::string, Operand*>();
+            copy_type->c_instance->fields_class = original_type->c_instance->fields_class;
+            break;
+        case CONSTANT_Array:
+            for (int i=0; (unsigned)i < original_type->array_type->array->size(); ++i) {
+                Operand *value = copy_operand(original_type->array_type->array->at(i));
+                copy_type->array_type->array->push_back(value);
+            }
+            break;
+    }
+    return copy_type;
 }

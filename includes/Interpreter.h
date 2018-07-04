@@ -21,9 +21,6 @@ class Interpreter {
 public:
   std::string current_path_folder;
 
-  Frame *current_frame;
-  std::stack<Frame*> frame_stack;
-
   void execute(JavaClass class_file);
 };
 
@@ -32,4 +29,7 @@ void load_class_var(ClassInstance *class_instance);
 JavaClass get_class_info_and_load_not_exists(std::string c_path);
 Operand* get_static_field_of_class(std::string class_name,
                                     std::string field_name);
+  void push_frame(Frame *frame);
+  void pop_frame();
+
 #endif
