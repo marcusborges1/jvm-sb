@@ -612,3 +612,30 @@ void iload_3(Frame *curr_frame) {
     curr_frame->push_operand(curr_frame->local_variables_array.at(3));
     curr_frame->pc++;
 }
+
+
+/**
+ * @brief Empilha a constante long 0 na pilha de opreandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lconst_0(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Long;
+    op->type_long = 0;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Empilha a constante long 1 na pilha de operandos
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lconst_1(Frame *curr_frame) {
+    Operand *op = (Operand*)malloc(sizeof(Operand));
+    op->tag = CONSTANT_Long;
+    op->type_long = 1;
+    curr_frame->operand_stack.push(op);
+    curr_frame->pc++;
+}

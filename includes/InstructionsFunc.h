@@ -30,5 +30,7 @@ void iload_0(Frame *curr_frame);
 void iload_1(Frame *curr_frame);
 void iload_2(Frame *curr_frame);
 void iload_3(Frame *curr_frame);
+void lconst_0(Frame*);
+void lconst_1(Frame*);
 
 #endif
