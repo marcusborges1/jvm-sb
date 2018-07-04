@@ -70,5 +70,7 @@ void lstore_2(Frame*);
 void lstore_3(Frame*);
 void fload(Frame*);
 
+void if_icmpge(Frame*);
+
 
 #endif
