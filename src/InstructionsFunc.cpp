@@ -1003,3 +1003,260 @@ void dstore_3(Frame* curr_frame) {
    curr_frame->local_variables_array[3] = op;
    curr_frame->pc++;
  }
+
+/**
+ * @brief Cria novo array do tipo definido
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void newarray(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  u4 index = operand_1->type_int;
+
+  Operand *operand_2 = check_string_create_type("[");
+  u1 array_type = curr_frame->method_code.code[curr_frame->pc++];
+
+  switch (array_type) {
+    case CONSTANT_Boolean:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("Z"));
+      }
+      break;
+    case CONSTANT_Char:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("C"));
+      }
+      break;
+    case CONSTANT_Float:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("F"));
+      }
+      break;
+    case CONSTANT_Double:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("D"));
+      }
+      break;
+    case CONSTANT_Byte:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("B"));
+      }
+      break;
+    case CONSTANT_Short:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("S"));
+      }
+      break;
+    case CONSTANT_Integer:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("I"));
+      }
+      break;
+    case CONSTANT_Long:
+      for (int i = 0; i < (int) index; i++) {
+        operand_2->array_type->array->emplace_back(check_string_create_type("J"));
+      }
+      break;
+  }
+
+  curr_frame->push_operand(operand_2);
+}
+
+/**
+ * @brief Cria novo objeto array.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void anewarray(Frame *curr_frame) {}
+
+/**
+ * @brief Soma de inteiros. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
+ * no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void iadd(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+
+  result->tag = CONSTANT_Integer;
+  result->type_int = operand_1->type_int + operand_2->type_int;
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Soma do tipo long. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
+ * no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void ladd(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Long;
+  result->type_long = operand_1->type_long + operand_2->type_long;
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Soma do tipo float. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
+ * no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fadd(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  float value_1, value_2;
+  memcpy(&value_1, &operand_1->type_float, sizeof(float));
+  memcpy(&value_2, &operand_2->type_float, sizeof(float));
+  value_1 += value_2;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Float;
+  memcpy(&result->type_float, &value_1, sizeof(u4));
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Soma do tipo double. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
+ * no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dadd(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  double value_1, value_2;
+  memcpy(&value_1, &operand_1->type_double, sizeof(float));
+  memcpy(&value_2, &operand_2->type_double, sizeof(float));
+  value_1 += value_2;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Double;
+  memcpy(&result->type_double, &value_1, sizeof(u8));
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Subtração do tipo inteiro. Retira os dois operando do topo da pilha, subtraí-os e coloca o
+ * resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void isub(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Integer;
+  result->type_long = operand_1->type_long - operand_2->type_long;
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Subtração do tipo long. Retira os dois operando do topo da pilha, subtraí-os e coloca o
+ * resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lsub(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Long;
+  result->type_long = operand_1->type_long - operand_2->type_long;
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Subtração do tipo float. Retira os dois operando do topo da pilha, subtraí-os e coloca o
+ * resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void fsub(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  float value_1, value_2;
+  memcpy(&value_1, &operand_1->type_float, sizeof(float));
+  memcpy(&value_2, &operand_2->type_float, sizeof(float));
+  value_1 -= value_2;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Float;
+  memcpy(&result->type_float, &value_1, sizeof(u4));
+
+  curr_frame->push_operand(result);
+}
+
+
+/**
+ * @brief Subtração do tipo double. Retira os dois operando do topo da pilha, subtraí-os e coloca o
+ * resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void dsub(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  double value_1, value_2;
+  memcpy(&value_1, &operand_1->type_float, sizeof(double));
+  memcpy(&value_2, &operand_2->type_float, sizeof(double));
+  value_1 -= value_2;
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Double;
+  memcpy(&result->type_double, &value_1, sizeof(u8));
+
+  curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Multiplicação de inteiros. Retira os dois operando do topo da pilha, multiplica-os
+ * e coloca o resultado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void imul(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  Operand *result = (Operand *) malloc(sizeof(Operand));
+  result->tag = CONSTANT_Integer;
+  result->type_int = (operand_1->type_int) * (operand_2->type_int);
+
+  curr_frame->push_operand(result);
+}
