@@ -1707,3 +1707,124 @@ void if_icmpge(Frame *curr_frame){
 
 
 
+
+
+
+
+
+
+
+
+
+/** Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
+ * @brief Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void i2l(Frame *curr_frame){
+    int value_op;
+    Operand *op_int = curr_frame->pop_operand();
+    memcpy(&value_op, &op_int->type_int, sizeof(int32_t));
+
+    long value_long = (long)value_op;
+    Operand *value_converted = check_string_create_type("J");
+    memcpy(&value_converted->type_long, &value_long, sizeof(uint64_t));
+
+    curr_frame->pc++;
+    curr_frame->push_operand(value_converted);
+}
+
+
+
+
+/**
+ * @brief Função para saltar para um certo offset.
+ * @param Frame *curr_frame ponteiro que para o frame atual
+ * @return void
+ */
+void ins_goto(Frame *curr_frame){
+    int16_t offset = curr_frame->method_code.code[curr_frame->pc+1];
+    offset = (offset << 8) + curr_frame->method_code.code[curr_frame->pc+2];
+    curr_frame->pc +=offset;
+}
+
+
+
+
+
+/**
+ * @brief Invoca um método estático de uma classe.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void invokestatic(Frame *curr_frame){
+    curr_frame->pc++;
+
+    u2 method_index = curr_frame->method_code.code[curr_frame->pc++];
+    method_index = (method_index << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    CpInfo &method_info = curr_frame->constant_pool_reference[method_index - 1];
+
+    CpInfo &class_info = curr_frame->constant_pool_reference[method_info.MethodRef.index - 1];
+    std::string class_name = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, class_info.Class.type_class_info - 1);
+
+    CpInfo &name_and_type = curr_frame->constant_pool_reference[method_info.MethodRef.name_and_type - 1];
+    std::string method_name = name_and_type.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.name_index - 1);
+    std::string method_descriptor = name_and_type.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.descriptor_index - 1);
+
+    if(class_name == "java/lang/Object" && method_name == "registerNatives"){
+    //não suporta metodo nativo
+        return;
+    }else if(class_name.find("java/") != std::string::npos)
+    {
+        // caso seja algum outro tipo de classe java nao implementada
+        printf("Classe Java não implementada.");
+        getchar();
+        exit(1); 
+    }
+    // calcula quantos argumentos o metodo tem
+    int count_arguments = 0;
+    uint16_t counter = 1;
+    while(method_descriptor[counter] != ')')
+    {
+        char find_type = method_descriptor[counter];
+        if(find_type == 'L')
+        { // tipo é um objeto
+            count_arguments++;
+            while(method_descriptor[++counter] != ';');
+        }else if(find_type == '[')
+        { // tipo é um array
+            count_arguments++;
+            while(method_descriptor[++counter] == '[');
+            if(method_descriptor[counter] == 'L')
+                while(method_descriptor[++counter] != ';');
+        }else
+        {
+            count_arguments++;
+        }
+        counter++;
+    }
+    std::vector<Operand*> arguments;
+
+    for (int i = 0; i < count_arguments; ++i) {
+        Operand *argument = curr_frame->pop_operand();
+        arguments.insert(arguments.begin(), argument);
+        if(argument->tag == CONSTANT_Double || argument->tag == CONSTANT_Long){
+            arguments.insert(arguments.begin()+1, check_string_create_type("P"));
+        }
+    }
+    
+    ClassInstance *class_instance = get_static_class(class_name);
+
+    MethodInfo *method_finded = find_method(class_instance->info_class, method_name, method_descriptor);
+    Frame *new_frame = new Frame(method_finded, class_instance->info_class.constant_pool);
+
+    for (int j = 0; j < arguments.size(); ++j) {
+        new_frame->local_variables_array.at(j) = arguments.at(j);
+    }
+
+    push_frame(new_frame);
+}
+

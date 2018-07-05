@@ -141,3 +141,15 @@ void push_frame(Frame *frame) {
 void pop_frame() {
     frame_stack.pop();
 }
+
+
+/**
+ * @brief Retorna a classe estática
+ * @param std::string nome da classe a ser retornada a referencia
+ * @return ClassInstance* ponteiro da referencia da classe
+ */
+ClassInstance* get_static_class(std::string class_name){
+    return static_classes[class_name];
+}
+
+

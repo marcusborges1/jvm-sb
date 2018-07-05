@@ -71,6 +71,8 @@ void lstore_3(Frame*);
 void fload(Frame*);
 
 void if_icmpge(Frame*);
+void ins_goto(Frame*);
+void i2l(Frame*);
 
 
 #endif
