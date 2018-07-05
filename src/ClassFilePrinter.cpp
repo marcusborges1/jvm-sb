@@ -100,6 +100,8 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   printf("18. Long\n");
   printf("19. Classe Abstrata\n");
   printf("20. Geral\n");
+  printf("21. vetor2-java6\n");
+  printf("22. vetor ladeira\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -165,6 +167,12 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
       break;
     case 20:
       filename = "test/a.class";
+      break;
+    case 21:
+      filename = "test/vetor2-java6.class";
+      break;
+    case 22:
+      filename = "test/vetor.class";
       break;
     case 0:
       printf("Até mais!\n");
@@ -572,7 +580,7 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
 
   for (int i = 0; i < class_file.constant_pool_count-1; i++) {
 
-    std::cout << "\nCP_INFO["<< i+1 << "]" << std::endl;
+    std::cout << "\nCP_INFO["<< std::dec << i+1 << "]" << std::endl;
 
     // formato de cada entrada é indicado pelo byte tag
     switch (class_file.constant_pool[i].tag) {
