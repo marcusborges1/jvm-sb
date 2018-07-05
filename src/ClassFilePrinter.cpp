@@ -36,8 +36,10 @@ void ClassFilePrinter::print_menu_init() {
 
   switch (option) {
     case 1:
+      if (DEBUG) std::cout << "get filename\n";
       // escolhe o tipo de arquivo que deseja ler/exibir
       filename = print_menu_choose_type_file("Leitor/Exibidor");
+      if (DEBUG) std::cout << "filename : " << filename << std::endl;
       // passa o nome do arquivo .class como argumento para função de leitura
       class_file = reader->read_class_file(filename);
       // exibe os dados gerais do arquivo .class informado pelo usuário
@@ -101,7 +103,6 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   printf("19. Classe Abstrata\n");
   printf("20. Geral\n");
   printf("21. vetor2-java6\n");
-  printf("22. vetor ladeira\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -170,9 +171,6 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
       break;
     case 21:
       filename = "test/vetor2-java6.class";
-      break;
-    case 22:
-      filename = "test/vetor.class";
       break;
     case 0:
       printf("Até mais!\n");
@@ -286,7 +284,7 @@ void ClassFilePrinter::print_interfaces(JavaClass class_file){
 void ClassFilePrinter::print_fields_info(JavaClass class_file) {
   int i, j;
   std::cout << "\n------------- Methods Info:  -------------\n";
-  std::cout << "Member count: " << std::dec << class_file.fields_count << std::endl;
+  std::cout << "Member count: " << class_file.fields_count << std::endl;
 
   if (class_file.fields_count != 0) {
     for (i = 0; i < class_file.fields_count; i++) {
@@ -580,7 +578,7 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
 
   for (int i = 0; i < class_file.constant_pool_count-1; i++) {
 
-    std::cout << "\nCP_INFO["<< std::dec << i+1 << "]" << std::endl;
+    std::cout << "\nCP_INFO["<< i+1 << "]" << std::endl;
 
     // formato de cada entrada é indicado pelo byte tag
     switch (class_file.constant_pool[i].tag) {
@@ -636,7 +634,7 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
         aux = ((u8)class_file.constant_pool[i].Double.high_bytes << 32) | class_file.constant_pool[i].Double.low_bytes;
         memcpy(&read_double_value, &aux, sizeof(double));
 
-        std::cout << "\tDouble Value:\t"<< std::dec << read_double_value << std::endl;
+        std::cout << "\tDouble Value:\t"<< read_double_value << std::endl;
         break;
       // caso tag seja 7
       case CONSTANT_Class :
@@ -678,14 +676,14 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
         std::cout << "CONSTANT_Methodref"<< std::endl;
 
         // representa um método
-        std::cout << "\tClass index:\t#"<< std::dec << class_file.constant_pool[i].MethodRef.index;
+        std::cout << "\tClass index:\t#"<< class_file.constant_pool[i].MethodRef.index;
         // representa nome completo classe que contem a declaração desse método
         std::cout << " \t" << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
                               class_file.constant_pool[i].MethodRef.index-1);
         std::cout << std::endl;
 
 
-        std::cout << "\tName and Type:\t#"<< std::dec << class_file.constant_pool[i].MethodRef.name_and_type;
+        std::cout << "\tName and Type:\t#"<< class_file.constant_pool[i].MethodRef.name_and_type;
         // indica nome e descritor do método
         std::cout << "\t" << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
                         class_file.constant_pool[i].MethodRef.name_and_type-1);

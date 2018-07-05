@@ -35,17 +35,19 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     // realiza a leitura das versões no formato major.minor
     class_file.minor_version = read_2_bytes(file);
     class_file.major_version = read_2_bytes(file);
-    if (class_file.major_version > 51){
-        printf( "Arquivo com versão invalida.\n");
-        printf("Encerrando programa. \n");
-        exit(1);
-    }
+    if (DEBUG) std::cout << "minor/major read\n";
+    // if (class_file.major_version > 51){
+    //     printf( "Arquivo com versão invalida.\n");
+    //     printf("Encerrando programa. \n");
+    //     exit(1);
+    // }
 
     // lê quantos constat_pool existem neste arquivo
     class_file.constant_pool_count = read_2_bytes(file);
     class_file.constant_pool = (CpInfo*)malloc(
                           (class_file.constant_pool_count-1)*sizeof(CpInfo));
     cpinfo->read(file, class_file);
+    if (DEBUG) std::cout << "cp info read\n";
 
     class_file.access_flags = read_2_bytes(file);
     class_file.this_class = read_2_bytes(file);
@@ -55,21 +57,25 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     class_file.interfaces = (InterfaceInfo*)malloc(
                           class_file.interfaces_count * sizeof(InterfaceInfo));
     interface_info->read(class_file, file);
+    if (DEBUG) std::cout << "interface read\n";
 
     class_file.fields_count = read_2_bytes(file);
     class_file.fields = (FieldInfo*)malloc(
                                   class_file.fields_count * sizeof(FieldInfo));
     field_info->read(class_file, file);
+    if (DEBUG) std::cout << "field read\n";
 
     class_file.methods_count = read_2_bytes(file);
     class_file.methods = (MethodInfo*) malloc(
                                 class_file.methods_count * sizeof(MethodInfo));
     method_info->read(class_file, file);
+    if (DEBUG) std::cout << "method read\n";
 
     class_file.attributes_count = read_2_bytes(file);
     class_file.attributes = (AttributeInfo*)malloc(
                           class_file.attributes_count * sizeof(AttributeInfo));
     attribute_info->read(class_file, file);
+    if (DEBUG) std::cout << "attribute read\n";
 
     return class_file;
 }
