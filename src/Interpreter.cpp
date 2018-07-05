@@ -35,9 +35,9 @@ void Interpreter::execute(JavaClass class_file) {
 
   if (DEBUG) std::cout << "FRAME INCIADO\n";
 
-  printf("------------------------");
+  printf("---------------------------------");
   printf("\n\nIniciando Execução\n");
-  printf("----------------------\n");
+  printf("---------------------------------\n");
 
   // se frame não estiver vazio
   while (!(frame_stack.empty())) {
@@ -45,9 +45,9 @@ void Interpreter::execute(JavaClass class_file) {
     frame_stack.top()->execute_frame();
   }
 
-  printf("------------------------");
-  printf("\n\tFinalizando Execução\n");
-  printf("----------------------\n");
+  printf("---------------------------------");
+  printf("\n\nFinalizando Execução\n");
+  printf("---------------------------------\n");
 }
 
 /**

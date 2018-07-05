@@ -82,7 +82,10 @@ void iconst_1(Frame* curr_frame) {
     op->tag = CONSTANT_Integer;
     op->type_int = 1;
     curr_frame->push_operand(op);
+
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "iconst_1\n";
 }
 
 /** @brief Empurra o valor NULL na pilha de operandos
@@ -109,7 +112,7 @@ void iconst_m1(Frame* curr_frame) {
 }
 
 /** @brief Empurra int na pilha de operandos
- * @param *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atualiconst_2
  * @return void
  */
 void iconst_0(Frame* curr_frame) {
@@ -117,6 +120,7 @@ void iconst_0(Frame* curr_frame) {
     op->tag = CONSTANT_Integer;
     op->type_int = 0;
     curr_frame->push_operand(op);
+    if(DEBUG)printf("[PUSHED OPERAND] %d\n", curr_frame->operand_stack.top()->type_int);
     curr_frame->pc++;
 }
 
@@ -168,6 +172,7 @@ void iconst_5(Frame* curr_frame) {
     op->type_int = 5;
     curr_frame->push_operand(op);
     curr_frame->pc++;
+  if(DEBUG)printf("[PUSHED OPERAND] %d\n", curr_frame->operand_stack.top()->type_int);
 }
 
 /** @brief ...
@@ -318,7 +323,7 @@ void invokevirtual(Frame *curr_frame) {
                         std::cout << *op->type_string;
                         break;
                     case CONSTANT_Integer:
-                        std::cout << (int32_t)op->type_int;
+                        std::cout << (u4)op->type_int;
                         break;
                     case CONSTANT_Float:
                         float float_v;
@@ -566,7 +571,7 @@ void void_return(Frame *curr_frame){
 
 /**
  * @brief Incrementa uma variavel local em uma constante
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iinc(Frame *curr_frame) {
@@ -578,22 +583,22 @@ void iinc(Frame *curr_frame) {
 
 /**
  * @brief Pusha um inteiro, indicado por um indice, na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iload(Frame *curr_frame) {
   curr_frame->pc++;
 
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << "iload index " << (int)index << std::endl;
   curr_frame->push_operand(curr_frame->local_variables_array.at((int)index));
-  curr_frame->pc++;
 
-  if (DEBUG) std::cout << "iload_1\n";
+  if (DEBUG) std::cout << "iload\n";
 }
 
 /**
  * @brief Pusha o inteiro do indice 0 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iload_0(Frame *curr_frame) {
@@ -603,7 +608,7 @@ void iload_0(Frame *curr_frame) {
 
 /**
  * @brief Pusha o inteiro do indice 1 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iload_1(Frame *curr_frame) {
@@ -615,7 +620,7 @@ void iload_1(Frame *curr_frame) {
 
 /**
  * @brief Pusha o inteiro do indice 2 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iload_2(Frame *curr_frame) {
@@ -627,7 +632,7 @@ void iload_2(Frame *curr_frame) {
 
 /**
  * @brief Pusha o inteiro do indice 3 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iload_3(Frame *curr_frame) {
@@ -640,7 +645,7 @@ void iload_3(Frame *curr_frame) {
 
 /**
  * @brief Empilha a constante long 0 na pilha de opreandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lconst_0(Frame *curr_frame) {
@@ -653,20 +658,22 @@ void lconst_0(Frame *curr_frame) {
 
 /**
  * @brief Empilha a constante long 1 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lconst_1(Frame *curr_frame) {
     Operand *op = (Operand*)malloc(sizeof(Operand));
     op->tag = CONSTANT_Long;
     op->type_long = 1;
-    curr_frame->operand_stack.push(op);
+    curr_frame->push_operand(op);
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "lconst_1\n";
 }
 
 /**
  * @brief Empilha a constante float 0 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fconst_0(Frame *curr_frame) {
@@ -679,7 +686,7 @@ void fconst_0(Frame *curr_frame) {
 
 /**
  * @brief Empilha a constante float 1 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fconst_1(Frame *curr_frame) {
@@ -688,11 +695,13 @@ void fconst_1(Frame *curr_frame) {
     op->type_long = 1.0;
     curr_frame->operand_stack.push(op);
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "fconst_1\n";
 }
 
 /**
  * @brief Empilha a constante float 0 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fconst_2(Frame *curr_frame) {
@@ -705,7 +714,7 @@ void fconst_2(Frame *curr_frame) {
 
 /**
  * @brief Empilha a constante double 0 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dconst_0(Frame *curr_frame) {
@@ -719,7 +728,7 @@ void dconst_0(Frame *curr_frame) {
 
 /**
  * @brief Empilha a constante double 1 na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dconst_1(Frame *curr_frame) {
@@ -752,7 +761,7 @@ void bipush(Frame *curr_frame) {
 
 /**
  * @brief Empilha int composto por byte de argumento na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void sipush(Frame *curr_frame) {
@@ -767,7 +776,7 @@ void sipush(Frame *curr_frame) {
 
 /**
  * @brief Empilha long indicado no indice 0 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lload_0(Frame *curr_frame) {
@@ -777,7 +786,7 @@ void lload_0(Frame *curr_frame) {
 
 /**
  * @brief Empilha long indicado no indice 1 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lload_1(Frame *curr_frame) {
@@ -790,7 +799,7 @@ void lload_1(Frame *curr_frame) {
 
 /**
  * @brief Empilha long indicado no indice 2 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lload_2(Frame *curr_frame) {
@@ -798,9 +807,10 @@ void lload_2(Frame *curr_frame) {
   curr_frame->pc++;
 }
 
+
 /**
  * @brief Empilha long indicado no indice 3 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lload_3(Frame *curr_frame) {
@@ -810,31 +820,38 @@ void lload_3(Frame *curr_frame) {
 
 }
 
+
 /**
- * @brief Empilha float indicado no indice 0 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Empilha float indicado no indice 0 do array de variáveis locais na
+ *  pilha de operandos
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fload(Frame *curr_frame) {
-  u1 index = curr_frame->method_code.code[curr_frame->pc++];
-  curr_frame->operand_stack.push(curr_frame->local_variables_array[index]);
   curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << "fload index " << (int)index << std::endl;
+  curr_frame->push_operand(curr_frame->local_variables_array[(int)index]);
+
+  if (DEBUG) std::cout << "fload\n";
 }
 
 
 /**
  * @brief Empilha float indicado no indice 0 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
-void fload_0  (Frame *curr_frame) {
+void fload_0(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[0]);
   curr_frame->pc++;
 }
 
+
 /**
  * @brief Empilha float indicado no indice 1 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fload_1  (Frame *curr_frame) {
@@ -846,7 +863,7 @@ void fload_1  (Frame *curr_frame) {
 
 /**
  * @brief Empilha float indicado no indice 2 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fload_2 (Frame *curr_frame) {
@@ -858,7 +875,7 @@ void fload_2 (Frame *curr_frame) {
 
 /**
  * @brief Empilha float indicado no indice 3 do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fload_3  (Frame *curr_frame) {
@@ -867,20 +884,38 @@ void fload_3  (Frame *curr_frame) {
 }
 
 /**
- * @brief Empilha float indicado no indice index do array de variáveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Empilha float indicado no indice index do array de variáveis locais
+ *  na pilha de operandos
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lload(Frame *curr_frame) {
-  int index = curr_frame->method_code.code[curr_frame->pc++];
-  curr_frame->operand_stack.push(curr_frame->local_variables_array[index]);
   curr_frame->pc++;
+
+  int index = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->push_operand(curr_frame->local_variables_array[(int)index]);
+
+  if (DEBUG) std::cout << "lload\n";
 }
 
+/** @brief Dá push em um valor de preciso dupla de uma variável local para a
+ *  pilha de operandos.
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void dload(Frame *curr_frame){
+  curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << "dload index " << (int)index << std::endl;
+  curr_frame->push_operand(curr_frame->local_variables_array.at((int)index));
+
+  if (DEBUG) std::cout << "dload\n";
+}
 
 /**
  * @brief empilha double  indicado no indice 0 do array de variaveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dload_0(Frame *curr_frame) {
@@ -890,7 +925,7 @@ void dload_0(Frame *curr_frame) {
 
 /**
  * @brief empilha double  indicado no indice 1 do array de variaveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dload_1(Frame *curr_frame) {
@@ -902,7 +937,7 @@ void dload_1(Frame *curr_frame) {
 
 /**
  * @brief empilha double  indicado no indice 2 do array de variaveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dload_2(Frame *curr_frame) {
@@ -912,7 +947,7 @@ void dload_2(Frame *curr_frame) {
 
 /**
  * @brief empilha double  indicado no indice 3 do array de variaveis locais na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dload_3(Frame *curr_frame) {
@@ -932,18 +967,17 @@ void dstore(Frame* curr_frame) {
   curr_frame->pc++;
 
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
-  Operand *op = curr_frame->operand_stack.top();
-  curr_frame->operand_stack.pop();
+  if (DEBUG) std::cout << "dstore index " << (int)index << std::endl;
+  Operand *op = curr_frame->pop_operand();
 
   curr_frame->local_variables_array.at((int)index) = op;
-  curr_frame->pc++;
 
   if (DEBUG) std::cout << "dstore\n";
 }
 
 /**
  * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 0
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dstore_0(Frame* curr_frame) {
@@ -957,7 +991,7 @@ void dstore_0(Frame* curr_frame) {
 
 /**
  * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 1
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dstore_1(Frame* curr_frame) {
@@ -972,7 +1006,7 @@ void dstore_1(Frame* curr_frame) {
 
 /**
  * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 2
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dstore_2(Frame* curr_frame) {
@@ -985,7 +1019,7 @@ void dstore_2(Frame* curr_frame) {
 
 /**
  * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice 3
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dstore_3(Frame* curr_frame) {
@@ -998,25 +1032,27 @@ void dstore_3(Frame* curr_frame) {
 }
 
 /**
- * @brief Armazena float do topo da pilha de operandos no array de variaveis locais
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Armazena float do topo da pilha de operandos no array de variaveis
+ *  locais
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
  void fstore(Frame* curr_frame) {
-   u1 index = curr_frame->method_code.code[curr_frame->pc++];
-   Operand *op = curr_frame->operand_stack.top();
-   curr_frame->operand_stack.pop();
-
-   curr_frame->local_variables_array[index] = op;
    curr_frame->pc++;
 
-   if (DEBUG) std::cout << "fstore\n" << std::endl;
+   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+   if (DEBUG) std::cout << "fstore index " << (int)index << std::endl;
+   Operand *op = curr_frame->pop_operand();
+
+   curr_frame->local_variables_array[(int)index] = op;
+
+   if (DEBUG) std::cout << "fstore\n";
  }
 
 
  /**
  * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
  void fstore_0(Frame* curr_frame) {
@@ -1029,7 +1065,7 @@ void dstore_3(Frame* curr_frame) {
 
  /**
   * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
-  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @param *curr_frame Ponteiro para o frame atual
   * @return void
   */
  void fstore_1(Frame* curr_frame) {
@@ -1044,7 +1080,7 @@ void dstore_3(Frame* curr_frame) {
 
  /**
   * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
-  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @param *curr_frame Ponteiro para o frame atual
   * @return void
   */
  void fstore_2(Frame* curr_frame) {
@@ -1057,7 +1093,7 @@ void dstore_3(Frame* curr_frame) {
 
  /**
   * @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
-  * @param Frame *curr_frame Ponteiro para o frame atual
+  * @param *curr_frame Ponteiro para o frame atual
   * @return void
   */
  void fstore_3(Frame* curr_frame) {
@@ -1070,7 +1106,7 @@ void dstore_3(Frame* curr_frame) {
 
 /**
  * @brief Cria novo array do tipo definido
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void newarray(Frame *curr_frame) {
@@ -1078,59 +1114,64 @@ void newarray(Frame *curr_frame) {
 
   Operand *operand_1 = curr_frame->pop_operand();
   u4 index = operand_1->type_int;
+  if (DEBUG) printf("[POPPED OPERAND] %d\n",operand_1->type_int);
 
   Operand *operand_2 = check_string_create_type("[");
+  // Operand *operand_2 =  (Operand*)malloc(sizeof(Operand));
+  // operand_2->array_type = (ArrayType*)malloc(sizeof(ArrayType));
+  // operand_2->array_type->array =  (std::vector<Operand*>*)malloc(sizeof(std::vector<Operand*>)); // new std::vector<Operand*>();
   u1 array_type = curr_frame->method_code.code[curr_frame->pc++];
-
+  // if(DEBUG) printf("Array type: %d\n", array_type-> );
   switch (array_type) {
-    case CONSTANT_Boolean:
+    case 4:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("Z"));
       }
       break;
-    case CONSTANT_Char:
+    case 5:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("C"));
       }
       break;
-    case CONSTANT_Float:
+    case 6:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("F"));
       }
       break;
-    case CONSTANT_Double:
+    case 7:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("D"));
       }
       break;
-    case CONSTANT_Byte:
+    case 8:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("B"));
       }
       break;
-    case CONSTANT_Short:
+    case 9:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("S"));
       }
       break;
-    case CONSTANT_Integer:
+    case 10:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("I"));
       }
       break;
-    case CONSTANT_Long:
+    case 11:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("J"));
       }
       break;
   }
 
+  if (DEBUG) printf("[DEBUG] array size %d \n", operand_2->array_type->array->size());
   curr_frame->push_operand(operand_2);
 }
 
 /**
  * @brief Cria novo objeto array.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void anewarray(Frame *curr_frame) {}
@@ -1138,7 +1179,7 @@ void anewarray(Frame *curr_frame) {}
 /**
  * @brief Soma de inteiros. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void iadd(Frame *curr_frame) {
@@ -1160,7 +1201,7 @@ void iadd(Frame *curr_frame) {
 /**
  * @brief Soma do tipo long. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void ladd(Frame *curr_frame) {
@@ -1180,7 +1221,7 @@ void ladd(Frame *curr_frame) {
 /**
  * @brief Soma do tipo float. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fadd(Frame *curr_frame) {
@@ -1206,7 +1247,7 @@ void fadd(Frame *curr_frame) {
 /**
  * @brief Soma do tipo double. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dadd(Frame *curr_frame) {
@@ -1216,9 +1257,10 @@ void dadd(Frame *curr_frame) {
   Operand *operand_2 = curr_frame->pop_operand();
 
   double value_1, value_2;
-  memcpy(&value_1, &operand_1->type_double, sizeof(float));
-  memcpy(&value_2, &operand_2->type_double, sizeof(float));
+  memcpy(&value_1, &operand_1->type_double, sizeof(double));
+  memcpy(&value_2, &operand_2->type_double, sizeof(double));
   value_1 += value_2;
+  if (DEBUG) std::cout << "dadd value " << value_1 << std::endl;
 
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Double;
@@ -1232,7 +1274,7 @@ void dadd(Frame *curr_frame) {
 /**
  * @brief Subtração do tipo inteiro. Retira os dois operando do topo da pilha, subtraí-os e coloca o
  * resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void isub(Frame *curr_frame) {
@@ -1252,7 +1294,7 @@ void isub(Frame *curr_frame) {
 /**
  * @brief Subtração do tipo long. Retira os dois operando do topo da pilha, subtraí-os e coloca o
  * resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lsub(Frame *curr_frame) {
@@ -1272,7 +1314,7 @@ void lsub(Frame *curr_frame) {
 /**
  * @brief Subtração do tipo float. Retira os dois operando do topo da pilha, subtraí-os e coloca o
  * resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fsub(Frame *curr_frame) {
@@ -1297,9 +1339,9 @@ void fsub(Frame *curr_frame) {
 
 
 /**
- * @brief Subtração do tipo double. Retira os dois operando do topo da pilha, subtraí-os e coloca o
- * resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Subtração do tipo double. Retira os dois operando do topo da pilha,
+ *  subtraí-os e coloca o resultado no topo da pilha.
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dsub(Frame *curr_frame) {
@@ -1318,12 +1360,14 @@ void dsub(Frame *curr_frame) {
   memcpy(&result->type_double, &value_2, sizeof(u8));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "dsub\n";
 }
 
 /**
  * @brief Multiplicação de inteiros. Retira os dois operando do topo da pilha, multiplica-os
  * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void imul(Frame *curr_frame) {
@@ -1342,7 +1386,7 @@ void imul(Frame *curr_frame) {
 /**
  * @brief Multiplicação de long. Retira os dois operando do topo da pilha, multiplica-os
  * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lmul(Frame *curr_frame) {
@@ -1363,7 +1407,7 @@ void lmul(Frame *curr_frame) {
 /**
  * @brief Multiplicação de float. Retira os dois operando do topo da pilha, multiplica-os
  * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fmul(Frame *curr_frame) {
@@ -1387,9 +1431,9 @@ void fmul(Frame *curr_frame) {
 }
 
 /**
- * @brief Multiplicação de double. Retira os dois operando do topo da pilha, multiplica-os
- * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Multiplicação de double. Retira os dois operando do topo da pilha,
+ *  multiplica-os e coloca o resultado no topo da pilha.
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dmul(Frame *curr_frame) {
@@ -1408,12 +1452,14 @@ void dmul(Frame *curr_frame) {
   memcpy(&result->type_double, &value_2, sizeof(u8));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "dmul\n";
 }
 
 /**
  * @brief Divisão de inteiro. Retira os dois operandos do topo da pilha, divide-os
  * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void idiv(Frame *curr_frame) {
@@ -1432,7 +1478,7 @@ void idiv(Frame *curr_frame) {
 /**
  * @brief Divisão de long. Retira os dois operandos do topo da pilha, divide-os
  * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void ldiv(Frame *curr_frame) {
@@ -1453,7 +1499,7 @@ void ldiv(Frame *curr_frame) {
 /**
  * @brief Divisão de float. Retira os dois operandos do topo da pilha, divide-os
  * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fdiv(Frame *curr_frame) {
@@ -1475,9 +1521,9 @@ void fdiv(Frame *curr_frame) {
 }
 
 /**
- * @brief Divisão de double. Retira os dois operandos do topo da pilha, divide-os
- * e coloca o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Divisão de double. Retira os dois operandos do topo da pilha,
+ *  divide-os e coloca o resultado no topo da pilha.
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void ddiv(Frame *curr_frame) {
@@ -1496,22 +1542,29 @@ void ddiv(Frame *curr_frame) {
   memcpy(&result->type_double, &value_2, sizeof(u8));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "ddiv\n";
 }
 
 /*
-* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice index
-* @param Frame *curr_frame Ponteiro para o frame atual
+* @brief Armazena long do topo da pilha de operandos no array de variaveis
+*   locais no indice index
+* @param *curr_frame Ponteiro para o frame atual
 * @return void
 */
 void lstore(Frame* curr_frame) {
+  curr_frame->pc++;
+
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
-  Operand *op = curr_frame->operand_stack.top();
-  curr_frame->operand_stack.pop();
+  Operand *op = curr_frame->pop_operand();
 
   curr_frame->local_variables_array[index] = op;
   curr_frame->pc++;
   if (DEBUG) std::cout << "lstore\n";
 
+  curr_frame->local_variables_array.at((int)index) = op;
+
+  if (DEBUG) std::cout << "lstore\n";
 }
 
 /**
@@ -1573,7 +1626,7 @@ void lstore_3(Frame* curr_frame) {
 /**
  * @brief Calcula o resto da divisão entre dois inteiros. Retira os dois operandos do topo da pilha,
  * calcula o resto da divisão e coloca no topo.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void irem(Frame *curr_frame) {
@@ -1597,7 +1650,7 @@ void irem(Frame *curr_frame) {
 /**
  * @brief Calcula o resto da divisão entre dois long. Retira os dois operandos do topo da pilha,
  * calcula o resto da divisão e coloca no topo.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lrem(Frame *curr_frame) {
@@ -1622,7 +1675,7 @@ void lrem(Frame *curr_frame) {
 /**
  * @brief Calcula o resto da divisão entre dois double. Retira os dois operandos do topo da pilha,
  * calcula o resto da divisão e coloca no topo.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void drem(Frame *curr_frame) {
@@ -1645,7 +1698,7 @@ void drem(Frame *curr_frame) {
 /**
  * @brief Calcula o valor negativo de int. Retira o operando do topo da pilha, nega o valor do
  * operando e o salva o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void ineg(Frame *curr_frame) {
@@ -1661,7 +1714,7 @@ void ineg(Frame *curr_frame) {
 /**
  * @brief Calcula o valor negativo de long. Retira o operando do topo da pilha, nega o valor do
  * operando e o salva o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lneg(Frame *curr_frame) {
@@ -1680,7 +1733,7 @@ void lneg(Frame *curr_frame) {
 /**
  * @brief Calcula o valor negativo de float. Retira o operando do topo da pilha, nega o valor do
  * operando e o salva o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void fneg(Frame *curr_frame) {
@@ -1701,7 +1754,7 @@ void fneg(Frame *curr_frame) {
 /**
  * @brief Calcula o valor negativo de double. Retira o operando do topo da pilha, nega o valor do
  * operando e o salva o resultado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dneg(Frame *curr_frame) {
@@ -1722,7 +1775,7 @@ void dneg(Frame *curr_frame) {
  * @brief Calcula o valor do shift left lógico para inteiro. Retira dois operandos do topo da pilha
  * e faz o shift left do primeiro operando por s posições, onde s são os 5 bits menos significativos
  * do segundo operando. O resultado é colocado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void ishl(Frame *curr_frame) {
@@ -1748,7 +1801,7 @@ void ishl(Frame *curr_frame) {
  * @brief Calcula o valor do shift left lógico para long. Retira dois operandos do topo da pilha
  * e faz o shift left do primeiro operando por s posições, onde s são os 5 bits menos significativos
  * do segundo operando. O resultado é colocado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lshl(Frame *curr_frame) {
@@ -1775,7 +1828,7 @@ void lshl(Frame *curr_frame) {
  * @brief Calcula o valor do shift right lógico para inteiro. Retira dois operandos do topo da pilha
  * e faz o shift right do primeiro operando por s posições, onde s são os 5 bits menos significativos
  * do segundo operando. O resultado é colocado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void ishr(Frame *curr_frame) {
@@ -1824,7 +1877,7 @@ void if_icmpge(Frame *curr_frame){
  * @brief Calcula o valor do shift right lógico para long. Retira dois operandos do topo da pilha
  * e faz o shift right do primeiro operando por s posições, onde s são os 5 bits menos significativos
  * do segundo operando. O resultado é colocado no topo da pilha.
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void lshr(Frame *curr_frame) {
@@ -1843,6 +1896,7 @@ void lshr(Frame *curr_frame) {
   curr_frame->push_operand(result);
 }
 
+
 /*
 * @brief Armazena um inteiro no array de variaveis locais no valor indicado
 *   pelo indice.
@@ -1856,17 +1910,15 @@ void istore(Frame *curr_frame) {
   if (DEBUG) std::cout << "istore index " << (int)index << std::endl;
 
   Operand *value = curr_frame->pop_operand();
-  int idx = (int)index;
-  curr_frame->local_variables_array.at(idx) = value;
-
-  curr_frame->pc++;
+  curr_frame->local_variables_array.at((int)index) = value;
 
   if (DEBUG) std::cout << "istore\n";
  }
 
+
 /**
  * @brief Armazena um inteiro no array de variaveis locais no indice 0
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void istore_0(Frame *curr_frame) {
@@ -1878,7 +1930,7 @@ void istore_0(Frame *curr_frame) {
 
 /**
  * @brief Armazena um inteiro no array de variaveis locais no indice 1
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void istore_1(Frame *curr_frame) {
@@ -1892,7 +1944,7 @@ void istore_1(Frame *curr_frame) {
 
 /**
  * @brief Armazena um inteiro no array de variaveis locais no indice 2
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void istore_2(Frame *curr_frame) {
@@ -1906,7 +1958,7 @@ void istore_2(Frame *curr_frame) {
 
 /**
  * @brief Armazena um inteiro no array de variaveis locais no indice 0
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void istore_3(Frame *curr_frame) {
@@ -1920,22 +1972,45 @@ void istore_3(Frame *curr_frame) {
 
 
 /**
- * @brief Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @brief Resgata o valor do topo da pilha (que deve ser int), covnerte para
+ *  long e salva na pilha de operandos
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void i2l(Frame *curr_frame){
     int value_op;
     Operand *op_int = curr_frame->pop_operand();
-    memcpy(&value_op, &op_int->type_int, sizeof(int32_t));
+    memcpy(&value_op, &op_int->type_int, sizeof(u4));
 
     long value_long = (long)value_op;
     Operand *value_converted = check_string_create_type("J");
-    memcpy(&value_converted->type_long, &value_long, sizeof(uint64_t));
+    memcpy(&value_converted->type_long, &value_long, sizeof(u8));
 
     curr_frame->pc++;
     curr_frame->push_operand(value_converted);
     if (DEBUG) std::cout << "i2l\n";
+}
+
+/**
+ * @brief Converte de int para double
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void i2d(Frame *curr_frame){
+  int stack_value;
+  Operand *int_type = curr_frame->pop_operand();
+  stack_value = int_type->type_int;
+  if (DEBUG) std::cout << "i2d int value " << stack_value << std::endl;
+
+  double d_value_cast = (double)stack_value;
+  if (DEBUG) std::cout << "i2d double value " << d_value_cast << std::endl;
+  Operand *d_value_cast_type = check_string_create_type("D");
+  memcpy(&d_value_cast_type->type_double, &d_value_cast, sizeof(u8));
+
+  curr_frame->pc++;
+  curr_frame->push_operand(d_value_cast_type);
+
+  if (DEBUG) std::cout << "i2d\n";
 }
 
 
@@ -2005,18 +2080,20 @@ void invokestatic(Frame *curr_frame){
         counter++;
     }
 
-    if (DEBUG) std::cout << "método possui " << count_arguments << " argumentos\n";
+    if (DEBUG) std::cout << "método possui " << count_arguments
+                        << " argumentos\n";
 
     // não precisa criar frame para definir tipo float
     if (class_name.find("Float") != std::string::npos &&
         method_name.find("valueOf") != std::string::npos) {
+          if (DEBUG) std::cout << "ignorar Float.valueOf\n";
           return;
     } else {
       std::vector<Operand*> arguments;
 
+      if (DEBUG) std::cout << "passando argumentos para o método estático\n";
       for (int i = 0; i < count_arguments; ++i) {
           Operand *argument = curr_frame->pop_operand();
-          if (DEBUG) std::cout << "classe atual: " << argument->c_instance->name_class << std::endl;
           if (DEBUG) std::cout << "operando do tipo: " <<  (int)argument->tag << std::endl;
           // passa argumento para a função
           arguments.insert(arguments.begin(), argument);
@@ -2045,7 +2122,7 @@ void invokestatic(Frame *curr_frame){
 
 /**
  * @brief Retorna long int de um método.
- * @param Frame *currentFrame ponteiro que aponta para o frame atual
+ * @param Frame *curr_frame ponteiro que aponta para o frame atual
  * @return void
  */
 
@@ -2088,48 +2165,52 @@ void new_obj(Frame *curr_frame){
 }
 
 
-
-
-
-
-
 /**
  * @brief Faz uma cópia do item que está no topo da pilha e o adiciona ao topo da pilha.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup(Frame *curr_frame){
     curr_frame->pc++;
 
-    Operand *op = curr_frame->pop_operand();
-    Operand *copy_1 = copy_operand(op);
-    Operand *copy_2 = copy_operand(op);
-
+    // Operand *op = curr_frame->pop_operand();
+    if(DEBUG)printf("[POPPED OPERAND]\n");
+    if(DEBUG)printf("array size %d\n", curr_frame->operand_stack.top()->array_type->array->size());
+    if(DEBUG)printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
+    Operand *copy_1 = copy_operand(curr_frame->operand_stack.top());
+    // Operand *copy_2 = copy_operand(op);
+    if(DEBUG)printf("coppied opperands\n");
     curr_frame->push_operand(copy_1);
-    curr_frame->push_operand(copy_2);
+    if(DEBUG)printf("[PUSHED OPERAND]\n");
+    // curr_frame->push_operand(copy_2);
+    // if(DEBUG)printf("[PUSHED   OPERAND]\n");
 }
 
 /**
  * @brief Converte de float para double
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void f2d(Frame *curr_frame) {
-    float float_value;
-    Operand *float_type = curr_frame->pop_operand();
-    memcpy(&float_value, &float_type->type_float, sizeof(u4));
+  float float_value;
+  Operand *float_type = curr_frame->pop_operand();
+  float_value = float_type->type_float;
+  if (DEBUG) std::cout << "f2d float value " << float_value << std::endl;
 
-    double double_value = (double)float_value;
-    Operand *new_double = check_string_create_type("D");
-    memcpy(&new_double->type_double, &double_value, sizeof(u8));
+  double double_value = (double)float_value;
+  if (DEBUG) std::cout << "f2d double value " << double_value << std::endl;
+  Operand *new_double = check_string_create_type("D");
+  memcpy(&new_double->type_double, &double_value, sizeof(u8));
 
-    curr_frame->push_operand(new_double);
-    curr_frame->pc++;
+  curr_frame->push_operand(new_double);
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "f2d\n";
 }
 
 /**
  * @brief Converte de float para inteiro
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void f2i(Frame *curr_frame) {
@@ -2147,7 +2228,7 @@ void f2i(Frame *curr_frame) {
 
 /**
  * @brief Converte um long para double
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void l2d(Frame *curr_frame) {
@@ -2161,11 +2242,13 @@ void l2d(Frame *curr_frame) {
 
     curr_frame->push_operand(new_double);
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "l2d\n";
 }
 
 /**
  * @brief Converte um long para float
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void l2f(Frame *curr_frame) {
@@ -2183,7 +2266,7 @@ void l2f(Frame *curr_frame) {
 
 /**
  * @brief Converte um long para int
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void l2i(Frame *curr_frame) {
@@ -2222,7 +2305,7 @@ void iand(Frame *curr_frame) {
 
 /**
  * @brief Converte de double para int
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void d2i(Frame *curr_frame) {
@@ -2240,7 +2323,7 @@ void d2i(Frame *curr_frame) {
 
 /**
  * @brief Converte de double para long
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void d2l(Frame *curr_frame) {
@@ -2258,7 +2341,7 @@ void d2l(Frame *curr_frame) {
 
 /**
  * @brief Converte double para float
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void d2f(Frame *curr_frame) {
@@ -2336,11 +2419,11 @@ void putfield(Frame *curr_frame){
 
 /**
  * @brief Realiza a operacao de OR entre dois operandos e empilha o resultado
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void ior(Frame *curr_frame) {
-    int32_t ivalue1, ivalue2, iresult;
+    u4 ivalue1, ivalue2, iresult;
 
     curr_frame->pc++;
 
@@ -2374,7 +2457,7 @@ void astore_2(Frame *curr_frame){
 }
 
 /** @brief Retira o topo da pilha e armazena na variavel local de posição 3.
-@param Frame *currentFrame ponteiro para o frame atual
+@param Frame *curr_frame ponteiro para o frame atual
 @return void
 */
 void astore_3(Frame *curr_frame){
@@ -2468,12 +2551,6 @@ void ldc2_w(Frame *curr_frame){
 }
 
 
-
-
-
-
-
-
 /** @brief Invoca a interface do método.
 @param Frame *curr_frame ponteiro que aponta para o frame atual
 @return void
@@ -2504,7 +2581,7 @@ void invokeinterface(Frame *curr_frame){
 
 /**
  * @brief Retorna int de um método.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 
@@ -2533,7 +2610,7 @@ void freturn(Frame *curr_frame){
 
 /**
  * @brief Retorna double de um método.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 
@@ -2547,7 +2624,7 @@ void dreturn(Frame *curr_frame){
 
 /**
  * @brief Retorna objeto de um método.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 
@@ -2561,7 +2638,7 @@ void areturn(Frame *curr_frame){
 
 /**
  * @brief Duplica o item no topo da pilha e pusha depois do segundo elemento da pilha.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup_x1(Frame *curr_frame) {
@@ -2581,7 +2658,7 @@ void dup_x1(Frame *curr_frame) {
 
 /**
  * @brief Duplica o item no topo da pilha e pusha depois do terceiro elemento da pilha
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup_x2(Frame *curr_frame) {
@@ -2612,7 +2689,7 @@ void dup_x2(Frame *curr_frame) {
 
 /**
  * @brief Faz uma cópia de dois itens que estao no topo da pilha e o(s) adiciona ao topo da pilha.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup2(Frame *curr_frame) {
@@ -2639,7 +2716,7 @@ void dup2(Frame *curr_frame) {
 
 /**
  * @brief Duplica um ou dois valores da pilha de operandos e insere os valores duplicados na ordem original
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup2_x1(Frame *curr_frame) {
@@ -2671,7 +2748,7 @@ void dup2_x1(Frame *curr_frame) {
 
 /**
  * @brief Duplica um ou dois operandos da pilha e insere os valores duplicados na ordem original
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup2_x2(Frame *curr_frame) {
@@ -2729,7 +2806,7 @@ void dup2_x2(Frame *curr_frame) {
 
 /**
  * @brief Calcula o resto da divisão entre dois floats
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 
@@ -2784,8 +2861,8 @@ void lookupswitch(Frame *curr_frame){
     nPares = (nPares << 8) + curr_frame->method_code.code[curr_frame->pc++];
     nPares = (nPares << 8) + curr_frame->method_code.code[curr_frame->pc++];
 
-    jpKeys = (uint32_t*)malloc(nPares * sizeof(uint32_t));
-    jpOffset = (uint32_t*)malloc(nPares * sizeof(uint32_t));
+    jpKeys = (u4*)malloc(nPares * sizeof(u4));
+    jpOffset = (u4*)malloc(nPares * sizeof(u4));
     for (int i = 0; i < (int)nPares; i++) {
         jpKeys[i] = curr_frame->method_code.code[curr_frame->pc++];
         jpKeys[i] = (jpKeys[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
@@ -2816,7 +2893,7 @@ void lookupswitch(Frame *curr_frame){
 
 /**
  * @brief Compara valor1 = valor2. Se verdeiro, realiza salto
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void if_icmpeq(Frame *curr_frame){
@@ -2840,15 +2917,15 @@ void if_icmpeq(Frame *curr_frame){
 
 /**
  * @brief Verifica se valor1 é diferente de valor2. Se for, realiza salto
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void if_icmpne(Frame *curr_frame){
     Operand *op1 = curr_frame->pop_operand();
     Operand *op2 = curr_frame->pop_operand();
 
-    int32_t value_op1 = op1->type_int;
-    int32_t value_op2 = op2->type_int;
+    u4 value_op1 = op1->type_int;
+    u4 value_op2 = op2->type_int;
 
     if(value_op2 != value_op1){
         int16_t offset;
@@ -2875,4 +2952,20 @@ void f2l(Frame *curr_frame){
     curr_frame->push_operand(longConvertidoType);
 
     if (DEBUG) std::cout << "f2l\n";
+}
+
+void iastore(Frame* curr_frame){
+  Operand* value = curr_frame->pop_operand();
+  if(DEBUG)printf("popped first\n");
+  Operand* index = curr_frame->pop_operand();
+  if(DEBUG)printf("popped second\n");
+  Operand *array = curr_frame->pop_operand();
+  if(DEBUG)printf("popped third\n");
+  if(DEBUG)printf("index: %d\n", index->type_int);
+  Operand *op = array->array_type->array->at(index->type_int);
+  if(DEBUG)printf("cant get index\n");
+  op->type_int = value->type_int;
+  if(DEBUG)printf("atribuiu\n");
+
+  curr_frame->pc++;
 }

@@ -61,6 +61,9 @@ void dload_3(Frame*);
 void dstore(Frame*);
 void dstore_0(Frame*);
 void dadd(Frame*);
+void dsub(Frame*);
+void dmul(Frame*);
+void ddiv(Frame*);
 void dstore_1(Frame*);
 void dstore_2(Frame*);
 void dstore_3(Frame*);
@@ -105,6 +108,7 @@ void ldiv(Frame *curr_frame);
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
 void i2l(Frame*);
+void i2d(Frame*);
 void invokestatic(Frame *curr_frame);
 void lreturn(Frame *curr_frame);
 void new_obj(Frame *curr_frame);
@@ -135,4 +139,6 @@ void iconst_m1(Frame *curr_frame);
 void if_icmpne(Frame *curr_frame);
 void if_icmpeq(Frame *curr_frame);
 
+void newarray(Frame*);
+void iastore(Frame*);
 #endif

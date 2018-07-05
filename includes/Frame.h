@@ -27,7 +27,7 @@ typedef struct {
 } ClassInstance;
 
 typedef struct {
-    std::vector<Operand*>* array;
+    std::vector<Operand*> *array;
 } ArrayType;
 
  struct Operand {

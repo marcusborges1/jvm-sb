@@ -27,15 +27,14 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     JavaClass class_file;
 
     class_file.magic_number = read_4_bytes(file);
-    if(class_file.magic_number != 0xCAFEBABE){
-        printf("Arquivo .class invalido. \n");
-        printf("Encerrando programa. \n");
-        exit(1);
-    }
+    // if(class_file.magic_number != 0xCAFEBABE){
+    //     printf("Arquivo .class invalido. \n");
+    //     printf("Encerrando programa. \n");
+    //     exit(1);
+    // }
     // realiza a leitura das versões no formato major.minor
     class_file.minor_version = read_2_bytes(file);
     class_file.major_version = read_2_bytes(file);
-    if (DEBUG) std::cout << "minor/major read\n";
     // if (class_file.major_version > 51){
     //     printf( "Arquivo com versão invalida.\n");
     //     printf("Encerrando programa. \n");
@@ -53,8 +52,9 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     class_file.this_class = read_2_bytes(file);
 
     // Lê o nome da classe no CP e converte pra String
-    std::string class_name = class_file.constant_pool->get_utf8_constant_pool(class_file.constant_pool,
-                          class_file.this_class - 1);
+    std::string class_name = class_file.constant_pool->get_utf8_constant_pool(
+                                                  class_file.constant_pool,
+                                                  class_file.this_class - 1);
     // Adiciona a extensão '.class' ao nome da classe
     class_name += ".class";
     // Se o nome do arquivo é diferente do nome da classe
@@ -78,6 +78,7 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     if (DEBUG) std::cout << "field read\n";
 
     class_file.methods_count = read_2_bytes(file);
+    if (DEBUG) std::cout << "\nmethods count " << class_file.methods_count << std::endl;
     class_file.methods = (MethodInfo*) malloc(
                                 class_file.methods_count * sizeof(MethodInfo));
     method_info->read(class_file, file);

@@ -39,7 +39,9 @@ MethodInfo* MethodInfo::find_main(JavaClass class_file) {
 void MethodInfo::read(JavaClass class_file, FILE * fp) {
   int i = 0, counter_method = 0;
   AttributeInfo *attributeinfo = new AttributeInfo();
+
   for (i = 0; i < class_file.methods_count; i++) {
+    if (DEBUG) printf("\nMethod %d\n", i);
    class_file.methods[i].access_flag = read_2_bytes(fp);
    class_file.methods[i].name_index = read_2_bytes(fp);
    class_file.methods[i].descriptor_index = read_2_bytes(fp);
@@ -47,9 +49,11 @@ void MethodInfo::read(JavaClass class_file, FILE * fp) {
 
     class_file.methods[i].attributes = (AttributeInfo*)malloc(
           class_file.methods[i].attributes_count * sizeof(AttributeInfo));
+    if (DEBUG) std::cout << "reading attributes...\n";
     for (counter_method = 0;
         counter_method < class_file.methods[i].attributes_count;
         counter_method++) {
+        if (DEBUG) std::cout << "reading attribute "<< counter_method << std::endl;
         class_file.methods[i].attributes[counter_method] = attributeinfo->get_attribute_info(
         fp, class_file.methods[i].attributes[counter_method], class_file);
     }
