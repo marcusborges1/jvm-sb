@@ -82,7 +82,9 @@ void iconst_1(Frame* curr_frame) {
     op->tag = CONSTANT_Integer;
     op->type_int = 1;
     curr_frame->push_operand(op);
+
     curr_frame->pc++;
+    printf("operand pushed: %d\n", curr_frame->operand_stack.top()->type_int);
 }
 
 /** @brief Empurra o valor NULL na pilha de operandos
@@ -117,6 +119,7 @@ void iconst_0(Frame* curr_frame) {
     op->tag = CONSTANT_Integer;
     op->type_int = 0;
     curr_frame->push_operand(op);
+    if(DEBUG)printf("[PUSHED OPERAND] %d\n", curr_frame->operand_stack.top()->type_int);
     curr_frame->pc++;
 }
 
@@ -168,6 +171,7 @@ void iconst_5(Frame* curr_frame) {
     op->type_int = 5;
     curr_frame->push_operand(op);
     curr_frame->pc++;
+  if(DEBUG)printf("[PUSHED OPERAND] %d\n", curr_frame->operand_stack.top()->type_int);
 }
 
 /** @brief ...
@@ -1061,53 +1065,58 @@ void newarray(Frame *curr_frame) {
 
   Operand *operand_1 = curr_frame->pop_operand();
   u4 index = operand_1->type_int;
+  if (DEBUG) printf("[POPPED OPERAND] %d\n",operand_1->type_int);
 
   Operand *operand_2 = check_string_create_type("[");
+  // Operand *operand_2 =  (Operand*)malloc(sizeof(Operand));
+  // operand_2->array_type = (ArrayType*)malloc(sizeof(ArrayType));
+  // operand_2->array_type->array =  (std::vector<Operand*>*)malloc(sizeof(std::vector<Operand*>)); // new std::vector<Operand*>();
   u1 array_type = curr_frame->method_code.code[curr_frame->pc++];
-
+  // if(DEBUG) printf("Array type: %d\n", array_type-> );
   switch (array_type) {
-    case CONSTANT_Boolean:
+    case 4:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("Z"));
       }
       break;
-    case CONSTANT_Char:
+    case 5:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("C"));
       }
       break;
-    case CONSTANT_Float:
+    case 6:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("F"));
       }
       break;
-    case CONSTANT_Double:
+    case 7:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("D"));
       }
       break;
-    case CONSTANT_Byte:
+    case 8:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("B"));
       }
       break;
-    case CONSTANT_Short:
+    case 9:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("S"));
       }
       break;
-    case CONSTANT_Integer:
+    case 10:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("I"));
       }
       break;
-    case CONSTANT_Long:
+    case 11:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("J"));
       }
       break;
   }
 
+  if (DEBUG) printf("[DEBUG] array size %d \n", operand_2->array_type->array->size());
   curr_frame->push_operand(operand_2);
 }
 
@@ -2067,12 +2076,17 @@ void new_obj(Frame *curr_frame){
 void dup(Frame *curr_frame){
     curr_frame->pc++;
 
-    Operand *op = curr_frame->pop_operand();
-    Operand *copy_1 = copy_operand(op);
-    Operand *copy_2 = copy_operand(op);
-
+    // Operand *op = curr_frame->pop_operand();
+    if(DEBUG)printf("[POPPED OPERAND]\n");
+    if(DEBUG)printf("array size %d\n", curr_frame->operand_stack.top()->array_type->array->size());
+    if(DEBUG)printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
+    Operand *copy_1 = copy_operand(curr_frame->operand_stack.top());
+    // Operand *copy_2 = copy_operand(op);
+    if(DEBUG)printf("coppied opperands\n");
     curr_frame->push_operand(copy_1);
-    curr_frame->push_operand(copy_2);
+    if(DEBUG)printf("[PUSHED OPERAND]\n");
+    // curr_frame->push_operand(copy_2);
+    // if(DEBUG)printf("[PUSHED   OPERAND]\n");
 }
 
 /**
@@ -2824,4 +2838,21 @@ void if_icmpne(Frame *curr_frame){
     }else{
         curr_frame->pc +=3;
     }
+}
+
+
+void iastore(Frame* curr_frame){
+  Operand* value = curr_frame->pop_operand();
+  if(DEBUG)printf("popped first\n");
+  Operand* index = curr_frame->pop_operand();
+  if(DEBUG)printf("popped second\n");
+  Operand *array = curr_frame->pop_operand();
+  if(DEBUG)printf("popped third\n");
+  if(DEBUG)printf("index: %d\n", index->type_int);
+  Operand *op = array->array_type->array->at(index->type_int);
+  if(DEBUG)printf("cant get index\n");
+  op->type_int = value->type_int;
+  if(DEBUG)printf("atribuiu\n");
+
+  curr_frame->pc++;
 }

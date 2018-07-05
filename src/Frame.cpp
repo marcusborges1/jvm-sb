@@ -41,6 +41,7 @@ void Frame::execute_frame() {
   // coleta o primeiro opcode
   u1 op_code = method_code.code[pc];
   // substituir pelo op_code
+  if (DEBUG) printf("OP CODE %d : \n", op_code);
   func[op_code](this);
 }
 
@@ -50,6 +51,7 @@ void Frame::execute_frame() {
 */
 Operand* Frame::pop_operand() {
     Operand *op = operand_stack.top();
+    // printf("[operand popped]: %d\n", curr_frame->operand_stack.top()->type_int);
     operand_stack.pop();
     return op;
 }
@@ -61,6 +63,8 @@ Operand* Frame::pop_operand() {
 */
 void Frame::push_operand(Operand* op) {
     operand_stack.push(op);
+    // printf("[operand pushed]: %d\n", curr_frame->operand_stack.top()->type_int);
+
 }
 
 /** @brief Inicia vetor de funções das instruções assembly.
@@ -146,7 +150,7 @@ void Frame::setup_instructions_func() {
     func[76] = astore_1;
     // func[77] = astore_2;
     // func[78] = astore_3;
-    // func[79] = iastore;
+    func[79] = iastore;
     // func[80] = lastore;
     // func[81] = fastore;
     // func[82] = dastore;
@@ -255,7 +259,7 @@ void Frame::setup_instructions_func() {
     func[185] = invokeinterface;
     //
     // func[187] = new_obj;
-    // func[188] = newarray;
+    func[188] = newarray;
     // func[189] = anewarray;
     // func[190] = arraylength;
     //
@@ -313,6 +317,7 @@ Operand* check_string_create_type(std::string type_string) {
             new_type->type_short = 0;
             break;
         case '[':
+        // if (DEBUG) printf("Entered [ case\n");
             new_type->tag = CONSTANT_Array;
             new_type->array_type = (ArrayType*)malloc(sizeof(ArrayType));
             new_type->array_type->array = new std::vector<Operand*>();
@@ -398,6 +403,7 @@ Operand* copy_operand(Operand* original_type) {
             copy_type->type_short = original_type->type_short;
             break;
         case CONSTANT_Integer:
+          // if(DEBUG)printf("Entered integer\n");
             copy_type->type_int = original_type->type_int;
             break;
         case CONSTANT_Float:
@@ -420,9 +426,13 @@ Operand* copy_operand(Operand* original_type) {
             copy_type->c_instance->fields_class = original_type->c_instance->fields_class;
             break;
         case CONSTANT_Array:
-            for (int i=0; (unsigned)i < original_type->array_type->array->size(); ++i) {
-                Operand *value = copy_operand(original_type->array_type->array->at(i));
-                copy_type->array_type->array->push_back(value);
+          copy_type->array_type = (ArrayType*)malloc(sizeof(ArrayType));
+          copy_type->array_type->array = new std::vector<Operand*>();
+            for (int i=0; (unsigned)i < original_type->array_type->array->size(); i++) {
+              if(DEBUG)printf("i %d\n", i);
+                Operand* aux = original_type->array_type->array->at(i);
+                Operand *value = copy_operand(aux);
+                copy_type->array_type->array->emplace_back(value);
             }
             break;
     }

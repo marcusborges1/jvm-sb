@@ -129,4 +129,6 @@ void iconst_m1(Frame *curr_frame);
 void if_icmpne(Frame *curr_frame);
 void if_icmpeq(Frame *curr_frame);
 
+void newarray(Frame*);
+void iastore(Frame*);
 #endif
