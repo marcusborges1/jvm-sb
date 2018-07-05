@@ -76,7 +76,9 @@ void istore_2(Frame *curr_frame);
 void istore_3(Frame *curr_frame);
 void f2d(Frame *curr_frame);
 void f2i(Frame *curr_frame);
-
+void l2d(Frame *curr_frame);
+void l2f(Frame *curr_frame);
+void l2i(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
