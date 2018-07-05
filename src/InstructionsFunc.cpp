@@ -60,7 +60,7 @@ void ldc(Frame *curr_frame) {
     }
     curr_frame->push_operand(op);
     curr_frame->pc++;
-    std::cout << "ldc\n";
+    if (DEBUG) std::cout << "ldc\n";
 }
 
 /** @brief Guarda referência do object ou array do operando na variável local 1.
@@ -222,6 +222,8 @@ void getstatic(Frame *curr_frame) {
     Operand *static_field = get_static_field_of_class(class_name, var_name);
 
     curr_frame->push_operand(static_field);
+
+    if (DEBUG) std::cout << "getstatic\n";
 }
 
 /** @brief Coloca na pilha de operandos a variável da posição 0 do vetor de
@@ -454,6 +456,8 @@ void invokevirtual(Frame *curr_frame) {
 
         push_frame(new_frame);
     }
+
+    if (DEBUG) std::cout << "invokevirtual\n";
 }
 
 /**
@@ -815,6 +819,8 @@ void fload_0  (Frame *curr_frame) {
 void fload_1  (Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[1]);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "float_1\n";
 }
 
 /**
@@ -825,6 +831,8 @@ void fload_1  (Frame *curr_frame) {
 void fload_2 (Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[2]);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "float_2\n";
 }
 
 /**
@@ -968,6 +976,8 @@ void dstore_3(Frame* curr_frame) {
 
    curr_frame->local_variables_array[index] = op;
    curr_frame->pc++;
+
+   if (DEBUG) std::cout << "fstore\n" << std::endl;
  }
 
 
@@ -995,6 +1005,8 @@ void dstore_3(Frame* curr_frame) {
 
    curr_frame->local_variables_array[1] = op;
    curr_frame->pc++;
+
+   if (DEBUG) std::cout << "fstore_1\n" << std::endl;
  }
 
  /**
@@ -1150,6 +1162,8 @@ void fadd(Frame *curr_frame) {
   memcpy(&result->type_float, &value_1, sizeof(u4));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "fadd\n";
 }
 
 /**
@@ -1234,6 +1248,8 @@ void fsub(Frame *curr_frame) {
   memcpy(&result->type_float, &value_2, sizeof(u4));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "fsub\n";
 }
 
 
@@ -1321,6 +1337,8 @@ void fmul(Frame *curr_frame) {
   memcpy(&result->type_float, &value_2, sizeof(u4));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "fmul\n";
 }
 
 /**
@@ -1895,13 +1913,13 @@ void invokestatic(Frame *curr_frame){
                                       curr_frame->constant_pool_reference,
                                       name_and_type.NameAndType.name_index-1);
 
-    std::cout << "nome do método a ser chamado: " << method_name << std::endl;
+    if (DEBUG) std::cout << "nome do método a ser chamado: " << method_name << std::endl;
 
     std::string method_descriptor = name_and_type.get_utf8_constant_pool(
                                   curr_frame->constant_pool_reference,
                                   name_and_type.NameAndType.descriptor_index-1);
 
-    std::cout << "nome da classe: " << class_name << std::endl;
+    if (DEBUG) std::cout << "nome da classe: " << class_name << std::endl;
     if (class_name == "java/lang/Object" && method_name == "registerNatives") {
       printf("JVM não suporta método nativo.");
       return;
@@ -1923,7 +1941,7 @@ void invokestatic(Frame *curr_frame){
         counter++;
     }
 
-    std::cout << "método possui " << count_arguments << " argumentos\n";
+    if (DEBUG) std::cout << "método possui " << count_arguments << " argumentos\n";
 
     // não precisa criar frame para definir tipo float
     if (class_name.find("Float") != std::string::npos &&
@@ -1934,8 +1952,8 @@ void invokestatic(Frame *curr_frame){
 
       for (int i = 0; i < count_arguments; ++i) {
           Operand *argument = curr_frame->pop_operand();
-          std::cout << "classe atual: " << argument->c_instance->name_class << std::endl;
-          std::cout << "operando do tipo: " <<  (int)argument->tag << std::endl;
+          if (DEBUG) std::cout << "classe atual: " << argument->c_instance->name_class << std::endl;
+          if (DEBUG) std::cout << "operando do tipo: " <<  (int)argument->tag << std::endl;
           // passa argumento para a função
           arguments.insert(arguments.begin(), argument);
           if (argument->tag == CONSTANT_Double || argument->tag == CONSTANT_Long)
@@ -1957,7 +1975,7 @@ void invokestatic(Frame *curr_frame){
       push_frame(new_frame);
     }
 
-    std::cout << "invokestatic\n";
+    if (DEBUG) std::cout << "invokestatic\n";
 }
 
 
@@ -1998,7 +2016,7 @@ void new_obj(Frame *curr_frame){
     }else{
         Operand *instance = check_string_create_type("L" + utf8_constant);
         if (instance->c_instance->name_class == NULL){
-            std::cout << "Error while loading class: " << utf8_constant<<std::endl;
+            if (DEBUG) std::cout << "Error while loading class: " << utf8_constant<<std::endl;
             exit(5);
         }
         curr_frame->push_operand(instance);
@@ -2716,7 +2734,7 @@ void lookupswitch(Frame *curr_frame){
             break;
         }
     }
-    if (i == nPares)
+    if ((unsigned)i == nPares)
         curr_frame->pc = start + dftByte;
 
     free(jpKeys);
@@ -2772,13 +2790,3 @@ void if_icmpne(Frame *curr_frame){
         curr_frame->pc +=3;
     }
 }
-
-
-
-
-
-
-
-
-
-

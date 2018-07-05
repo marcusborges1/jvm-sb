@@ -119,6 +119,7 @@ void ireturn(Frame *curr_frame);
 void fadd(Frame *curr_frame);
 void fsub(Frame *curr_frame);
 void fdiv(Frame *curr_frame);
+void fmul(Frame *curr_frame);
 void frem(Frame *curr_frame);
 void drem(Frame *curr_frame);
 void fneg(Frame *curr_frame);
@@ -127,7 +128,5 @@ void iconst_m1(Frame *curr_frame);
 
 void if_icmpne(Frame *curr_frame);
 void if_icmpeq(Frame *curr_frame);
-
-
 
 #endif

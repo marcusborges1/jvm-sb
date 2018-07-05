@@ -27,13 +27,13 @@ void Interpreter::execute(JavaClass class_file) {
 
   MethodInfo *method = new MethodInfo();
 
-  std::cout << "MÉTODO MAIN ENCONTRADO\n";
+  if (DEBUG) std::cout << "MÉTODO MAIN ENCONTRADO\n";
 
   Frame *frame = new Frame(method->find_main(class_file),
                           class_file.constant_pool);
   frame_stack.push(frame);
 
-  std::cout << "FRAME INCIADO\n";
+  if (DEBUG) std::cout << "FRAME INCIADO\n";
 
   printf("=========================================\n");
   printf("======         JVM START          =======\n");
@@ -63,7 +63,7 @@ ClassInstance* load_class_memory(JavaClass class_file) {
                                                   class_file.this_class-1);
   c_instance->name_class = &utf8_s;
 
-  std::cout << "Classe estática " << utf8_s << " carregada na memória...!\n";
+  if (DEBUG) std::cout << "Classe estática " << utf8_s << " carregada na memória...!\n";
   loaded_classes.insert(
               (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
 
@@ -71,7 +71,7 @@ ClassInstance* load_class_memory(JavaClass class_file) {
               (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
   load_class_var(c_instance);
 
-  std::cout << "Classes carregadas na memória...!\n";
+  if (DEBUG) std::cout << "Classes carregadas na memória...!\n";
 
   return c_instance;
 }

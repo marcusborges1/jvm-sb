@@ -8,6 +8,8 @@
 #include <cstdint>
 /** @endcond */
 
+#define DEBUG false
+
 // uint64_t : unsigned integer type with width of exactly 64
 #define u8 uint64_t
 // uint32_t : unsigned integer type with width of exactly 32
