@@ -41,7 +41,6 @@ void Frame::execute_frame() {
   // coleta o primeiro opcode
   u1 op_code = method_code.code[pc];
   // substituir pelo op_code
-  if (DEBUG) printf("OP CODE %d : \n", op_code);
   func[op_code](this);
 }
 
@@ -168,11 +167,11 @@ void Frame::setup_instructions_func() {
     // func[94] = dup2_x2;
     // func[95] = swap;
     func[96] = iadd;
-    // func[97] = ladd;
+    func[97] = ladd;
     func[98] = fadd;
     func[99] = dadd;
     func[100] = isub;
-    // func[101] = lsub;
+    func[101] = lsub;
     func[102] = fsub;
     func[103] = dsub;
     // func[104] = imul;
@@ -180,7 +179,7 @@ void Frame::setup_instructions_func() {
     func[106] = fmul;
     func[107] = dmul;
     // func[108] = idiv;
-    // func[109] = ldiv;
+    func[109] = ldiv;
     func[110] = fdiv;
     func[111] = ddiv;
     // func[112] = irem;
@@ -211,6 +210,8 @@ void Frame::setup_instructions_func() {
     func[137] = l2f;
     func[138] = l2d;
     // func[139] = f2i;
+    func[140] = f2l;
+    // func[141] = f2d;
     // func[140] = f2l;
     func[141] = f2d;
     // func[142] = d2i;
