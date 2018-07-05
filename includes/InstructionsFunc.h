@@ -101,6 +101,9 @@ void putfield(Frame *curr_frame);
 void ldc_w(Frame *curr_frame);
 void ldc2_w(Frame *curr_frame);
 
+void isub(Frame *curr_frame);
+void invokeinterface(Frame *curr_frame);
+
 
 
 #endif

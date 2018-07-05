@@ -2390,3 +2390,31 @@ void ldc2_w(Frame *curr_frame){
 }
 
 
+
+
+
+
+
+
+/** @brief Invoca a interface do método.
+@param Frame *curr_frame ponteiro que aponta para o frame atual
+@return void
+*/
+void invokeinterface(Frame *curr_frame){
+    curr_frame->pc++;
+
+    uint16_t method_index = curr_frame->method_code.code[curr_frame->pc++];
+    method_index = (method_index << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    CpInfo &method_info = curr_frame->constant_pool_reference[method_index - 1];
+
+    CpInfo &class_info = curr_frame->constant_pool_reference[method_info.MethodRef.index - 1];
+    std::string class_name = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, class_info.Class.type_class_info - 1);
+
+    CpInfo &name_and_type = curr_frame->constant_pool_reference[method_info.MethodRef.name_and_type - 1];
+    std::string method_name = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.name_index - 1);
+    std::string method_descriptor = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.descriptor_index - 1);
+}
+
+
+
