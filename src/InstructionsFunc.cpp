@@ -2631,7 +2631,154 @@ void dup2_x2(Frame *curr_frame) {
             curr_frame->push_operand(value2);
             curr_frame->push_operand(value1);
         }
+    }
+}
 
+
+
+
+
+/**
+ * @brief Calcula o resto da divisão entre dois floats
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void frem(Frame *curr_frame){
+    float dividend, divisor, f_remainder;
+
+    curr_frame->pc++;
+    Operand *op1 = curr_frame->pop_operand();
+    Operand *op2 = curr_frame->pop_operand();
+
+    memcpy(&divisor, &op1->type_float, sizeof(float));
+    memcpy(&dividend, &op2->type_float, sizeof(float));
+
+    f_remainder = std::fmod(dividend, divisor);
+
+    Operand *result = (Operand*)malloc(sizeof(Operand));
+    result->tag = CONSTANT_Float;
+    memcpy(&result->type_float, &f_remainder, sizeof(u4));
+    curr_frame->push_operand(result);
+}
+
+
+/**
+ * @brief Acessa tabela de salto por chave e realiza salto.
+ * @param Frame *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+
+void lookupswitch(Frame *curr_frame){
+    u4 dftByte = 0;
+    u4 nPares = 0;
+    u4 *jpKeys;
+    u4 *jpOffset;
+    u4 key;
+    u4 start = curr_frame->pc;
+
+    Operand *value_1 = curr_frame->pop_operand();
+    key = value_1->type_int;
+    curr_frame->pc++;
+
+    while (curr_frame->pc % 4 != 0) {
+        curr_frame->pc++;
     }
 
+    dftByte = curr_frame->method_code.code[curr_frame->pc++];
+    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    nPares = curr_frame->method_code.code[curr_frame->pc++];
+    nPares = (nPares << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    nPares = (nPares << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    nPares = (nPares << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    jpKeys = (uint32_t*)malloc(nPares * sizeof(uint32_t));
+    jpOffset = (uint32_t*)malloc(nPares * sizeof(uint32_t));
+    for (int i = 0; i < (int)nPares; i++) {
+        jpKeys[i] = curr_frame->method_code.code[curr_frame->pc++];
+        jpKeys[i] = (jpKeys[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+        jpKeys[i] = (jpKeys[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+        jpKeys[i] = (jpKeys[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+        jpOffset[i] = curr_frame->method_code.code[curr_frame->pc++];
+        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    }
+
+    int i;
+    for (i = 0; i < (int)nPares; ++i) {
+        if (jpKeys[i] == key) {
+            curr_frame->pc = start + jpOffset[i];
+            break;
+        }
+    }
+    if (i == nPares)
+        curr_frame->pc = start + dftByte;
+
+    free(jpKeys);
+    free(jpOffset);
 }
+
+
+
+/**
+ * @brief Compara valor1 = valor2. Se verdeiro, realiza salto
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void if_icmpeq(Frame *curr_frame){
+    Operand *operand_1 = curr_frame->pop_operand();
+    Operand *operand_2 = curr_frame->pop_operand();
+
+    u4 value_operand_1 = operand_1->type_int;
+    u4 value_operand_2 = operand_2->type_int;
+
+    if(value_operand_2 == value_operand_1){
+        u2 offset;
+
+        offset = curr_frame->method_code.code[curr_frame->pc + 1];
+        offset = (offset << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+
+        curr_frame->pc += offset;
+    }else{
+        curr_frame->pc +=3;
+    }
+}
+
+/**
+ * @brief Verifica se valor1 é diferente de valor2. Se for, realiza salto
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void if_icmpne(Frame *curr_frame){
+    Operand *op1 = curr_frame->pop_operand();
+    Operand *op2 = curr_frame->pop_operand();
+
+    int32_t value_op1 = op1->type_int;
+    int32_t value_op2 = op2->type_int;
+
+    if(value_op2 != value_op1){
+        int16_t offset;
+
+        offset = curr_frame->method_code.code[curr_frame->pc + 1];
+        offset = (offset << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+
+        curr_frame->pc += offset;
+    }else{
+        curr_frame->pc +=3;
+    }
+}
+
+
+
+
+
+
+
+
+
+
