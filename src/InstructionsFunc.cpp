@@ -1670,15 +1670,56 @@ void ishl(Frame *curr_frame) {
   curr_frame->push_operand(result);
 }
 
+/**
+ * @brief Calcula o valor do shift left lógico para long. Retira dois operandos do topo da pilha
+ * e faz o shift left do primeiro operando por s posições, onde s são os 5 bits menos significativos
+ * do segundo operando. O resultado é colocado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lshl(Frame *curr_frame) {
+  curr_frame->pc++;
 
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
 
+  u8 l_value_1 = operand_1->type_long;
+  u8 l_value_2 = operand_2->type_long;
 
+  l_value_2 &= 0x0000003f;
 
+  u8 l_result = l_value_1 << l_value_2;
 
+  Operand *result = check_string_create_type("J");
 
+  result->type_long = l_result;
 
+  curr_frame->push_operand(result);
+}
 
+/**
+ * @brief Calcula o valor do shift right lógico para inteiro. Retira dois operandos do topo da pilha
+ * e faz o shift right do primeiro operando por s posições, onde s são os 5 bits menos significativos
+ * do segundo operando. O resultado é colocado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void ishr(Frame *curr_frame) {
+  curr_frame->pc++;
 
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u4 l_value_1 = operand_1->type_int;
+  u4 l_value_2 = operand_2->type_int;
+
+  u4 l_result = (u4) (l_value_1 / pow(2, l_value_2));
+
+  Operand *result = check_string_create_type("I");
+  result->type_int = l_result;
+
+  curr_frame->push_operand(result);
+}
 
 /**
  * @brief Salta para outro endereço caso  parametro 1 for maior ou igual ao parametro 2
@@ -1705,11 +1746,89 @@ void if_icmpge(Frame *curr_frame){
     }
 }
 
+/**
+ * @brief Calcula o valor do shift right lógico para long. Retira dois operandos do topo da pilha
+ * e faz o shift right do primeiro operando por s posições, onde s são os 5 bits menos significativos
+ * do segundo operando. O resultado é colocado no topo da pilha.
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void lshr(Frame *curr_frame) {
+  curr_frame->pc++;
 
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
 
+  u8 l_value_1 = operand_1->type_long;
+  u8 l_value_2 = operand_2->type_long;
+  u8 l_result = (u8) (l_value_1 / pow(2, l_value_2 & 0x3f));
 
+  Operand *result = check_string_create_type("J");
+  result->type_long = (u8) l_result;
 
+  curr_frame->push_operand(result);
+}
 
+/*
+* @brief Armazena um inteiro no array de variaveis locais no valor indicado pelo indice
+* @param Frame *curr_frame Ponteiro para o frame atual
+* @return void
+*/
+void istore(Frame *curr_frame) {
+   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+   Operand *value = curr_frame->pop_operand();
+   curr_frame->local_variables_array.at(index) = value;
+
+   curr_frame->pc++;
+ }
+
+/**
+ * @brief Armazena um inteiro no array de variaveis locais no indice 0
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void istore_0(Frame *curr_frame) {
+    Operand *value = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(0) = value;
+
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena um inteiro no array de variaveis locais no indice 1
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void istore_1(Frame *curr_frame) {
+    Operand *value = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(1) = value;
+
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena um inteiro no array de variaveis locais no indice 2
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void istore_2(Frame *curr_frame) {
+    Operand *value = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(2) = value;
+
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Armazena um inteiro no array de variaveis locais no indice 0
+ * @param Frame *curr_frame Ponteiro para o frame atual
+ * @return void
+ */
+void istore_3(Frame *curr_frame) {
+    Operand *value = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(3) = value;
+
+    curr_frame->pc++;
+}
 
 
 
@@ -1827,4 +1946,3 @@ void invokestatic(Frame *curr_frame){
 
     push_frame(new_frame);
 }
-
