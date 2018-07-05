@@ -1856,7 +1856,7 @@ void istore_3(Frame *curr_frame) {
 }
 
 
-/** Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
+/**
  * @brief Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
  * @param Frame *curr_frame ponteiro para o frame atual
  * @return void
