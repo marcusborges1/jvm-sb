@@ -226,8 +226,8 @@ void Frame::setup_instructions_func() {
     // func[156] = ifge;
     // func[157] = ifgt;
     // func[158] = ifle;
-    // func[159] = if_icmpeq;
-    // func[160] = if_icmpne;
+    func[159] = if_icmpeq;
+    func[160] = if_icmpne;
     // func[161] = if_icmplt;
     func[162] = if_icmpge;
     // func[163] = if_icmpgt;
@@ -238,7 +238,7 @@ void Frame::setup_instructions_func() {
     // func[168] = jsr;
     // func[169] = ret;
     // func[170] = tableswitch;
-    // func[171] = lookupswitch;
+    func[171] = lookupswitch;
     func[172] = ireturn;
     func[173] = lreturn;
     func[174] = freturn;
