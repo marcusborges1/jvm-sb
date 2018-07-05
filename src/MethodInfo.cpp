@@ -48,7 +48,7 @@ void MethodInfo::read(JavaClass class_file, FILE * fp) {
     for (counter_attr = 0;
         counter_attr < class_file.methods[counter_attr].attributes_count;
         counter_attr++) {
-        
+
         class_file.methods[counter_attr].attributes[counter_method] = attributeinfo->get_attribute_info(
         fp, class_file.methods[counter_attr].attributes[counter_method], class_file);
     }

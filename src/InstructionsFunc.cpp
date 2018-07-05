@@ -1940,7 +1940,7 @@ void invokestatic(Frame *curr_frame){
     MethodInfo *method_finded = find_method(class_instance->info_class, method_name, method_descriptor);
     Frame *new_frame = new Frame(method_finded, class_instance->info_class.constant_pool);
 
-    for (int j = 0; j < arguments.size(); ++j) {
+    for (int j = 0; (unsigned)j < arguments.size(); ++j) {
         new_frame->local_variables_array.at(j) = arguments.at(j);
     }
 
