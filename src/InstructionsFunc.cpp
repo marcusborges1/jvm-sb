@@ -1901,7 +1901,7 @@ void invokestatic(Frame *curr_frame){
         // caso seja algum outro tipo de classe java nao implementada
         printf("Classe Java não implementada.");
         getchar();
-        exit(1); 
+        exit(1);
     }
     // calcula quantos argumentos o metodo tem
     int count_arguments = 0;
@@ -1934,7 +1934,7 @@ void invokestatic(Frame *curr_frame){
             arguments.insert(arguments.begin()+1, check_string_create_type("P"));
         }
     }
-    
+
     ClassInstance *class_instance = get_static_class(class_name);
 
     MethodInfo *method_finded = find_method(class_instance->info_class, method_name, method_descriptor);
@@ -2038,6 +2038,38 @@ void dup(Frame *curr_frame){
     curr_frame->push_operand(copy_2);
 }
 
+/**
+ * @brief Converte de float para double
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void f2d(Frame *curr_frame) {
+    float float_value;
+    Operand *float_type = curr_frame->pop_operand();
+    memcpy(&float_value, &float_type->type_float, sizeof(u4));
 
+    double double_value = (double)float_value;
+    Operand *new_double = check_string_create_type("D");
+    memcpy(&new_double->type_double, &double_value, sizeof(u8));
 
+    curr_frame->push_operand(new_double);
+    curr_frame->pc++;
+}
 
+/**
+ * @brief Converte de float para inteiro
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void f2i(Frame *curr_frame) {
+    float float_value;
+    Operand *float_type = curr_frame->pop_operand();
+    memcpy(&float_value, &float_type->type_float, sizeof(u4));
+
+    int int_value = (int)float_value;
+    Operand *new_int = check_string_create_type("I");
+    memcpy(&new_int->type_int, &int_value, sizeof(u8));
+
+    curr_frame->push_operand(new_int);
+    curr_frame->pc++;
+}
