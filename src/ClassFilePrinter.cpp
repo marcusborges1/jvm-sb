@@ -286,7 +286,7 @@ void ClassFilePrinter::print_interfaces(JavaClass class_file){
 void ClassFilePrinter::print_fields_info(JavaClass class_file) {
   int i, j;
   std::cout << "\n------------- Methods Info:  -------------\n";
-  std::cout << "Member count: " << class_file.fields_count << std::endl;
+  std::cout << "Member count: " << std::dec << class_file.fields_count << std::endl;
 
   if (class_file.fields_count != 0) {
     for (i = 0; i < class_file.fields_count; i++) {
@@ -450,7 +450,10 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
   Instruction::setup_instructions(instructions);
 
   for (int i = 0; (unsigned)i < info_code.code_length; i++) {
+
+    // printf("\nCode Lenght: %d\n\n", info_code.code_length);
     int op_code = (int)info_code.code[i];
+    // printf("\nDEBUG: op code: %d \n", op_code);
     std::cout << "\t"<< i << ": " << instructions[op_code].name;
     for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
         ++i;
@@ -502,6 +505,8 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
             std::cout << " #" << index << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
                                       class_file.constant_pool, index-1);
+
+            i++;
             j++;
         }
         else if (op_code == GOTO || op_code == if_acmpeq ||
@@ -512,13 +517,14 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
                 op_code == ifne || op_code == iflt || op_code == ifge ||
                 op_code == ifgt || op_code == ifle || op_code == ifnonull ||
                 op_code == ifnull || op_code == jsr) {
-
             u1 branchbyte1 = info_code.code[i];
             u1 branchbyte2 = info_code.code[i+1];
             u2 address = (branchbyte1 << 8) | branchbyte2;
             printf(" %08X ", address);
+            i++;
             j++;
         }
+
         else printf(" %x ", info_code.code[j]);
     }
     std::cout << std::endl;
@@ -636,7 +642,7 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
         aux = ((u8)class_file.constant_pool[i].Double.high_bytes << 32) | class_file.constant_pool[i].Double.low_bytes;
         memcpy(&read_double_value, &aux, sizeof(double));
 
-        std::cout << "\tDouble Value:\t"<< read_double_value << std::endl;
+        std::cout << "\tDouble Value:\t"<< std::dec << read_double_value << std::endl;
         break;
       // caso tag seja 7
       case CONSTANT_Class :
@@ -678,14 +684,14 @@ void ClassFilePrinter::print_constant_pool_info(JavaClass class_file) {
         std::cout << "CONSTANT_Methodref"<< std::endl;
 
         // representa um método
-        std::cout << "\tClass index:\t#"<< class_file.constant_pool[i].MethodRef.index;
+        std::cout << "\tClass index:\t#"<< std::dec << class_file.constant_pool[i].MethodRef.index;
         // representa nome completo classe que contem a declaração desse método
         std::cout << " \t" << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
                               class_file.constant_pool[i].MethodRef.index-1);
         std::cout << std::endl;
 
 
-        std::cout << "\tName and Type:\t#"<< class_file.constant_pool[i].MethodRef.name_and_type;
+        std::cout << "\tName and Type:\t#"<< std::dec << class_file.constant_pool[i].MethodRef.name_and_type;
         // indica nome e descritor do método
         std::cout << "\t" << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
                         class_file.constant_pool[i].MethodRef.name_and_type-1);
