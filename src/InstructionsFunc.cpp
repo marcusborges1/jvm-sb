@@ -2198,7 +2198,7 @@ void f2i(Frame *curr_frame) {
 
     int int_value = (int)float_value;
     Operand *new_int = check_string_create_type("I");
-    memcpy(&new_int->type_int, &int_value, sizeof(u8));
+    memcpy(&new_int->type_int, &int_value, sizeof(u4));
 
     curr_frame->push_operand(new_int);
     curr_frame->pc++;
@@ -2222,24 +2222,6 @@ void l2d(Frame *curr_frame) {
     curr_frame->pc++;
 
     if (DEBUG) std::cout << "l2d\n";
-}
-
-/**
- * @brief Converte um long para float
- * @param *curr_frame ponteiro para o frame atual
- * @return void
- */
-void l2f(Frame *curr_frame) {
-    long stack_value;
-    Operand *long_type = curr_frame->pop_operand();
-    memcpy(&stack_value, &long_type->type_long, sizeof(u8));
-
-    float new_value = (float) stack_value;
-    Operand *new_float = check_string_create_type("D");
-    memcpy(&new_float->type_float, &new_value, sizeof(u4));
-
-    curr_frame->push_operand(new_float);
-    curr_frame->pc++;
 }
 
 /**
@@ -2325,7 +2307,7 @@ void d2l(Frame *curr_frame) {
 void d2f(Frame *curr_frame) {
   double stack_value;
   Operand *double_type = curr_frame->pop_operand();
-  memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
+  memcpy(&stack_value, &double_type->type_double, sizeof(double));
 
   float float_value = (float)stack_value;
   Operand *new_float = check_string_create_type("F");
@@ -2932,4 +2914,40 @@ void iastore(Frame* curr_frame){
   if(DEBUG)printf("atribuiu\n");
 
   curr_frame->pc++;
+}
+
+/**
+* @brief Converte de inteiro para float
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
+void i2f(Frame *curr_frame) {
+  int stack_value;
+  Operand *operand = curr_frame->pop_operand();
+  memcpy(&stack_value, &operand->type_int, sizeof(u4));
+
+  float converted_value = (float) stack_value;
+  Operand *float_converted_type = check_string_create_type("F");
+  memcpy(&float_converted_type->type_float, &converted_value, sizeof(u4));
+
+  curr_frame->pc++;
+  curr_frame->push_operand(float_converted_type);
+}
+
+/**
+* @brief Converte de long para float
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
+void l2f(Frame *curr_frame) {
+  long stack_value;
+  Operand *operand = curr_frame->pop_operand();
+  memcpy(&stack_value, &operand->type_long, sizeof(u8));
+
+  float converted_value = (float) stack_value;
+  Operand *float_converted_type = check_string_create_type("F");
+  memcpy(&float_converted_type->type_float, &converted_value, sizeof(u4));
+
+  curr_frame->pc++;
+  curr_frame->push_operand(float_converted_type);
 }

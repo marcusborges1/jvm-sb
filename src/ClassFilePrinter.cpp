@@ -218,10 +218,10 @@ void ClassFilePrinter::print_general_info(JavaClass class_file,
   std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
   class_file.constant_pool[(class_file.super_class)-1].Class.type_class_info-1)
   << " >";
-  printf("\nInterface count: %d\n", class_file.interfaces_count);
-  printf("Field count: %d\n", class_file.fields_count);
-  printf("Methods count: %d\n", class_file.methods_count);
-  printf("Attributes count: %d\n", class_file.attributes_count);
+  printf("\nInterface count:      %d\n", class_file.interfaces_count);
+  printf("Field count:            %d\n", class_file.fields_count);
+  printf("Methods count:          %d\n", class_file.methods_count);
+  printf("Attributes count:       %d\n", class_file.attributes_count);
 }
 
 /** @brief Mostra menu de escolhas do exibidor do arquivo .class.
