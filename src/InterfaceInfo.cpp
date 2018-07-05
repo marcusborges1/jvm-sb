@@ -2,9 +2,11 @@
  *  @brief ...
  *  @bug No know bugs.
  */
+/** @cond */
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
+/** @endcond */
 #include "InterfaceInfo.h"
 #include "ReadBytes.h"
 

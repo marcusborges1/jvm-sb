@@ -2,7 +2,9 @@
  *  @brief Leitura dos atributos do arquivo .class
  *  @bug No know bugs.
  */
+ /** @cond */
 #include <iostream>
+/** @endcond */
 #include "Instruction.h"
 #include "AttributeInfo.h"
 #include "ReadBytes.h"

@@ -9,10 +9,11 @@
 #include "JavaClass.h"
 #include "CpInfo.h"
 #include "Frame.h"
+/** @cond */
 #include <map>
 #include <stack>
 #include <string>
-
+/** @endcond */
 
 /**
  * @brief Interpretador da JVM.

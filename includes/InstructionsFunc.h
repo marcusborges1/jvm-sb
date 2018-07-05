@@ -1,3 +1,6 @@
+/** @file InstructionsFunc.h
+ *  @brief ...
+ */
 #ifndef INSTRUCTIONS_FUNC_H
 #define INSTRUCTIONS_FUNC_H
 

@@ -4,10 +4,12 @@
 #ifndef JVM_CPP_ATTRIBUTEINFO_H
 #define JVM_CPP_ATTRIBUTEINFO_H
 
+/** @cond */
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
 #include <cstring>
+/** @endcond */
 #include "JavaClass.h"
 #include "CpInfo.h"
 

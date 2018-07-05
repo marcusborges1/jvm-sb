@@ -2,7 +2,9 @@
  *  @brief ...
  *  @bug No know bugs.
  */
+/** @cond */
 #include <iostream>
+/** @endcond */
 #include "MethodInfo.h"
 #include "ReadBytes.h"
 

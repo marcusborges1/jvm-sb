@@ -4,7 +4,9 @@
 #ifndef JVM_CPP_INTERFACEINFO_H
 #define JVM_CPP_INTERFACEINFO_H
 
+/** @cond */
 #include <cstdio>
+/** @endcond */
 #include "JavaClass.h"
 
 

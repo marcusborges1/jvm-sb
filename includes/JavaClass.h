@@ -4,7 +4,9 @@
 #ifndef JAVA_CLASS_H
 #define JAVA_CLASS_H
 
+/** @cond */
 #include <cstdint>
+/** @endcond */
 
 // uint64_t : unsigned integer type with width of exactly 64
 #define u8 uint64_t

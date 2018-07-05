@@ -5,8 +5,10 @@
 #ifndef JVM_CPP_CONSTANTPOOLINFO_H
 #define JVM_CPP_CONSTANTPOOLINFO_H
 
+/** @cond */
 #include <cstdio>
 #include <string>
+/** @endcond */
 #include "JavaClass.h"
 
 /**
@@ -91,4 +93,4 @@ public:
 };
 
 
-#endif 
+#endif

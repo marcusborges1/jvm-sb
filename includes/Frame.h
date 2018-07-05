@@ -7,9 +7,11 @@
 
 #include "JavaClass.h"
 #include "AttributeInfo.h"
+/** @cond */
 #include <stack>
 #include <vector>
 #include <map>
+/** @endcond */
 
 typedef struct Operand Operand;
 

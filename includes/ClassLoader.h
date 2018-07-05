@@ -4,7 +4,9 @@
 #ifndef JVM_CPP_CLASSLOADER_H
 #define JVM_CPP_CLASSLOADER_H
 
+/** @cond */
 #include <string>
+/** @endcond */
 #include "JavaClass.h"
 #include "MethodsArea.h"
 
