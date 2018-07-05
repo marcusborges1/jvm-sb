@@ -81,6 +81,7 @@ void ins_goto(Frame*);
 void i2l(Frame*);
 void invokestatic(Frame *curr_frame);
 void lreturn(Frame *curr_frame);
+void new_obj(Frame *curr_frame);
 
 
 

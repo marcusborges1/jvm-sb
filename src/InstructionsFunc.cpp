@@ -1982,3 +1982,38 @@ void lreturn(Frame *curr_frame){
 
 
 
+
+
+
+
+
+/**
+ * @brief Cria novo array podendo ser de qualquer tipo.
+ * @param Frame *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void new_obj(Frame *curr_frame){
+    curr_frame->pc++;
+    u2 index = curr_frame->method_code.code[curr_frame->pc];
+    index = (index << 8)+curr_frame->method_code.code[++curr_frame->pc];
+
+    CpInfo &class_info = curr_frame->constant_pool_reference[index - 1];
+    std::string utf8_constant = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, class_info.Class.type_class_info - 1);
+
+    curr_frame->pc++;
+    if(utf8_constant == "java/lang/StringBuilder"){
+        Operand* string_builder = (Operand*)malloc(sizeof(Operand));
+        string_builder->tag = CONSTANT_String;
+        string_builder->type_string = new std::string("");
+        curr_frame->push_operand(string_builder);
+    }else{
+        Operand *instance = check_string_create_type("L" + utf8_constant);
+        if (instance->c_instance->name_class == NULL){
+            std::cout << "Error while loading class: " << utf8_constant<<std::endl;
+            exit(5);
+        }
+        curr_frame->push_operand(instance);
+    }
+}
+
+
