@@ -4,7 +4,9 @@
 #ifndef JVM_CPP_METHODSAREA_H
 #define JVM_CPP_METHODSAREA_H
 
+/** @cond */
 #include <vector>
+/** @endcond */
 #include "JavaClass.h"
 
 

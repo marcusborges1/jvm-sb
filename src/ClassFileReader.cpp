@@ -2,7 +2,9 @@
  *  @brief Funções de leitura do arquivo ".class".
  *  @bug No know bugs.
  */
+/** @cond */
 #include <iostream>
+/** @endcond */
 #include "ClassFileReader.h"
 #include "ReadBytes.h"
 

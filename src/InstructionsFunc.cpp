@@ -1,8 +1,14 @@
+/** @file InstructionsFunc.cpp
+ *  @brief ...
+ *  @bug No know bugs.
+ */
 #include "InstructionsFunc.h"
 #include "Interpreter.h"
 #include "CpInfo.h"
+/** @cond */
 #include <sstream>
 #include <cmath>
+/** @endcond */
 
 namespace patch {
   template < typename T > std::string to_string( const T& n ) {

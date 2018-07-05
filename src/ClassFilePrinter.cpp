@@ -3,10 +3,12 @@
  *    do arquivo ".class".
  *  @bug No know bugs.
  */
+/** @cond */
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
+ /** @endcond */
 #include "ClassFilePrinter.h"
 #include "ClassFileReader.h"
 #include "Interpreter.h"

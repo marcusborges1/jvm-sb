@@ -1,7 +1,9 @@
 #ifndef CLASS_FILE_READER_H
 #define CLASS_FILE_READER_H
 
+/** @cond */
 #include <string>
+/** @endcond */
 #include "JavaClass.h"
 #include "CpInfo.h"
 #include "FieldInfo.h"

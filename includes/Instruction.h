@@ -4,7 +4,9 @@
 #ifndef JVM_CPP_INSTRUCTION_H
 #define JVM_CPP_INSTRUCTION_H
 
+/** @cond */
 #include <string>
+/** @endcond */
 #include "JavaClass.h"
 
 

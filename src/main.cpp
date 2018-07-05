@@ -21,7 +21,9 @@
  *
  *  @bug No know bugs.
  */
+/** @cond */
 #include <string>
+/** @endcond */
 #include "ClassFilePrinter.h"
 
 
