@@ -27,19 +27,19 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     JavaClass class_file;
 
     class_file.magic_number = read_4_bytes(file);
-    if(class_file.magic_number != 0xCAFEBABE){
-        printf("Arquivo .class invalido. \n");
-        printf("Encerrando programa. \n");
-        exit(1);
-    }
+    // if(class_file.magic_number != 0xCAFEBABE){
+    //     printf("Arquivo .class invalido. \n");
+    //     printf("Encerrando programa. \n");
+    //     exit(1);
+    // }
     // realiza a leitura das versões no formato major.minor
     class_file.minor_version = read_2_bytes(file);
     class_file.major_version = read_2_bytes(file);
-    if (class_file.major_version > 51){
-        printf( "Arquivo com versão invalida.\n");
-        printf("Encerrando programa. \n");
-        exit(1);
-    }
+    // if (class_file.major_version > 51){
+    //     printf( "Arquivo com versão invalida.\n");
+    //     printf("Encerrando programa. \n");
+    //     exit(1);
+    // }
 
     // lê quantos constat_pool existem neste arquivo
     class_file.constant_pool_count = read_2_bytes(file);
