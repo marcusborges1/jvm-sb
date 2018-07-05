@@ -2017,3 +2017,27 @@ void new_obj(Frame *curr_frame){
 }
 
 
+
+
+
+
+
+/**
+ * @brief Faz uma cópia do item que está no topo da pilha e o adiciona ao topo da pilha.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void dup(Frame *curr_frame){
+    curr_frame->pc++;
+
+    Operand *op = curr_frame->pop_operand();
+    Operand *copy_1 = copy_operand(op);
+    Operand *copy_2 = copy_operand(op);
+
+    curr_frame->push_operand(copy_1);
+    curr_frame->push_operand(copy_2);
+}
+
+
+
+
