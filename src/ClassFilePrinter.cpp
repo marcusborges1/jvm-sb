@@ -450,7 +450,10 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
   Instruction::setup_instructions(instructions);
 
   for (int i = 0; (unsigned)i < info_code.code_length; i++) {
+
+    // printf("\nCode Lenght: %d\n\n", info_code.code_length);
     int op_code = (int)info_code.code[i];
+    // printf("\nDEBUG: op code: %d \n", op_code);
     std::cout << "\t"<< i << ": " << instructions[op_code].name;
     for (int j = 0; (unsigned)j < instructions[op_code].bytes; j++) {
         ++i;
@@ -502,6 +505,8 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
             std::cout << " #" << index << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
                                       class_file.constant_pool, index-1);
+
+            i++;
             j++;
         }
         else if (op_code == GOTO || op_code == if_acmpeq ||
@@ -512,13 +517,14 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
                 op_code == ifne || op_code == iflt || op_code == ifge ||
                 op_code == ifgt || op_code == ifle || op_code == ifnonull ||
                 op_code == ifnull || op_code == jsr) {
-
             u1 branchbyte1 = info_code.code[i];
             u1 branchbyte2 = info_code.code[i+1];
             u2 address = (branchbyte1 << 8) | branchbyte2;
             printf(" %08X ", address);
+            i++;
             j++;
         }
+
         else printf(" %x ", info_code.code[j]);
     }
     std::cout << std::endl;
