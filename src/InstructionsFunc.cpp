@@ -130,6 +130,8 @@ void iconst_2(Frame* curr_frame) {
     op->type_int = 2;
     curr_frame->push_operand(op);
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "iconst_2\n";
 }
 
 /** @brief Empurra int na pilha de operandos
@@ -580,9 +582,13 @@ void iinc(Frame *curr_frame) {
  * @return void
  */
 void iload(Frame *curr_frame) {
-    u1 index = curr_frame->method_code.code[curr_frame->pc++];
-    curr_frame->push_operand(curr_frame->local_variables_array.at(index));
-    curr_frame->pc++;
+  curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->push_operand(curr_frame->local_variables_array.at((int)index));
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "iload_1\n";
 }
 
 /**
@@ -603,6 +609,8 @@ void iload_0(Frame *curr_frame) {
 void iload_1(Frame *curr_frame) {
     curr_frame->push_operand(curr_frame->local_variables_array.at(1));
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "iload_1\n";
 }
 
 /**
@@ -613,6 +621,8 @@ void iload_1(Frame *curr_frame) {
 void iload_2(Frame *curr_frame) {
     curr_frame->push_operand(curr_frame->local_variables_array.at(2));
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "iload_2\n";
 }
 
 /**
@@ -623,6 +633,8 @@ void iload_2(Frame *curr_frame) {
 void iload_3(Frame *curr_frame) {
     curr_frame->push_operand(curr_frame->local_variables_array.at(3));
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "iload_3\n";
 }
 
 
@@ -721,17 +733,21 @@ void dconst_1(Frame *curr_frame) {
 
 /**
  * @brief Empilha int composto por byte de argumento na pilha de operandos
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void bipush(Frame *curr_frame) {
-    Operand *op = (Operand*)malloc(sizeof(Operand));
-    u1 byte = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->pc++;
 
-    op->tag = CONSTANT_Integer;
-    op->type_int = byte;
-    curr_frame->operand_stack.push(op);
+  Operand *op = (Operand*)malloc(sizeof(Operand));
+  u1 byte = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << "bipush byte " << byte << std::endl;
 
+  op->tag = CONSTANT_Integer;
+  op->type_int = byte;
+  curr_frame->operand_stack.push(op);
+
+  if (DEBUG) std::cout << "bipush\n";
 }
 
 /**
@@ -1120,6 +1136,8 @@ void iadd(Frame *curr_frame) {
   result->type_int = operand_1->type_int + operand_2->type_int;
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "iadd\n";
 }
 
 /**
@@ -1206,6 +1224,8 @@ void isub(Frame *curr_frame) {
   result->type_long = operand_1->type_long - operand_2->type_long;
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "isub\n";
 }
 
 /**
@@ -1466,7 +1486,7 @@ void lstore(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 0
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1479,7 +1499,7 @@ void lstore_0(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 1
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1492,7 +1512,7 @@ void lstore_1(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 2
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1505,7 +1525,7 @@ void lstore_2(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 3
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1565,10 +1585,6 @@ void lrem(Frame *curr_frame) {
   curr_frame->push_operand(result);
 }
 
-// <<<<<<< HEAD
-// =======
-//   curr_frame->push_operand(result);
-// }
 
 /**
  * @brief Calcula o resto da divisão entre dois double. Retira os dois operandos do topo da pilha,
@@ -1795,16 +1811,24 @@ void lshr(Frame *curr_frame) {
 }
 
 /*
-* @brief Armazena um inteiro no array de variaveis locais no valor indicado pelo indice
-* @param Frame *curr_frame Ponteiro para o frame atual
+* @brief Armazena um inteiro no array de variaveis locais no valor indicado
+*   pelo indice.
+* @param *curr_frame Ponteiro para o frame atual
 * @return void
 */
 void istore(Frame *curr_frame) {
-   u1 index = curr_frame->method_code.code[curr_frame->pc++];
-   Operand *value = curr_frame->pop_operand();
-   curr_frame->local_variables_array.at(index) = value;
+  curr_frame->pc++;
 
-   curr_frame->pc++;
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << "istore index " << (int)index << std::endl;
+
+  Operand *value = curr_frame->pop_operand();
+  int idx = (int)index;
+  curr_frame->local_variables_array.at(idx) = value;
+
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "istore\n";
  }
 
 /**
@@ -1829,6 +1853,8 @@ void istore_1(Frame *curr_frame) {
     curr_frame->local_variables_array.at(1) = value;
 
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "istore_1\n";
 }
 
 /**
@@ -1841,6 +1867,8 @@ void istore_2(Frame *curr_frame) {
     curr_frame->local_variables_array.at(2) = value;
 
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "istore_2\n";
 }
 
 /**
@@ -1853,6 +1881,8 @@ void istore_3(Frame *curr_frame) {
     curr_frame->local_variables_array.at(3) = value;
 
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "istore_3\n";
 }
 
 
@@ -2198,19 +2228,24 @@ void d2l(Frame *curr_frame) {
  * @return void
  */
 void d2f(Frame *curr_frame) {
-    double stack_value;
-    Operand *double_type = curr_frame->pop_operand();
-	memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
+  double stack_value;
+  Operand *double_type = curr_frame->pop_operand();
+  memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
 
-    float float_value = (float)stack_value;
-    Operand *new_float = check_string_create_type("F");
-    memcpy(&new_float->type_float, &float_value, sizeof(u4));
+  float float_value = (float)stack_value;
+  Operand *new_float = check_string_create_type("F");
+  memcpy(&new_float->type_float, &float_value, sizeof(u4));
 
-    curr_frame->push_operand(new_float);
-    curr_frame->pc++;
+  curr_frame->push_operand(new_float);
+  curr_frame->pc++;
 }
 
 
+/**
+ * @brief ...
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
 void putfield(Frame *curr_frame){
     curr_frame->pc++;
 

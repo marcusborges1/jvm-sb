@@ -35,18 +35,14 @@ void Interpreter::execute(JavaClass class_file) {
 
   if (DEBUG) std::cout << "FRAME INCIADO\n";
 
-  printf("=========================================\n");
-  printf("======         JVM START          =======\n");
-  printf("=========================================\n");
+  printf("\n\n\t\t\tIniciando Execução\t\t\t\n\n");
 
   // se frame não estiver vazio
   while (!(frame_stack.empty())) {
     // coleta frame do topo (FIFO)
     frame_stack.top()->execute_frame();
   }
-  printf("=========================================\n");
-  printf("======          JVM END           =======\n");
-  printf("=========================================\n");
+  printf("\n\n\t\t\tFinalizando Execução\t\t\t\n\n");
 }
 
 /**

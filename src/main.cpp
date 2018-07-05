@@ -17,7 +17,7 @@
  *  @author Laís Mendes Gonçalves             11/0033647
  *  @author Marcus Vinícius da Silva Borges   13/0032891
  *  @author Leonardo de Almeida               15/0135491
- *  @author Gabriel Almeida Campos
+ *  @author Gabriel Almeida Campos            15/0009887
  *
  *  @bug No know bugs.
  */
