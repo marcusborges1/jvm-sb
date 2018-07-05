@@ -8,6 +8,8 @@ void ldc(Frame *curr_frame);
 void invokespecial(Frame *curr_frame);
 void invokevirtual(Frame *curr_frame);
 void astore_1(Frame *curr_frame);
+void astore_2(Frame *curr_frame);
+void astore_3(Frame *curr_frame);
 void getstatic(Frame *curr_frame);
 void aaload(Frame *curr_frame);
 void aconst_null(Frame *curr_frame);
@@ -95,8 +97,6 @@ void new_obj(Frame *curr_frame);
 void dup(Frame *curr_frame);
 
 void putfield(Frame *curr_frame);
-void astore_2(Frame *curr_frame);
-void astore_3(Frame *curr_frame);
 
 void ldc_w(Frame *curr_frame);
 void ldc2_w(Frame *curr_frame);
