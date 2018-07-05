@@ -35,10 +35,11 @@ CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp,
     attribute_info.code.max_stack = read_2_bytes(fp);
     attribute_info.code.max_locals = read_2_bytes(fp);
     attribute_info.code.code_length = read_4_bytes(fp);
+
     attribute_info.code.code = (u1*)malloc(
                                   sizeof(u1)*attribute_info.code.code_length);
 
-    for (int i = 0; (unsigned)i < attribute_info.code.code_length; i++) {
+    for (int i = 0; i < attribute_info.code.code_length; i++) {
         attribute_info.code.code[i] = read_1_byte(fp);
     }
     printf("\n");
@@ -57,10 +58,11 @@ CodeAttribute CodeAttribute::read(JavaClass class_file, FILE* fp,
     attribute_info.code.attributes = (AttributeInfo*)malloc(
                     sizeof(AttributeInfo)*attribute_info.code.attributes_count);
 
-    for (int k = 0; k < attribute_info.code.attributes_count; k++)
+    for (int k = 0; k < attribute_info.code.attributes_count; k++){
         attribute_info.code.attributes[k] = attributeinfo->get_attribute_info(
                             fp, attribute_info.code.attributes[k], class_file);
-
+    }
+    
     return attribute_info.code;
 }
 

@@ -2073,3 +2073,8 @@ void f2i(Frame *curr_frame) {
     curr_frame->push_operand(new_int);
     curr_frame->pc++;
 }
+
+
+
+
+

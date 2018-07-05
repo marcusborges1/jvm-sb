@@ -54,10 +54,10 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
                                 class_file.methods_count * sizeof(MethodInfo));
     method_info->read(class_file, file);
 
-    class_file.attributes_count = read_2_bytes(file);
-    class_file.attributes = (AttributeInfo*)malloc(
-                          class_file.attributes_count * sizeof(AttributeInfo));
-    attribute_info->read(class_file, file);
+    // class_file.attributes_count = read_2_bytes(file);
+    // class_file.attributes = (AttributeInfo*)malloc(
+    //                       class_file.attributes_count * sizeof(AttributeInfo));
+    // attribute_info->read(class_file, file);
 
     return class_file;
 }

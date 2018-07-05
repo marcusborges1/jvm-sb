@@ -97,6 +97,7 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   printf("17. Long\n");
   printf("18. Classe Abstrata\n");
   printf("19. Geral\n");
+  printf("20. Fibonacci\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -157,6 +158,9 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
       break;
     case 19:
       filename = "test/a.class";
+      break;
+    case 20:
+      filename = "test/Fibonacci.class";
       break;
     case 0:
       printf("Até mais!\n");
@@ -308,11 +312,12 @@ void ClassFilePrinter::print_fields_info(JavaClass class_file) {
  *  @return void
  */
 void ClassFilePrinter::print_method(JavaClass class_file) {
+  int counter_attr = 0, counter_method = 0;
   printf(" ------------- Methods Info:  -------------\n");
 
-  for (int i = 0; i < class_file.methods_count; i++) {
-    printf("\nMETHOD INFO[%d]\n", i);
-    MethodInfo* cp = class_file.methods+i;
+  for (counter_method = 0; counter_method < class_file.methods_count; counter_method++) {
+    printf("\nMETHOD INFO[%d]\n", counter_method);
+    MethodInfo* cp = class_file.methods+counter_method;
 
     printf("Name Index: cp info #%d ",cp->name_index);
     std::cout << cpinfo->get_utf8_constant_pool(class_file.constant_pool,
@@ -328,9 +333,9 @@ void ClassFilePrinter::print_method(JavaClass class_file) {
 
     printf("Attributes Count: %d\n",cp->attributes_count);
     printf("\nATTRIBUTES:\n");
-    for (int j = 0; j < cp->attributes_count; j++) {
-      printf("\nATTRIBUTE[%d]\n", j);
-      print_attributes_methods(class_file, cp->attributes[j]);
+    for (counter_attr = 0; counter_attr < cp->attributes_count; counter_attr++) {
+      printf("\nATTRIBUTE[%d]\n", counter_attr);
+      print_attributes_methods(class_file, cp->attributes[counter_attr]);
     }
     printf("\n");
   }
