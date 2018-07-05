@@ -1486,7 +1486,7 @@ void lstore(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 0
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 0
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1499,7 +1499,7 @@ void lstore_0(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 1
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 1
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1512,7 +1512,7 @@ void lstore_1(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 2
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 2
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
@@ -1525,7 +1525,7 @@ void lstore_2(Frame* curr_frame) {
 }
 
 /**
-* @brief Armazena float do topo da pilha de operandos no array de variaveis locais no indice 3
+* @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 3
 * @param Frame *curr_frame Ponteiro para o frame atual
 * @return void
 */
