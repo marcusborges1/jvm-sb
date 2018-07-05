@@ -2346,7 +2346,7 @@ void ldc_w(Frame *curr_frame){
             break;
         case CONSTANT_Class:
             //TODO
-            printf("");
+            printf("TODO");
             break;
         case CONSTANT_String:{
             operands = (Operand*)malloc(sizeof(Operand));
@@ -2357,7 +2357,7 @@ void ldc_w(Frame *curr_frame){
         }
         default:
             //TODO
-            printf("");
+            printf("TODO");
             break; //methodRef e methodHandle não implementados
     }
 
@@ -2486,6 +2486,3 @@ void areturn(Frame *curr_frame){
     Frame *called_frame = top_frame();
     called_frame->push_operand(object);
 }
-
-
-
