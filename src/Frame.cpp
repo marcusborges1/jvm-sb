@@ -86,8 +86,8 @@ void Frame::setup_instructions_func() {
     func[16] = bipush;
     func[17] = sipush;
     func[18] = ldc;
-    // func[19] = ldc_w;
-    // func[20] = ldc2_w;
+    func[19] = ldc_w;
+    func[20] = ldc2_w;
     func[21] = iload;
     func[22] = lload;
     func[23] = fload;
@@ -127,9 +127,9 @@ void Frame::setup_instructions_func() {
     func[57] = dstore;
     // func[58] = astore;
     // func[59] = istore_0;
-    // func[60] = istore_1;
-    // func[61] = istore_2;
-    // func[62] = istore_3;
+    func[60] = istore_1;
+    func[61] = istore_2;
+    func[62] = istore_3;
     func[63] = lstore_0;
     func[64] = lstore_1;
     func[65] = lstore_2;
@@ -156,7 +156,7 @@ void Frame::setup_instructions_func() {
     // func[86] = sastore;
     // func[87] = pop;
     // func[88] = pop2;
-    // func[89] = dup;
+    func[89] = dup;
     // func[90] = dup_x1;
     // func[91] = dup_x2;
     // func[92] = dup2;
@@ -167,7 +167,7 @@ void Frame::setup_instructions_func() {
     // func[97] = ladd;
     // func[98] = fadd;
     // func[99] = dadd;
-    // func[100] = isub;
+    func[100] = isub;
     // func[101] = lsub;
     // func[102] = fsub;
     // func[103] = dsub;
@@ -200,7 +200,7 @@ void Frame::setup_instructions_func() {
     // func[130] = ixor;
     // func[131] = lxor;
     // func[132] = iinc;
-    // func[133] = i2l;
+    func[133] = i2l;
     // func[134] = i2f;
     // func[135] = i2d;
     // func[136] = l2i;
@@ -229,12 +229,12 @@ void Frame::setup_instructions_func() {
     // func[159] = if_icmpeq;
     // func[160] = if_icmpne;
     // func[161] = if_icmplt;
-    // func[162] = if_icmpge;
+    func[162] = if_icmpge;
     // func[163] = if_icmpgt;
     // func[164] = if_icmple;
     // func[165] = if_acmpeq;
     // func[166] = if_acmpne;
-    // func[167] = ins_goto;
+    func[167] = ins_goto;
     // func[168] = jsr;
     // func[169] = ret;
     // func[170] = tableswitch;
@@ -248,11 +248,11 @@ void Frame::setup_instructions_func() {
     func[178] = getstatic;
     // func[179] = putstatic;
     func[180] = getfield;
-    // func[181] = putfield;
+    func[181] = putfield;
     func[182] = invokevirtual;
     func[183] = invokespecial;
-    // func[184] = invokestatic;
-    // func[185] = invokeinterface;
+    func[184] = invokestatic;
+    func[185] = invokeinterface;
     //
     // func[187] = new_obj;
     // func[188] = newarray;
