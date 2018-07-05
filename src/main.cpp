@@ -16,8 +16,8 @@
  *  @author Dayanne Fernandes da Cunha        13/0107191
  *  @author Laís Mendes Gonçalves             11/0033647
  *  @author Marcus Vinícius da Silva Borges   13/0032891
- *  @author
- *  @author
+ *  @author Leonardo de Almeida               15/0135491
+ *  @author Gabriel Almeida Campos
  *
  *  @bug No know bugs.
  */
