@@ -2127,3 +2127,23 @@ void l2i(Frame *curr_frame) {
     curr_frame->push_operand(new_int);
     curr_frame->pc++;
 }
+
+void iand(Frame *curr_frame) {
+    u4 ivalue1, ivalue2, iresult;
+
+    curr_frame->pc++;
+
+    Operand *value1 = curr_frame->pop_operand();
+    Operand *value2 = curr_frame->pop_operand();
+
+    ivalue1 = value1->type_int;
+    ivalue2 = value2->type_int;
+
+    iresult = ivalue1 & ivalue2;
+
+    Operand *result = check_string_create_type("I");
+
+    result->type_int = (u4)iresult;
+
+    curr_frame->push_operand(result);
+}
