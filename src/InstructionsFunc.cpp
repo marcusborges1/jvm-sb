@@ -1946,3 +1946,39 @@ void invokestatic(Frame *curr_frame){
 
     push_frame(new_frame);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @brief Retorna long int de um método.
+ * @param Frame *currentFrame ponteiro que aponta para o frame atual
+ * @return void
+ */
+
+void lreturn(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *long_value = curr_frame->pop_operand();
+    pop_frame();
+    Frame *past_frame = top_frame();
+    past_frame->push_operand(long_value);
+}
+
+
+
+

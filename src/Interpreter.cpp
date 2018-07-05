@@ -141,7 +141,10 @@ void push_frame(Frame *frame) {
 void pop_frame() {
     frame_stack.pop();
 }
-
+Frame* top_frame() {
+  Frame *frame = frame_stack.top();
+  return frame;
+}
 
 /**
  * @brief Retorna a classe estática

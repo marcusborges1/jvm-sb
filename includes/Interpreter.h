@@ -31,6 +31,7 @@ Operand* get_static_field_of_class(std::string class_name,
                                     std::string field_name);
 void push_frame(Frame *frame);
 void pop_frame();
+Frame* top_frame();
 ClassInstance* get_static_class(std::string class_name);
 
 #endif
