@@ -783,6 +783,9 @@ void lload_0(Frame *curr_frame) {
 void lload_1(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[1]);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "lload_1\n";
+
 }
 
 /**
@@ -803,6 +806,8 @@ void lload_2(Frame *curr_frame) {
 void lload_3(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[3]);
   curr_frame->pc++;
+  if (DEBUG) std::cout << "lload_3\n";
+
 }
 
 /**
@@ -1168,6 +1173,8 @@ void ladd(Frame *curr_frame) {
   result->type_long = operand_1->type_long + operand_2->type_long;
 
   curr_frame->push_operand(result);
+  if (DEBUG) std::cout << "ladd\n";
+
 }
 
 /**
@@ -1258,6 +1265,8 @@ void lsub(Frame *curr_frame) {
   result->type_long = operand_1->type_long - operand_2->type_long;
 
   curr_frame->push_operand(result);
+  if (DEBUG) std::cout << "lsub\n";
+
 }
 
 /**
@@ -1347,6 +1356,8 @@ void lmul(Frame *curr_frame) {
   result->type_long = (operand_1->type_long) * (operand_2->type_long);
 
   curr_frame->push_operand(result);
+  if (DEBUG) std::cout << "lmul\n";
+
 }
 
 /**
@@ -1435,6 +1446,8 @@ void ldiv(Frame *curr_frame) {
   result->type_long = (operand_2->type_long) / (operand_1->type_long);
 
   curr_frame->push_operand(result);
+  if (DEBUG) std::cout << "ldiv\n";
+
 }
 
 /**
@@ -1497,6 +1510,8 @@ void lstore(Frame* curr_frame) {
 
   curr_frame->local_variables_array[index] = op;
   curr_frame->pc++;
+  if (DEBUG) std::cout << "lstore\n";
+
 }
 
 /**
@@ -1523,6 +1538,8 @@ void lstore_1(Frame* curr_frame) {
 
   curr_frame->local_variables_array[1] = op;
   curr_frame->pc++;
+  if (DEBUG) std::cout << "lstore_1\n";
+
 }
 
 /**
@@ -1549,6 +1566,8 @@ void lstore_3(Frame* curr_frame) {
 
   curr_frame->local_variables_array[3] = op;
   curr_frame->pc++;
+  if (DEBUG) std::cout << "istore_3\n";
+
 }
 
 /**
@@ -1916,6 +1935,7 @@ void i2l(Frame *curr_frame){
 
     curr_frame->pc++;
     curr_frame->push_operand(value_converted);
+    if (DEBUG) std::cout << "i2l\n";
 }
 
 
@@ -2840,4 +2860,19 @@ void if_icmpne(Frame *curr_frame){
     }else{
         curr_frame->pc +=3;
     }
+}
+
+void f2l(Frame *curr_frame){
+    float valorPilha;
+    Operand *floatType = curr_frame->pop_operand();
+	memcpy(&valorPilha, &floatType->type_float, sizeof(int32_t));
+
+    long valorConvertido = (long)valorPilha;
+    Operand *longConvertidoType = check_string_create_type("J");
+    memcpy(&longConvertidoType->type_long, &valorConvertido, sizeof(uint64_t));
+
+    curr_frame->pc++;
+    curr_frame->push_operand(longConvertidoType);
+
+    if (DEBUG) std::cout << "f2l\n";
 }

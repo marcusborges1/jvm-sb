@@ -96,6 +96,11 @@ void dup_x2(Frame *curr_frame);
 void dup2(Frame *curr_frame);
 void dup2_x1(Frame *curr_frame);
 void dup2_x2(Frame *curr_frame);
+void f2l(Frame *curr_frame);
+void ladd(Frame *curr_frame);
+void lsub(Frame *curr_frame);
+void ldiv(Frame *curr_frame);
+
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
