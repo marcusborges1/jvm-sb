@@ -2306,3 +2306,87 @@ void astore_3(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
     curr_frame->local_variables_array.at(3) = op;
 }
+
+
+
+
+
+
+/** @brief Dá push de uma word na pilha de operandos.
+@param Frame *curr_frame ponteiro que aponta para o frame atual
+@return void
+*/
+void ldc_w(Frame *curr_frame){
+    curr_frame->pc++;
+
+    u1 index_1 = curr_frame->method_code.code[curr_frame->pc++];
+    u1 index_2 = curr_frame->method_code.code[curr_frame->pc++];
+
+    u2 index = (index_1 << 8) + index_2;
+
+    CpInfo *cp_info = curr_frame->constant_pool_reference + index - 1;
+    Operand* operands = nullptr;
+
+    switch(cp_info->tag){
+        case CONSTANT_Integer:
+            operands = (Operand*)malloc(sizeof(Operand));
+            operands->tag = CONSTANT_Integer;
+            operands->type_int = cp_info->Integer.bytes;
+            break;
+        case CONSTANT_Float:
+            operands = (Operand*)malloc(sizeof(Operand));
+            operands->tag = CONSTANT_Float;
+            operands->type_float = cp_info->Float.bytes;
+            break;
+        case CONSTANT_Class:
+            //TODO
+            printf("");
+            break;
+        case CONSTANT_String:{
+            operands = (Operand*)malloc(sizeof(Operand));
+            operands->tag = CONSTANT_String;
+            std::string utf8_cp = cp_info->get_utf8_constant_pool(curr_frame->constant_pool_reference, cp_info->String.bytes-1);
+            operands->type_string = new std::string(utf8_cp);
+            break;
+        }
+        default:
+            //TODO
+            printf("");
+            break; //methodRef e methodHandle não implementados
+    }
+
+    curr_frame->push_operand(operands);
+
+}
+
+/** @brief Dá push em duas words na pilha de operandos.
+@param Frame *curr_frame ponteiro que aponta para o frame atual
+@return void
+*/
+void ldc2_w(Frame *curr_frame){
+    curr_frame->pc++;
+
+    u1 index_1 = curr_frame->method_code.code[curr_frame->pc++];
+    u1 index_2 = curr_frame->method_code.code[curr_frame->pc++];
+
+    uint16_t index = (index_1 << 8) + index_2;
+
+    CpInfo *cp_info = curr_frame->constant_pool_reference + index - 1;
+    Operand* operands;
+
+    if (cp_info->tag == CONSTANT_Double) { // double
+        operands = (Operand*)malloc(sizeof(Operand));
+        operands->tag = CONSTANT_Double;
+        operands->type_double = cp_info->Double.high_bytes;
+        operands->type_double = (operands->type_double << 32) + cp_info->Double.low_bytes;
+    }
+    else {
+        operands = (Operand*)malloc(sizeof(Operand));
+        operands->tag = CONSTANT_Long;
+        operands->type_long = cp_info->Long.high_bytes;
+        operands->type_long =(operands->type_long << 32) + cp_info->Long.low_bytes;
+    }
+    curr_frame->push_operand(operands);
+}
+
+

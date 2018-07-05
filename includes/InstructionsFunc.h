@@ -98,6 +98,9 @@ void putfield(Frame *curr_frame);
 void astore_2(Frame *curr_frame);
 void astore_3(Frame *curr_frame);
 
+void ldc_w(Frame *curr_frame);
+void ldc2_w(Frame *curr_frame);
+
 
 
 #endif
