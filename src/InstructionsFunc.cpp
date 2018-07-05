@@ -2074,7 +2074,57 @@ void f2i(Frame *curr_frame) {
     curr_frame->pc++;
 }
 
+/**
+ * @brief Converte um long para double
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void l2d(Frame *curr_frame) {
+    long stack_value;
+    Operand *long_type = curr_frame->pop_operand();
+    memcpy(&stack_value, &long_type->type_long, sizeof(u8));
 
+    double new_value = (double) stack_value;
+    Operand *new_double = check_string_create_type("D");
+    memcpy(&new_double->type_double, &new_value, sizeof(u8));
 
+    curr_frame->push_operand(new_double);
+    curr_frame->pc++;
+}
 
+/**
+ * @brief Converte um long para float
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void l2f(Frame *curr_frame) {
+    long stack_value;
+    Operand *long_type = curr_frame->pop_operand();
+    memcpy(&stack_value, &long_type->type_long, sizeof(u8));
+
+    float new_value = (float) stack_value;
+    Operand *new_float = check_string_create_type("D");
+    memcpy(&new_float->type_float, &new_value, sizeof(u4));
+
+    curr_frame->push_operand(new_float);
+    curr_frame->pc++;
+}
+
+/**
+ * @brief Converte um long para int
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void l2i(Frame *curr_frame) {
+    long stack_value;
+    Operand *long_type = curr_frame->pop_operand();
+    memcpy(&stack_value, &long_type->type_long, sizeof(u8));
+
+    int new_value = (int) stack_value;
+    Operand *new_int = check_string_create_type("D");
+    memcpy(&new_int->type_int, &new_value, sizeof(u4));
+
+    curr_frame->push_operand(new_int);
+    curr_frame->pc++;
+}
 
