@@ -1,6 +1,6 @@
 class DoubleDemo {
 
-  static double TESTEDOCARALHO(Double arg) {
+  static double TESTEDOCARALHO(double arg) {
     return arg;
   }
 
@@ -24,8 +24,12 @@ class DoubleDemo {
     System.out.println(e7);
 
     long i2 = 1l;
-    double e8 = (double)( i2);
+    double e8 = (double)(i2);
     System.out.println(e8);
+
+    float i3 = 1.0f;
+    double e9 = (double)(i3);
+    System.out.println(e9);
 
     System.out.println(TESTEDOCARALHO(e1));
   }

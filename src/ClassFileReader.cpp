@@ -53,8 +53,9 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     class_file.this_class = read_2_bytes(file);
 
     // Lê o nome da classe no CP e converte pra String
-    std::string class_name = class_file.constant_pool->get_utf8_constant_pool(class_file.constant_pool,
-                          class_file.this_class - 1);
+    std::string class_name = class_file.constant_pool->get_utf8_constant_pool(
+                                                  class_file.constant_pool,
+                                                  class_file.this_class - 1);
     // Adiciona a extensão '.class' ao nome da classe
     class_name += ".class";
     // Se o nome do arquivo é diferente do nome da classe
