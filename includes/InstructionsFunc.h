@@ -93,6 +93,8 @@ void lreturn(Frame *curr_frame);
 void new_obj(Frame *curr_frame);
 void dup(Frame *curr_frame);
 void putfield(Frame *curr_frame);
+void astore_2(Frame *curr_frame);
+void astore_3(Frame *curr_frame);
 
 
 #endif

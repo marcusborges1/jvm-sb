@@ -2261,3 +2261,34 @@ void putfield(Frame *curr_frame){
 
 
 
+
+
+
+
+
+
+
+
+
+/** @brief Retira o topo da pilha e armazena na variavel local de posição 2.
+@param Frame *curr_frame ponteiro para o frame atual
+@return void
+*/
+void astore_2(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *op = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(2) = op;
+}
+
+/** @brief Retira o topo da pilha e armazena na variavel local de posição 3.
+@param Frame *currentFrame ponteiro para o frame atual
+@return void
+*/
+void astore_3(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *op = curr_frame->pop_operand();
+    curr_frame->local_variables_array.at(3) = op;
+}
+
+
+
