@@ -2128,3 +2128,56 @@ void l2i(Frame *curr_frame) {
     curr_frame->pc++;
 }
 
+void putfield(Frame *curr_frame){
+    curr_frame->pc++;
+    
+    uint16_t index = curr_frame->method_code.code[curr_frame->pc++];
+    index = (index<<8) + curr_frame->method_code.code[curr_frame->pc++];
+    CpInfo field_reference = curr_frame->constant_pool_reference[index - 1];
+
+    CpInfo name_and_type = curr_frame->constant_pool_reference[field_reference.FieldRef.name_and_type_index - 1];
+
+    std::string class_name = name_and_type.get_utf8_constant_pool(curr_frame->constant_pool_reference, field_reference.FieldRef.class_index - 1);
+    std::string var_name = name_and_type.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.name_index - 1);
+
+    Operand *var_operand = curr_frame->pop_operand();
+    Operand *class_instance = curr_frame->pop_operand();
+
+    Operand *class_variable = class_instance->c_instance->fields_class->at(var_name);
+
+    switch (var_operand->tag){
+        case CONSTANT_Integer:
+            class_variable->type_int = var_operand->type_int;
+            break;
+        case CONSTANT_Long:
+            class_variable->type_long = var_operand->type_long;
+            break;
+        case CONSTANT_Boolean:
+            class_variable->type_bool = var_operand->type_bool;
+            break;
+        case CONSTANT_Char:
+            class_variable->type_char = var_operand->type_char;
+            break;
+        case CONSTANT_Short:
+            class_variable->type_short = var_operand->type_short;
+            break;
+        case CONSTANT_Byte:
+            class_variable->type_byte = var_operand->type_byte;
+            break;
+        case CONSTANT_Float:
+            class_variable->type_float = var_operand->type_float;
+            break;
+        case CONSTANT_Double:
+            class_variable->type_double = var_operand->type_double;
+            break;
+        case CONSTANT_String:
+            class_variable->type_string = var_operand->type_string;
+            break;
+        case CONSTANT_Class:
+            class_variable->c_instance = var_operand->c_instance;
+            break;
+        case CONSTANT_Array:
+            class_variable->array_type = var_operand->array_type;
+            break;
+    }
+}
