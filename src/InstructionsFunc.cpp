@@ -2648,7 +2648,102 @@ void dup2_x2(Frame *curr_frame) {
             curr_frame->push_operand(value2);
             curr_frame->push_operand(value1);
         }
-
     }
-
 }
+
+
+
+
+
+/**
+ * @brief Calcula o resto da divisão entre dois floats
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void frem(Frame *curr_frame){
+    float dividend, divisor, f_remainder;
+
+    curr_frame->pc++;
+    Operand *op1 = curr_frame->pop_operand();
+    Operand *op2 = curr_frame->pop_operand();
+
+    memcpy(&divisor, &op1->type_float, sizeof(float));
+    memcpy(&dividend, &op2->type_float, sizeof(float));
+
+    f_remainder = std::fmod(dividend, divisor);
+
+    Operand *result = (Operand*)malloc(sizeof(Operand));
+    result->tag = CONSTANT_Float;
+    memcpy(&result->type_float, &f_remainder, sizeof(u4));
+    curr_frame->push_operand(result);
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * @brief Compara valor1 = valor2. Se verdeiro, realiza salto
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+// void if_icmpeq(Frame *curr_frame){
+//     Operand *operand_1 = curr_frame->pop_operand();
+//     Operand *operand_2 = curr_frame->pop_operand();
+
+//     u4 value_operand_1 = operand_1->type_int;
+//     u4 value_operand_2 = operand_2->type_int;
+
+//     if(value_operand_2 == value_operand_1){
+//         u2 deslocamento;
+
+//         deslocamento = curr_frame->code[curr_frame->currentPc + 1];
+//         deslocamento = (deslocamento << 8 ) | curr_frame->code[curr_frame->currentPc + 2];
+
+//         curr_frame->currentPc += deslocamento;
+//     }else{
+//         curr_frame->currentPc +=3;
+//     }
+// }
+
+/**
+ * @brief Compara valor1 diferente de (not equal) valor2. Se for, realizar salto
+ * @param Frame *currentFrame ponteiro que aponta para o frame atual
+ * @return void
+ */
+
+// void if_icmpne(Frame *currentFrame){
+//     Types *operand1 = currentFrame->popOperand();
+//     Types *operand2 = currentFrame->popOperand();
+
+//     int32_t valueOperand1 = operand1->tpInt;
+//     int32_t valueOperand2 = operand2->tpInt;
+
+//     if(valueOperand2 != valueOperand1){
+//         int16_t deslocamento;
+
+//         deslocamento = currentFrame->code[currentFrame->currentPc + 1];
+//         deslocamento = (deslocamento << 8 ) | currentFrame->code[currentFrame->currentPc + 2];
+
+//         currentFrame->currentPc += deslocamento;
+//     }else{
+//         currentFrame->currentPc +=3;
+//     }
+// }
+
+
+
+
+
+
+
+
+
+

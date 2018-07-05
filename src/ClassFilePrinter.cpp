@@ -80,89 +80,91 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   printf("---------------------\n");
 
   printf("Insira qual tipo de arquivo java gostaria de testar:\n");
-  printf("1. String\n");
-  printf("2. Simulação de impressão\n");
-  printf("3. Vetor unidimensional\n");
-  printf("4. Vetor multidimensional\n");
-  printf("5. Herança\n");
-  printf("6. Reescrita\n");
-  printf("7. Float\n");
-  printf("8. Interface\n");
-  printf("9. Inteiro\n");
-  printf("10. Polimorfismo\n");
-  printf("11. Double\n");
-  printf("12. Static\n");
-  printf("13. Atributo de instancia\n");
-  printf("14. Atributo de classe\n");
-  printf("15. Metodos Dinamicos\n");
-  printf("16. Attributos\n");
-  printf("17. Long\n");
-  printf("18. Classe Abstrata\n");
-  printf("19. Geral\n");
-  printf("20. Fibonacci\n");
+  printf("1. Testar novo arquivo\n");
+  printf("2. String\n");
+  printf("3. Simulação de impressão\n");
+  printf("4. Vetor unidimensional\n");
+  printf("5. Vetor multidimensional\n");
+  printf("6. Herança\n");
+  printf("7. Reescrita\n");
+  printf("8. Float\n");
+  printf("9. Interface\n");
+  printf("10. Inteiro\n");
+  printf("11. Polimorfismo\n");
+  printf("12. Double\n");
+  printf("13. Static\n");
+  printf("14. Atributo de instancia\n");
+  printf("15. Atributo de classe\n");
+  printf("16. Metodos Dinamicos\n");
+  printf("17. Attributos\n");
+  printf("18. Long\n");
+  printf("19. Classe Abstrata\n");
+  printf("20. Geral\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
   switch (option) {
     case 1:
-      filename = "test/StringDemo.class";
+      std::cout << "Nome do arquivo: ";
+      std::cin >> filename;
+      filename = "test/"+filename;
       break;
     case 2:
-      filename = "test/PrintDemo.class";
+      filename = "test/StringDemo.class";
       break;
     case 3:
-      filename = "test/ArrayUniDemo.class";
+      filename = "test/PrintDemo.class";
       break;
     case 4:
-      filename = "test/ArrayMultDemo.class";
+      filename = "test/ArrayUniDemo.class";
       break;
     case 5:
-      filename = "test/SuperClassInheritanceDemo.class";
+      filename = "test/ArrayMultDemo.class";
       break;
     case 6:
-      filename = "test/RewriteDemo.class";
+      filename = "test/SuperClassInheritanceDemo.class";
       break;
     case 7:
-      filename = "test/FloatDemo.class";
+      filename = "test/RewriteDemo.class";
       break;
     case 8:
-      filename = "test/InterfaceDemo.class";
+      filename = "test/FloatDemo.class";
       break;
     case 9:
-      filename = "test/IntegerDemo.class";
+      filename = "test/InterfaceDemo.class";
       break;
     case 10:
-      filename = "test/PolDemo.class";
+      filename = "test/IntegerDemo.class";
       break;
     case 11:
-      filename = "test/DoubleDemo.class";
+      filename = "test/PolDemo.class";
       break;
     case 12:
-      filename = "test/MethodStaticDemo.class";
+      filename = "test/DoubleDemo.class";
       break;
     case 13:
-      filename = "test/AttributeInstDemo.class";
+      filename = "test/MethodStaticDemo.class";
       break;
     case 14:
-      filename = "test/AttributeClassDemo.class";
+      filename = "test/AttributeInstDemo.class";
       break;
     case 15:
-      filename = "test/MethodDynamicDemo.class";
+      filename = "test/AttributeClassDemo.class";
       break;
     case 16:
-      filename = "test/AttributesDemo.class";
+      filename = "test/MethodDynamicDemo.class";
       break;
     case 17:
-      filename = "test/LongDemo.class";
+      filename = "test/AttributesDemo.class";
       break;
     case 18:
-      filename = "test/AbstractClassDemo.class";
+      filename = "test/LongDemo.class";
       break;
     case 19:
-      filename = "test/a.class";
+      filename = "test/AbstractClassDemo.class";
       break;
     case 20:
-      filename = "test/Fibonacci.class";
+      filename = "test/a.class";
       break;
     case 0:
       printf("Até mais!\n");
