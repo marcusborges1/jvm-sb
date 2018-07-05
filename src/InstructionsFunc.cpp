@@ -1165,7 +1165,9 @@ void newarray(Frame *curr_frame) {
       break;
   }
 
-  if (DEBUG) printf("[DEBUG] array size %d \n", operand_2->array_type->array->size());
+  if (DEBUG) std::cout << "[DEBUG] array size "
+                      << operand_2->array_type->array->size() << std::endl;
+
   curr_frame->push_operand(operand_2);
 }
 
@@ -1546,6 +1548,7 @@ void ddiv(Frame *curr_frame) {
   if (DEBUG) std::cout << "ddiv\n";
 }
 
+
 /*
 * @brief Armazena long do topo da pilha de operandos no array de variaveis
 *   locais no indice index
@@ -1556,16 +1559,14 @@ void lstore(Frame* curr_frame) {
   curr_frame->pc++;
 
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << "lstore index " << (int)index << std::endl;
   Operand *op = curr_frame->pop_operand();
-
-  curr_frame->local_variables_array[index] = op;
-  curr_frame->pc++;
-  if (DEBUG) std::cout << "lstore\n";
 
   curr_frame->local_variables_array.at((int)index) = op;
 
   if (DEBUG) std::cout << "lstore\n";
 }
+
 
 /**
 * @brief Armazena long do topo da pilha de operandos no array de variaveis locais no indice 0
@@ -2173,18 +2174,17 @@ void new_obj(Frame *curr_frame){
 void dup(Frame *curr_frame){
     curr_frame->pc++;
 
-    // Operand *op = curr_frame->pop_operand();
-    if(DEBUG)printf("[POPPED OPERAND]\n");
-    if(DEBUG)printf("array size %d\n", curr_frame->operand_stack.top()->array_type->array->size());
-    if(DEBUG)printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
+    if(DEBUG) printf("[POPPED OPERAND]\n");
+    if (DEBUG) std::cout << "array size "
+                        << curr_frame->operand_stack.top()->array_type->array->size()
+                        << std::endl;
+    if(DEBUG) printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
     Operand *copy_1 = copy_operand(curr_frame->operand_stack.top());
-    // Operand *copy_2 = copy_operand(op);
-    if(DEBUG)printf("coppied opperands\n");
+    if(DEBUG) printf("coppied opperands\n");
     curr_frame->push_operand(copy_1);
-    if(DEBUG)printf("[PUSHED OPERAND]\n");
-    // curr_frame->push_operand(copy_2);
-    // if(DEBUG)printf("[PUSHED   OPERAND]\n");
+    if(DEBUG) printf("[PUSHED OPERAND]\n");
 }
+
 
 /**
  * @brief Converte de float para double

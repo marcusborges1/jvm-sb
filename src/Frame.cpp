@@ -41,7 +41,6 @@ void Frame::execute_frame() {
   // coleta o primeiro opcode
   u1 op_code = method_code.code[pc];
   // substituir pelo op_code
-  if (DEBUG) printf("OP CODE %d : \n", op_code);
   func[op_code](this);
 }
 

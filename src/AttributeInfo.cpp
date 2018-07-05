@@ -297,7 +297,7 @@ AttributeInfo AttributeInfo::get_attribute_info(FILE *fp,
             if (DEBUG) std::cout << "ELSE\n";
             if (DEBUG) std::cout << "Attribute Lenght: " << attribute_info.attribute_length << "\n" ;
         //ignora silenciosamente os outros atributos
-        for (int j = 0; j < attribute_info.attribute_length; j++) {
+        for (int j = 0; (unsigned)j < attribute_info.attribute_length; j++) {
             if (DEBUG) std::cout << "reading byte " << j << std::endl;
             attribute_info.info[j] = read_1_byte(fp);
             if (DEBUG) std::cout << "read byte\n";
