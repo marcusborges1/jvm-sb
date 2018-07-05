@@ -891,6 +891,8 @@ void dload_0(Frame *curr_frame) {
 void dload_1(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[1]);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "dload_1\n";
 }
 
 /**
@@ -911,20 +913,27 @@ void dload_2(Frame *curr_frame) {
 void dload_3(Frame *curr_frame) {
   curr_frame->operand_stack.push(curr_frame->local_variables_array[3]);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "dload_3\n";
 }
 
 /**
- * @brief Armazena valor double da pilha de operandos no array de variaveis locais no indice index
- * @param Frame *curr_frame Ponteiro para o frame atual
+ * @brief Armazena valor double da pilha de operandos no array de variaveis
+ *  locais no indice index
+ * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
 void dstore(Frame* curr_frame) {
+  curr_frame->pc++;
+
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
   Operand *op = curr_frame->operand_stack.top();
   curr_frame->operand_stack.pop();
 
-  curr_frame->local_variables_array[index] = op;
+  curr_frame->local_variables_array.at((int)index) = op;
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "dstore\n";
 }
 
 /**
@@ -952,6 +961,8 @@ void dstore_1(Frame* curr_frame) {
 
   curr_frame->local_variables_array[1] = op;
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "dstore_1\n";
 }
 
 /**
@@ -973,6 +984,7 @@ void dstore_2(Frame* curr_frame) {
  * @return void
  */
 void dstore_3(Frame* curr_frame) {
+
   Operand *op = curr_frame->operand_stack.top();
   curr_frame->operand_stack.pop();
 
@@ -1206,6 +1218,8 @@ void dadd(Frame *curr_frame) {
   memcpy(&result->type_double, &value_1, sizeof(u8));
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "dadd\n";
 }
 
 /**
@@ -2429,6 +2443,8 @@ void ldc2_w(Frame *curr_frame){
         operands->type_long =(operands->type_long << 32) + cp_info->Long.low_bytes;
     }
     curr_frame->push_operand(operands);
+
+    if (DEBUG) std::cout << "ldc2_w\n";
 }
 
 

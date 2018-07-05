@@ -60,6 +60,7 @@ void dload_2(Frame*);
 void dload_3(Frame*);
 void dstore(Frame*);
 void dstore_0(Frame*);
+void dadd(Frame*);
 void dstore_1(Frame*);
 void dstore_2(Frame*);
 void dstore_3(Frame*);

@@ -166,7 +166,7 @@ void Frame::setup_instructions_func() {
     func[96] = iadd;
     // func[97] = ladd;
     func[98] = fadd;
-    // func[99] = dadd;
+    func[99] = dadd;
     func[100] = isub;
     // func[101] = lsub;
     func[102] = fsub;
