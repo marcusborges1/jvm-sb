@@ -90,6 +90,11 @@ void d2f(Frame *curr_frame);
 void d2l(Frame *curr_frame);
 void d2i(Frame *curr_frame);
 void ior(Frame *curr_frame);
+void dup_x1(Frame *curr_frame);
+void dup_x2(Frame *curr_frame);
+void dup2(Frame *curr_frame);
+void dup2_x1(Frame *curr_frame);
+void dup2_x2(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);

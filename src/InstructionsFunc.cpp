@@ -2486,3 +2486,169 @@ void areturn(Frame *curr_frame){
     Frame *called_frame = top_frame();
     called_frame->push_operand(object);
 }
+
+/**
+ * @brief Duplica o item no topo da pilha e pusha depois do segundo elemento da pilha.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void dup_x1(Frame *curr_frame) {
+    curr_frame->pc++;
+    Operand *value = curr_frame->pop_operand();
+    Operand *value2 = curr_frame->pop_operand();
+    if (value->tag == CONSTANT_Double || value->tag == CONSTANT_Long || value2->tag == CONSTANT_Double || value2->tag == CONSTANT_Long) {
+        curr_frame->push_operand(value2);
+        curr_frame->push_operand(value);
+    } else {
+        Operand *tipo = copy_operand(value);
+        curr_frame->push_operand(tipo);
+        curr_frame->push_operand(value2);
+        curr_frame->push_operand(value);
+    }
+}
+
+/**
+ * @brief Duplica o item no topo da pilha e pusha depois do terceiro elemento da pilha
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void dup_x2(Frame *curr_frame) {
+    curr_frame->pc++;
+    Operand* value = curr_frame->pop_operand();
+    Operand* value2 = curr_frame->pop_operand();
+
+    if (value->tag != CONSTANT_Double && value->tag != CONSTANT_Long) {
+        if (value2->tag == CONSTANT_Double || value2->tag == CONSTANT_Long) {
+            Operand* tipo = copy_operand(value);
+            curr_frame->push_operand(tipo);
+            curr_frame->push_operand(value2);
+            curr_frame->push_operand(value);
+
+        }
+        else {
+            Operand* value3 = curr_frame->pop_operand();
+            if (value3->tag != CONSTANT_Double && value3->tag != CONSTANT_Long) {
+                Operand* tipo = copy_operand(value);
+                curr_frame->push_operand(tipo);
+                curr_frame->push_operand(value3);
+                curr_frame->push_operand(value2);
+                curr_frame->push_operand(value);
+            }
+        }
+    }
+}
+
+/**
+ * @brief Faz uma cópia de dois itens que estao no topo da pilha e o(s) adiciona ao topo da pilha.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void dup2(Frame *curr_frame) {
+    curr_frame->pc++;
+    Operand *value1 = curr_frame->pop_operand();
+    if (value1->tag != CONSTANT_Double && value1->tag != CONSTANT_Long) {
+        Operand *value2 = curr_frame->pop_operand();
+
+        Operand *tipo1 = copy_operand(value1);
+        Operand *tipo2 = copy_operand(value2);
+
+        curr_frame->push_operand(tipo2);
+        curr_frame->push_operand(tipo1);
+
+        curr_frame->push_operand(value2);
+        curr_frame->push_operand(value1);
+
+    } else {
+        Operand *tipo = copy_operand(value1);
+        curr_frame->push_operand(tipo);
+        curr_frame->push_operand(value1);
+    }
+}
+
+/**
+ * @brief Duplica um ou dois valores da pilha de operandos e insere os valores duplicados na ordem original
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void dup2_x1(Frame *curr_frame) {
+    curr_frame->pc++;
+    Operand *value1 = curr_frame->pop_operand();
+    Operand *value2 = curr_frame->pop_operand();
+
+    if (value1->tag != CONSTANT_Double && value1->tag != CONSTANT_Long) {
+        Operand* value3 = curr_frame->pop_operand();
+
+        Operand *tipo1 = copy_operand(value1);
+        Operand *tipo2 = copy_operand(value2);
+
+        curr_frame->push_operand(tipo2);
+        curr_frame->push_operand(tipo1);
+
+        curr_frame->push_operand(value3);
+
+        curr_frame->push_operand(value2);
+        curr_frame->push_operand(value1);
+    } else {
+        Operand* tipo1 = copy_operand(value1);
+
+        curr_frame->push_operand(tipo1);
+        curr_frame->push_operand(value2);
+        curr_frame->push_operand(value1);
+    }
+}
+
+/**
+ * @brief Duplica um ou dois operandos da pilha e insere os valores duplicados na ordem original
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void dup2_x2(Frame *curr_frame) {
+    curr_frame->pc++;
+    Operand* value1 = curr_frame->pop_operand();
+    Operand* value2 = curr_frame->pop_operand();
+
+    Operand* tipo1 = copy_operand(value1);
+    if (value1->tag != CONSTANT_Double && value1->tag != CONSTANT_Long && value2->tag != CONSTANT_Double && value2->tag != CONSTANT_Long) {
+        Operand* value3 = curr_frame->pop_operand();
+
+        Operand* tipo2 = copy_operand(value2);
+
+        if (value3->tag != CONSTANT_Double && value3->tag != CONSTANT_Long) {
+            Operand* value4 = curr_frame->pop_operand();
+
+
+            curr_frame->push_operand(tipo2);
+            curr_frame->push_operand(tipo1);
+
+            curr_frame->push_operand(value4);
+            curr_frame->push_operand(value3);
+
+            curr_frame->push_operand(value2);
+            curr_frame->push_operand(value1);
+        } else {
+            curr_frame->push_operand(tipo2);
+            curr_frame->push_operand(tipo1);
+
+            curr_frame->push_operand(value3);
+            curr_frame->push_operand(value2);
+            curr_frame->push_operand(value1);
+        }
+    }
+    else {
+        if (value2->tag == CONSTANT_Double || value2->tag == CONSTANT_Long) {
+            curr_frame->push_operand(tipo1);
+            curr_frame->push_operand(value2);
+            curr_frame->push_operand(value1);
+        }
+        else {
+            Operand* value3 = curr_frame->pop_operand();
+
+            curr_frame->push_operand(tipo1);
+            curr_frame->push_operand(value3);
+            curr_frame->push_operand(value2);
+            curr_frame->push_operand(value1);
+        }
+
+    }
+
+}
