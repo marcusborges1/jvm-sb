@@ -35,8 +35,7 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
     // realiza a leitura das versões no formato major.minor
     class_file.minor_version = read_2_bytes(file);
     class_file.major_version = read_2_bytes(file);
-    if((class_file.major_version > 46 || class_file.major_version < 45) || 
-        (class_file.major_version == 46 && class_file.minor_version > 0)){
+    if (class_file.major_version > 51){
         printf( "Arquivo com versão invalida.\n");
         printf("Encerrando programa. \n");
         exit(1);
