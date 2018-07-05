@@ -103,6 +103,10 @@ void ldc2_w(Frame *curr_frame);
 
 void isub(Frame *curr_frame);
 void invokeinterface(Frame *curr_frame);
+void areturn(Frame *curr_frame);
+void dreturn(Frame *curr_frame);
+void freturn(Frame *curr_frame);
+void ireturn(Frame *curr_frame);
 
 
 

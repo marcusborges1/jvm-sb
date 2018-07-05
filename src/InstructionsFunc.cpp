@@ -2418,3 +2418,68 @@ void invokeinterface(Frame *curr_frame){
 
 
 
+
+
+
+
+
+
+/**
+ * @brief Retorna int de um método.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void ireturn(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *integer = curr_frame->pop_operand();
+    pop_frame();
+    Frame *called_frame = top_frame();
+    called_frame->push_operand(integer);
+}
+
+
+/**
+ * @brief Retorna float de um método.
+ * @param Frame *curr_frame ponteiro o frame atual
+ * @return void
+ */
+
+void freturn(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *float_value = curr_frame->pop_operand();
+    pop_frame();
+    Frame *called_frame = top_frame();
+    called_frame->push_operand(float_value);
+}
+
+/**
+ * @brief Retorna double de um método.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void dreturn(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *double_value = curr_frame->pop_operand();
+    pop_frame();
+    Frame *called_frame = top_frame();
+    called_frame->push_operand(double_value);
+}
+
+/**
+ * @brief Retorna objeto de um método.
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+
+void areturn(Frame *curr_frame){
+    curr_frame->pc++;
+    Operand *object = curr_frame->pop_operand();
+    pop_frame();
+    Frame *called_frame = top_frame();
+    called_frame->push_operand(object);
+}
+
+
+

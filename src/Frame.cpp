@@ -239,11 +239,11 @@ void Frame::setup_instructions_func() {
     // func[169] = ret;
     // func[170] = tableswitch;
     // func[171] = lookupswitch;
-    // func[172] = ireturn;
-    // func[173] = lreturn;
-    // func[174] = freturn;
-    // func[175] = dreturn;
-    // func[176] = areturn;
+    func[172] = ireturn;
+    func[173] = lreturn;
+    func[174] = freturn;
+    func[175] = dreturn;
+    func[176] = areturn;
     func[177] = void_return;
     func[178] = getstatic;
     // func[179] = putstatic;
