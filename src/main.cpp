@@ -21,9 +21,6 @@
  *
  *  @bug No know bugs.
  */
-/** @cond */
-#include <string>
-/** @endcond */
 #include "ClassFilePrinter.h"
 
 
@@ -31,6 +28,7 @@
  *  @return int que notifica saída com sucesso do sistema
  */
 int main() {
+  // mostra menu inicial de interface com usuário
   ClassFilePrinter *printer = new ClassFilePrinter();
   printer->print_menu_init();
 
