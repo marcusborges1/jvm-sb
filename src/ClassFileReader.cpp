@@ -51,6 +51,18 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     class_file.access_flags = read_2_bytes(file);
     class_file.this_class = read_2_bytes(file);
+
+    // Lê o nome da classe no CP e converte pra String
+    std::string class_name = class_file.constant_pool->get_utf8_constant_pool(class_file.constant_pool,
+                          class_file.this_class - 1);
+    // Adiciona a extensão '.class' ao nome da classe
+    class_name += ".class";
+    // Se o nome do arquivo é diferente do nome da classe
+    if (filename.find(class_name) == std::string::npos) {
+      printf("O nome do arquivo não é imcompátivel com o da classe. \n");
+      exit(1);
+    }
+
     class_file.super_class = read_2_bytes(file);
 
     class_file.interfaces_count = read_2_bytes(file);
