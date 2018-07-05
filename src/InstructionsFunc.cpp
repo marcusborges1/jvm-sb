@@ -60,6 +60,7 @@ void ldc(Frame *curr_frame) {
     }
     curr_frame->push_operand(op);
     curr_frame->pc++;
+    std::cout << "ldc\n";
 }
 
 /** @brief Guarda referência do object ou array do operando na variável local 1.
@@ -1740,7 +1741,7 @@ void if_icmpge(Frame *curr_frame){
     u4 value_param2 = op1->type_int;
     u4 value_param1 = op2->type_int;
 
-    if(value_param1 >= value_param2){
+    if (value_param1 >= value_param2){
         u2 jump;
 
         jump = curr_frame->method_code.code[curr_frame->pc + 1];
@@ -1837,16 +1838,11 @@ void istore_3(Frame *curr_frame) {
 }
 
 
-
-
-
-
 /** Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
  * @brief Resgata o valor do topo da pilha (que deve ser int), covnerte para long e salva na pilha de operandos
  * @param Frame *curr_frame ponteiro para o frame atual
  * @return void
  */
-
 void i2l(Frame *curr_frame){
     int value_op;
     Operand *op_int = curr_frame->pop_operand();
@@ -1861,11 +1857,9 @@ void i2l(Frame *curr_frame){
 }
 
 
-
-
 /**
  * @brief Função para saltar para um certo offset.
- * @param Frame *curr_frame ponteiro que para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void ins_goto(Frame *curr_frame){
@@ -1875,82 +1869,79 @@ void ins_goto(Frame *curr_frame){
 }
 
 
-
-
-
 /**
  * @brief Invoca um método estático de uma classe.
- * @param Frame *curr_frame ponteiro para o frame atual
+ * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
-
 void invokestatic(Frame *curr_frame){
     curr_frame->pc++;
 
     u2 method_index = curr_frame->method_code.code[curr_frame->pc++];
-    method_index = (method_index << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    method_index = (method_index << 8) + curr_frame->method_code.code[
+                                                            curr_frame->pc++];
 
-    CpInfo &method_info = curr_frame->constant_pool_reference[method_index - 1];
+    CpInfo &method_info = curr_frame->constant_pool_reference[method_index-1];
 
-    CpInfo &class_info = curr_frame->constant_pool_reference[method_info.MethodRef.index - 1];
-    std::string class_name = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, class_info.Class.type_class_info - 1);
+    CpInfo &class_info = curr_frame->constant_pool_reference[
+                                            method_info.MethodRef.index - 1];
+    std::string class_name = class_info.get_utf8_constant_pool(
+                                        curr_frame->constant_pool_reference,
+                                        class_info.Class.type_class_info - 1);
 
-    CpInfo &name_and_type = curr_frame->constant_pool_reference[method_info.MethodRef.name_and_type - 1];
-    std::string method_name = name_and_type.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.name_index - 1);
-    std::string method_descriptor = name_and_type.get_utf8_constant_pool(curr_frame->constant_pool_reference, name_and_type.NameAndType.descriptor_index - 1);
+    CpInfo &name_and_type = curr_frame->constant_pool_reference[
+                                    method_info.MethodRef.name_and_type - 1];
+    std::string method_name = name_and_type.get_utf8_constant_pool(
+                                      curr_frame->constant_pool_reference,
+                                      name_and_type.NameAndType.name_index-1);
+    std::string method_descriptor = name_and_type.get_utf8_constant_pool(
+                                  curr_frame->constant_pool_reference,
+                                  name_and_type.NameAndType.descriptor_index-1);
 
-    if(class_name == "java/lang/Object" && method_name == "registerNatives"){
-    //não suporta metodo nativo
-        return;
-    }else if(class_name.find("java/") != std::string::npos)
-    {
-        // caso seja algum outro tipo de classe java nao implementada
-        printf("Classe Java não implementada.");
-        getchar();
-        exit(1);
+    std::cout << "class name: " << class_name << std::endl;
+    if (class_name == "java/lang/Object" && method_name == "registerNatives") {
+      printf("JVM não suporta método nativo.");
+      return;
     }
     // calcula quantos argumentos o metodo tem
     int count_arguments = 0;
-    uint16_t counter = 1;
-    while(method_descriptor[counter] != ')')
-    {
+    u2 counter = 1;
+    while (method_descriptor[counter] != ')') {
         char find_type = method_descriptor[counter];
-        if(find_type == 'L')
-        { // tipo é um objeto
+        if (find_type == 'L') { // tipo é um objeto
             count_arguments++;
-            while(method_descriptor[++counter] != ';');
-        }else if(find_type == '[')
-        { // tipo é um array
+            while (method_descriptor[++counter] != ';');
+        } else if (find_type == '[') { // tipo é um array
             count_arguments++;
-            while(method_descriptor[++counter] == '[');
-            if(method_descriptor[counter] == 'L')
+            while (method_descriptor[++counter] == '[');
+            if (method_descriptor[counter] == 'L')
                 while(method_descriptor[++counter] != ';');
-        }else
-        {
-            count_arguments++;
-        }
+        } else count_arguments++;
         counter++;
     }
     std::vector<Operand*> arguments;
 
     for (int i = 0; i < count_arguments; ++i) {
         Operand *argument = curr_frame->pop_operand();
+        // passa argumento para a função
         arguments.insert(arguments.begin(), argument);
-        if(argument->tag == CONSTANT_Double || argument->tag == CONSTANT_Long){
+        if (argument->tag == CONSTANT_Double || argument->tag == CONSTANT_Long)
             arguments.insert(arguments.begin()+1, check_string_create_type("P"));
-        }
     }
 
     ClassInstance *class_instance = get_static_class(class_name);
 
-    MethodInfo *method_finded = find_method(class_instance->info_class, method_name, method_descriptor);
-    Frame *new_frame = new Frame(method_finded, class_instance->info_class.constant_pool);
+    MethodInfo *method_finded = find_method(class_instance->info_class,
+                                            method_name, method_descriptor);
+    Frame *new_frame = new Frame(method_finded,
+                                class_instance->info_class.constant_pool);
 
-    for (int j = 0; (unsigned)j < arguments.size(); ++j) {
+    for (int j = 0; (unsigned)j < arguments.size(); ++j)
         new_frame->local_variables_array.at(j) = arguments.at(j);
-    }
 
     push_frame(new_frame);
+
+    std::cout << "invokestatic\n";
 }
 
 
@@ -2007,7 +1998,7 @@ void new_obj(Frame *curr_frame){
     std::string utf8_constant = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, class_info.Class.type_class_info - 1);
 
     curr_frame->pc++;
-    if(utf8_constant == "java/lang/StringBuilder"){
+    if (utf8_constant == "java/lang/StringBuilder"){
         Operand* string_builder = (Operand*)malloc(sizeof(Operand));
         string_builder->tag = CONSTANT_String;
         string_builder->type_string = new std::string("");
@@ -2213,7 +2204,7 @@ void d2f(Frame *curr_frame) {
 void putfield(Frame *curr_frame){
     curr_frame->pc++;
 
-    uint16_t index = curr_frame->method_code.code[curr_frame->pc++];
+    u2 index = curr_frame->method_code.code[curr_frame->pc++];
     index = (index<<8) + curr_frame->method_code.code[curr_frame->pc++];
     CpInfo field_reference = curr_frame->constant_pool_reference[index - 1];
 
@@ -2375,7 +2366,7 @@ void ldc2_w(Frame *curr_frame){
     u1 index_1 = curr_frame->method_code.code[curr_frame->pc++];
     u1 index_2 = curr_frame->method_code.code[curr_frame->pc++];
 
-    uint16_t index = (index_1 << 8) + index_2;
+    u2 index = (index_1 << 8) + index_2;
 
     CpInfo *cp_info = curr_frame->constant_pool_reference + index - 1;
     Operand* operands;
@@ -2409,7 +2400,7 @@ void ldc2_w(Frame *curr_frame){
 void invokeinterface(Frame *curr_frame){
     curr_frame->pc++;
 
-    uint16_t method_index = curr_frame->method_code.code[curr_frame->pc++];
+    u2 method_index = curr_frame->method_code.code[curr_frame->pc++];
     method_index = (method_index << 8) + curr_frame->method_code.code[curr_frame->pc++];
 
     CpInfo &method_info = curr_frame->constant_pool_reference[method_index - 1];
