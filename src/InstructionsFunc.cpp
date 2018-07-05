@@ -1894,11 +1894,14 @@ void invokestatic(Frame *curr_frame){
     std::string method_name = name_and_type.get_utf8_constant_pool(
                                       curr_frame->constant_pool_reference,
                                       name_and_type.NameAndType.name_index-1);
+
+    std::cout << "nome do método a ser chamado: " << method_name << std::endl;
+
     std::string method_descriptor = name_and_type.get_utf8_constant_pool(
                                   curr_frame->constant_pool_reference,
                                   name_and_type.NameAndType.descriptor_index-1);
 
-    std::cout << "class name: " << class_name << std::endl;
+    std::cout << "nome da classe: " << class_name << std::endl;
     if (class_name == "java/lang/Object" && method_name == "registerNatives") {
       printf("JVM não suporta método nativo.");
       return;
@@ -1919,47 +1922,43 @@ void invokestatic(Frame *curr_frame){
         } else count_arguments++;
         counter++;
     }
-    std::vector<Operand*> arguments;
 
-    for (int i = 0; i < count_arguments; ++i) {
-        Operand *argument = curr_frame->pop_operand();
-        // passa argumento para a função
-        arguments.insert(arguments.begin(), argument);
-        if (argument->tag == CONSTANT_Double || argument->tag == CONSTANT_Long)
-            arguments.insert(arguments.begin()+1, check_string_create_type("P"));
-    }
+    std::cout << "método possui " << count_arguments << " argumentos\n";
 
-    ClassInstance *class_instance = get_static_class(class_name);
+    // não precisa criar frame para definir tipo float
+    if (class_name.find("Float") != std::string::npos &&
+        method_name.find("valueOf") != std::string::npos) {
+          return;
+    } else {
+      std::vector<Operand*> arguments;
 
-    MethodInfo *method_finded = find_method(class_instance->info_class,
+      for (int i = 0; i < count_arguments; ++i) {
+          Operand *argument = curr_frame->pop_operand();
+          std::cout << "classe atual: " << argument->c_instance->name_class << std::endl;
+          std::cout << "operando do tipo: " <<  (int)argument->tag << std::endl;
+          // passa argumento para a função
+          arguments.insert(arguments.begin(), argument);
+          if (argument->tag == CONSTANT_Double || argument->tag == CONSTANT_Long)
+              arguments.insert(arguments.begin()+1,
+                              check_string_create_type("P"));
+      }
+
+      ClassInstance *class_instance = get_static_class(class_name);
+
+      MethodInfo *method_finded = find_method(class_instance->info_class,
                                             method_name, method_descriptor);
-    Frame *new_frame = new Frame(method_finded,
-                                class_instance->info_class.constant_pool);
+      Frame *new_frame = new Frame(method_finded,
+                                  curr_frame->constant_pool_reference);
 
-    for (int j = 0; (unsigned)j < arguments.size(); ++j)
-        new_frame->local_variables_array.at(j) = arguments.at(j);
+      // vetor das variáveis locais
+      for (int j = 0; (unsigned)j < arguments.size(); ++j)
+          new_frame->local_variables_array.at(j) = arguments.at(j);
 
-    push_frame(new_frame);
+      push_frame(new_frame);
+    }
 
     std::cout << "invokestatic\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -1975,13 +1974,6 @@ void lreturn(Frame *curr_frame){
     Frame *past_frame = top_frame();
     past_frame->push_operand(long_value);
 }
-
-
-
-
-
-
-
 
 
 /**

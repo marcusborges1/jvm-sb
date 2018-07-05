@@ -372,7 +372,7 @@ MethodInfo *find_method(JavaClass class_file, std::string method_name,
     }
   }
 
-  printf("Metodo nao encontrado\n");
+  printf("Método não encontrado\n");
   getchar();
   exit(5);
 }

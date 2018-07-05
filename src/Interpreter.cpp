@@ -57,12 +57,13 @@ void Interpreter::execute(JavaClass class_file) {
 ClassInstance* load_class_memory(JavaClass class_file) {
   CpInfo *cpinfo = new CpInfo();
 
-  ClassInstance *c_instance = (ClassInstance*)malloc(
-                                                      sizeof(ClassInstance));
+  ClassInstance *c_instance = (ClassInstance*)malloc(sizeof(ClassInstance));
   c_instance->info_class = class_file;
   std::string utf8_s = cpinfo->get_utf8_constant_pool(class_file.constant_pool,
                                                   class_file.this_class-1);
   c_instance->name_class = &utf8_s;
+
+  std::cout << "Classe estática " << utf8_s << " carregada na memória...!\n";
   loaded_classes.insert(
               (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
 
@@ -70,7 +71,7 @@ ClassInstance* load_class_memory(JavaClass class_file) {
               (std::pair<std::string, ClassInstance*>(utf8_s, c_instance)));
   load_class_var(c_instance);
 
-  std::cout << "Classe carregada na memória...!\n";
+  std::cout << "Classes carregadas na memória...!\n";
 
   return c_instance;
 }
@@ -152,7 +153,5 @@ Frame* top_frame() {
  * @return ClassInstance* ponteiro da referencia da classe
  */
 ClassInstance* get_static_class(std::string class_name){
-    return static_classes[class_name];
+  return static_classes[class_name];
 }
-
-
