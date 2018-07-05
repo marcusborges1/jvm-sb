@@ -84,6 +84,7 @@ void iand(Frame *curr_frame);
 void d2f(Frame *curr_frame);
 void d2l(Frame *curr_frame);
 void d2i(Frame *curr_frame);
+void ior(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
@@ -92,9 +93,13 @@ void invokestatic(Frame *curr_frame);
 void lreturn(Frame *curr_frame);
 void new_obj(Frame *curr_frame);
 void dup(Frame *curr_frame);
+<<<<<<< HEAD
 void putfield(Frame *curr_frame);
 void astore_2(Frame *curr_frame);
 void astore_3(Frame *curr_frame);
+=======
+
+>>>>>>> 6f636ffe5dcc85bbeecea3d431e17bc2b7a25179
 
 
 #endif

@@ -2206,7 +2206,7 @@ void d2f(Frame *curr_frame) {
 
 void putfield(Frame *curr_frame){
     curr_frame->pc++;
-    
+
     uint16_t index = curr_frame->method_code.code[curr_frame->pc++];
     index = (index<<8) + curr_frame->method_code.code[curr_frame->pc++];
     CpInfo field_reference = curr_frame->constant_pool_reference[index - 1];
@@ -2258,13 +2258,30 @@ void putfield(Frame *curr_frame){
     }
 }
 
+/**
+ * @brief Realiza a operacao de OR entre dois operandos e empilha o resultado
+ * @param Frame *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void ior(Frame *curr_frame) {
+    int32_t ivalue1, ivalue2, iresult;
 
+    curr_frame->pc++;
 
+    Operand *value1 = curr_frame->pop_operand();
+    Operand *value2 = curr_frame->pop_operand();
 
+    ivalue1 = value1->type_int;
+    ivalue2 = value2->type_int;
 
+    iresult = ivalue1 | ivalue2;
 
+    Operand* result = check_string_create_type("I");
 
+    result->type_int = (u4)iresult;
 
+    curr_frame->push_operand(result);
+}
 
 
 
@@ -2289,6 +2306,3 @@ void astore_3(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
     curr_frame->local_variables_array.at(3) = op;
 }
-
-
-
