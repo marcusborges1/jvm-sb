@@ -35,7 +35,7 @@ MethodInfo* MethodInfo::find_main(JavaClass class_file) {
  *  @return void
  */
 void MethodInfo::read(JavaClass class_file, FILE * fp) {
-  int i = 0, counter_attr = 0, counter_method = 0;
+  int counter_attr = 0, counter_method = 0;
   AttributeInfo *attributeinfo = new AttributeInfo();
   for (counter_method = 0; counter_method < 3; counter_method++) {
    class_file.methods[counter_method].access_flag = read_2_bytes(fp);
@@ -48,7 +48,7 @@ void MethodInfo::read(JavaClass class_file, FILE * fp) {
     for (counter_attr = 0;
         counter_attr < class_file.methods[counter_attr].attributes_count;
         counter_attr++) {
-        
+
         class_file.methods[counter_attr].attributes[counter_method] = attributeinfo->get_attribute_info(
         fp, class_file.methods[counter_attr].attributes[counter_method], class_file);
     }
