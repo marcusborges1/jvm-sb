@@ -186,4 +186,5 @@ void lushr(Frame *curr_frame);
 void land(Frame *curr_frame);
 void lor(Frame *curr_frame);
 void ixor(Frame *curr_frame);
+void lxor(Frame *curr_frame);
 #endif
