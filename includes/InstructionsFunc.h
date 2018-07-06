@@ -164,6 +164,17 @@ void iconst_m1(Frame *curr_frame);
 
 void if_icmpne(Frame *curr_frame);
 void if_icmpeq(Frame *curr_frame);
+void ifeq(Frame *curr_frame);
+void ifne(Frame *curr_frame);
+void iflt(Frame *curr_frame);
+void ifge(Frame *curr_frame);
+void ifgt(Frame *curr_frame);
+void ifle(Frame *curr_frame);
+void if_icmplt(Frame *curr_frame);
+void if_icmpgt(Frame *curr_frame);
+void if_icmple(Frame *curr_frame);
+void if_acmpeq(Frame *curr_frame;
+void if_acmpne(Frame *curr_frame);
 
 void newarray(Frame*);
 void iastore(Frame*);
