@@ -31,6 +31,10 @@ class DoubleDemo {
     double e9 = (double)(i3);
     System.out.println(e9);
 
+    short i4 = 5;
+    double e10 = (double)(i4);
+    System.out.println(e10);
+
     System.out.println(TESTEDOCARALHO(e1));
   }
 }
