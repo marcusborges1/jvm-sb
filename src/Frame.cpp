@@ -40,7 +40,6 @@ Frame::Frame(MethodInfo *method, CpInfo *cp_info) {
 void Frame::execute_frame() {
   // coleta o primeiro opcode
   u1 op_code = method_code.code[pc];
-  if(DEBUG)printf("\nOP CODE %d\n", op_code);
   // substituir pelo op_code
   func[op_code](this);
 }
@@ -430,13 +429,13 @@ Operand* copy_operand(Operand* original_type) {
         case CONSTANT_Array:
           copy_type->array_type = (ArrayType*)malloc(sizeof(ArrayType));
           copy_type->array_type->array = new std::vector<Operand*>();
-            for (int i=0; (unsigned)i < original_type->array_type->array->size(); i++) {
-              if(DEBUG)printf("i %d\n", i);
-                Operand* aux = original_type->array_type->array->at(i);
-                Operand *value = copy_operand(aux);
-                copy_type->array_type->array->emplace_back(value);
-            }
-            break;
+          
+          for (int i=0; (unsigned)i < original_type->array_type->array->size(); i++) {
+              Operand* aux = original_type->array_type->array->at(i);
+              Operand *value = copy_operand(aux);
+              copy_type->array_type->array->emplace_back(value);
+          }
+          break;
     }
     return copy_type;
 }
