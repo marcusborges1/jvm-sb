@@ -230,7 +230,7 @@ void getstatic(Frame *curr_frame) {
                                   field_info.FieldRef.name_and_type_index-1];
     std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
       curr_frame->constant_pool_reference, field_info.FieldRef.class_index-1);
-    // 
+    //
     // if (class_name == "java/lang/System") {
     //     // se for a classe System (default java) não coloca na pilha
     //     return;
@@ -3047,4 +3047,202 @@ void iaload(Frame *curr_frame){
     curr_frame->operand_stack.push(op);
 
     curr_frame->pc++;
+}
+
+void ifnull(Frame *curr_frame){
+    Operand *operand = curr_frame->pop_operand();
+
+    if (!(operand->type_int)){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+
+void ifnonnull(Frame *curr_frame){
+    Operand *operand = curr_frame->pop_operand();
+
+    if (operand->type_int){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+void ret(Frame *curr_frame){
+  u1 index = curr_frame->method_code.code[curr_frame->pc + 1];
+  curr_frame->pc = curr_frame->local_variables_array[index]->type_int;
+}
+
+
+void if_icmplt(Frame *curr_frame){
+    Operand *op1 =curr_frame->pop_operand();
+    Operand *op2 =curr_frame->pop_operand();
+
+    int value = op1->type_int;
+    int value2 = op2->type_int;
+
+    if(value2 < value){
+        int shift;
+
+        shift =curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) |curr_frame->method_code.code[curr_frame->pc + 2];
+
+       curr_frame->pc += shift;
+    }else{
+       curr_frame->pc +=3;
+    }
+}
+
+void if_icmpgt(Frame *curr_frame){
+  Operand *op1 =curr_frame->pop_operand();
+  Operand *op2 =curr_frame->pop_operand();
+
+  int value = op1->type_int;
+  int value2 = op2->type_int;
+
+  if(value2 > value){
+      int shift;
+
+      shift =curr_frame->method_code.code[curr_frame->pc + 1];
+      shift = (shift << 8 ) |curr_frame->method_code.code[curr_frame->pc + 2];
+
+     curr_frame->pc += shift;
+  }else{
+     curr_frame->pc +=3;
+  }
+}
+
+void if_icmple(Frame *curr_frame){
+  Operand *op1 =curr_frame->pop_operand();
+  Operand *op2 =curr_frame->pop_operand();
+
+  int value = op1->type_int;
+  int value2 = op2->type_int;
+
+  if(value2 <= value){
+      int shift;
+
+      shift =curr_frame->method_code.code[curr_frame->pc + 1];
+      shift = (shift << 8 ) |curr_frame->method_code.code[curr_frame->pc + 2];
+
+     curr_frame->pc += shift;
+  }else{
+     curr_frame->pc +=3;
+  }
+}
+
+void if_acmpeq(Frame *curr_frame){
+  u2 branch = curr_frame->method_code.code[curr_frame->pc + 1];
+  branch = (branch << 8) + curr_frame->method_code.code[curr_frame->pc + 2];
+
+  Operand *op = curr_frame->pop_operand();
+  Operand *op2 = curr_frame->pop_operand();
+
+  if (op->c_instance == op2->c_instance) {
+      curr_frame->pc += branch;
+  }
+  else{
+      curr_frame->pc += 3;
+  }
+}
+
+void if_acmpne(Frame *curr_frame){
+  u2 branch = curr_frame->method_code.code[curr_frame->pc + 1];
+  branch = (branch << 8) + curr_frame->method_code.code[curr_frame->pc + 2];
+
+  Operand *op = curr_frame->pop_operand();
+  Operand *op2 = curr_frame->pop_operand();
+
+  if (op->c_instance != op2->c_instance) {
+      curr_frame->pc += branch;
+  }
+  else{
+      curr_frame->pc += 3;
+  }
+}
+
+void ifeq(Frame *curr_frame){
+    Operand *op = curr_frame->pop_operand();
+
+    if (op->type_int == 0){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+void ifne(Frame *curr_frame){
+    Operand *op = curr_frame->pop_operand();
+
+    if (op->type_int != 0){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+void iflt(Frame *curr_frame){
+    Operand *op = curr_frame->pop_operand();
+
+    if (op->type_int < 0){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+void ifge(Frame *curr_frame){
+    Operand *op = curr_frame->pop_operand();
+
+    if (op->type_int >= 0){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+void ifgt(Frame *curr_frame){
+    Operand *op = curr_frame->pop_operand();
+
+    if (op->type_int > 0){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
+}
+
+void ifle(Frame *curr_frame){
+    Operand *op = curr_frame->pop_operand();
+
+    if (op->type_int <= 0){
+        int shift;
+        shift = curr_frame->method_code.code[curr_frame->pc + 1];
+        shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
+        curr_frame->pc += shift;
+    } else {
+        curr_frame->pc +=3;
+    }
 }

@@ -152,4 +152,20 @@ void newarray(Frame*);
 void iastore(Frame*);
 void iaload(Frame*);
 // void istore_0(Frame*);
+
+// cat 1 desvios
+void ifnull(Frame*);
+void ifnonnull(Frame*);
+void ret(Frame*);
+void  if_icmplt(Frame*);
+void if_icmpgt(Frame*);
+void if_icmple(Frame*);
+void if_acmpeq(Frame*);
+void if_acmpne(Frame*);
+void ifeq(Frame*);
+void ifne(Frame*);
+void iflt(Frame *);
+void ifge(Frame*);
+void ifgt(Frame*);
+void ifle(Frame*);
 #endif
