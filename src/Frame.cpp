@@ -160,11 +160,11 @@ void Frame::setup_instructions_func() {
     func[87] = pop;
     func[88] = pop2;
     func[89] = dup;
-    // func[90] = dup_x1;
-    // func[91] = dup_x2;
-    // func[92] = dup2;
-    // func[93] = dup2_x1;
-    // func[94] = dup2_x2;
+    func[90] = dup_x1;
+    func[91] = dup_x2;
+    func[92] = dup2;
+    func[93] = dup2_x1;
+    func[94] = dup2_x2;
     // func[95] = swap;
     func[96] = iadd;
     func[97] = ladd;
