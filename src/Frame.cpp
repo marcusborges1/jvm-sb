@@ -40,6 +40,7 @@ Frame::Frame(MethodInfo *method, CpInfo *cp_info) {
 void Frame::execute_frame() {
   // coleta o primeiro opcode
   u1 op_code = method_code.code[pc];
+  if(DEBUG)printf("\nOP CODE %d\n", op_code);
   // substituir pelo op_code
   func[op_code](this);
 }
@@ -116,7 +117,7 @@ void Frame::setup_instructions_func() {
     func[43] = aload_1;
     func[44] = aload_2;
     func[45] = aload_3;
-    // func[46] = iaload;
+    func[46] = iaload;
     // func[47] = laload;
     // func[48] = faload;
     // func[49] = daload;
@@ -129,7 +130,7 @@ void Frame::setup_instructions_func() {
     func[56] = fstore;
     func[57] = dstore;
     // func[58] = astore;
-    // func[59] = istore_0;
+    func[59] = istore_0;
     func[60] = istore_1;
     func[61] = istore_2;
     func[62] = istore_3;
@@ -145,10 +146,10 @@ void Frame::setup_instructions_func() {
     func[72] = dstore_1;
     func[73] = dstore_2;
     func[74] = dstore_3;
-    // func[75] = astore_0;
+    func[75] = astore_0;
     func[76] = astore_1;
-    // func[77] = astore_2;
-    // func[78] = astore_3;
+    func[77] = astore_2;
+    func[78] = astore_3;
     func[79] = iastore;
     // func[80] = lastore;
     // func[81] = fastore;
@@ -259,7 +260,7 @@ void Frame::setup_instructions_func() {
     func[184] = invokestatic;
     func[185] = invokeinterface;
     //
-    // func[187] = new_obj;
+    func[187] = new_obj;
     func[188] = newarray;
     // func[189] = anewarray;
     // func[190] = arraylength;

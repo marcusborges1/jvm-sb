@@ -66,6 +66,16 @@ void ldc(Frame *curr_frame) {
     if (DEBUG) std::cout << "ldc\n";
 }
 
+/** @brief Guarda referência do object ou array do operando na variável local -0.
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void astore_0(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *op = curr_frame->pop_operand();
+  curr_frame->local_variables_array.at(0) = op;
+}
+
 /** @brief Guarda referência do object ou array do operando na variável local 1.
  * @param *curr_frame ponteiro para o frame atual
  * @return void
@@ -220,11 +230,11 @@ void getstatic(Frame *curr_frame) {
                                   field_info.FieldRef.name_and_type_index-1];
     std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
       curr_frame->constant_pool_reference, field_info.FieldRef.class_index-1);
-
-    if (class_name == "java/lang/System") {
-        // se for a classe System (default java) não coloca na pilha
-        return;
-    }
+    // 
+    // if (class_name == "java/lang/System") {
+    //     // se for a classe System (default java) não coloca na pilha
+    //     return;
+    // }
 
     JavaClass class_info = get_class_info_and_load_not_exists(class_name);
     std::string var_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
@@ -234,7 +244,7 @@ void getstatic(Frame *curr_frame) {
     Operand *static_field = get_static_field_of_class(class_name, var_name);
 
     curr_frame->push_operand(static_field);
-
+if(DEBUG)printf("ARRAY SIZE: %d\n", curr_frame->operand_stack.top()->array_type->array->size());
     if (DEBUG) std::cout << "getstatic\n";
 }
 
@@ -2186,7 +2196,6 @@ void new_obj(Frame *curr_frame){
     CpInfo &class_info = curr_frame->constant_pool_reference[index - 1];
     std::string utf8_constant = class_info.get_utf8_constant_pool(curr_frame->constant_pool_reference, class_info.Class.type_class_info - 1);
 
-    curr_frame->pc++;
     if (utf8_constant == "java/lang/StringBuilder"){
         Operand* string_builder = (Operand*)malloc(sizeof(Operand));
         string_builder->tag = CONSTANT_String;
@@ -2194,12 +2203,9 @@ void new_obj(Frame *curr_frame){
         curr_frame->push_operand(string_builder);
     }else{
         Operand *instance = check_string_create_type("L" + utf8_constant);
-        if (instance->c_instance->name_class == NULL){
-            if (DEBUG) std::cout << "Error while loading class: " << utf8_constant<<std::endl;
-            exit(5);
-        }
         curr_frame->push_operand(instance);
     }
+    curr_frame->pc++;
 }
 
 
@@ -2211,11 +2217,10 @@ void new_obj(Frame *curr_frame){
 void dup(Frame *curr_frame){
     curr_frame->pc++;
 
-    if(DEBUG) printf("[POPPED OPERAND]\n");
-    if (DEBUG) std::cout << "array size "
+    if (DEBUG) std::cout << "top array size "
                         << curr_frame->operand_stack.top()->array_type->array->size()
                         << std::endl;
-    if(DEBUG) printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
+    // if(DEBUG) printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
     Operand *copy_1 = copy_operand(curr_frame->operand_stack.top());
     if(DEBUG) printf("coppied opperands\n");
     curr_frame->push_operand(copy_1);
@@ -2982,6 +2987,7 @@ void f2l(Frame *curr_frame){
 }
 
 void iastore(Frame* curr_frame){
+  if(DEBUG)printf("iastore\n");
   Operand* value = curr_frame->pop_operand();
   if(DEBUG)printf("popped first\n");
   Operand* index = curr_frame->pop_operand();
@@ -3031,4 +3037,14 @@ void l2f(Frame *curr_frame) {
 
   curr_frame->pc++;
   curr_frame->push_operand(float_converted_type);
+}
+
+void iaload(Frame *curr_frame){
+    Operand* index = curr_frame->pop_operand();
+    Operand* array = curr_frame->pop_operand();
+    if(DEBUG)printf("ARRAY SIZE: %d\n", array->array_type->array->size());
+    Operand* op = array->array_type->array->at(index->type_int);
+    curr_frame->operand_stack.push(op);
+
+    curr_frame->pc++;
 }
