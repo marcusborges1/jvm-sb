@@ -263,7 +263,7 @@ void Frame::setup_instructions_func() {
     func[187] = new_obj;
     func[188] = newarray;
     // func[189] = anewarray;
-    // func[190] = arraylength;
+    func[190] = arraylength;
     //
     // func[192] = checkcast;
     // func[193] = instanceof;

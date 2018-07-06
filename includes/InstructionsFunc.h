@@ -169,4 +169,5 @@ void iflt(Frame *);
 void ifge(Frame*);
 void ifgt(Frame*);
 void ifle(Frame*);
+void arraylength(Frame*);
 #endif
