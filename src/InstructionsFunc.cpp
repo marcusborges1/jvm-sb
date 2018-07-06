@@ -1192,6 +1192,7 @@ void newarray(Frame *curr_frame) {
  */
 void anewarray(Frame *curr_frame) {}
 
+
 /**
  * @brief Soma de inteiros. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
@@ -1213,6 +1214,7 @@ void iadd(Frame *curr_frame) {
 
   if (DEBUG) std::cout << "iadd\n";
 }
+
 
 /**
  * @brief Soma do tipo long. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
@@ -2048,7 +2050,7 @@ void i2s(Frame *curr_frame){
 
   int stack_value;
   Operand *int_type = curr_frame->pop_operand();
-  memcpy(&stack_value, &int_type->type_int, sizeof(int32_t));
+  memcpy(&stack_value, &int_type->type_int, sizeof(uint32_t));
 
   short conv_value = (short)stack_value;
   Operand *op_from_type = check_string_create_type("S");
@@ -3041,7 +3043,7 @@ void l2f(Frame *curr_frame) {
 void iaload(Frame *curr_frame){
     Operand* index = curr_frame->pop_operand();
     Operand* array = curr_frame->pop_operand();
-    
+
     Operand* op = array->array_type->array->at(index->type_int);
     curr_frame->operand_stack.push(op);
 

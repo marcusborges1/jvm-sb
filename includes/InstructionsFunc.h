@@ -90,6 +90,7 @@ void l2d(Frame *curr_frame);
 void l2f(Frame *curr_frame);
 void l2i(Frame *curr_frame);
 void i2f(Frame *curr_frame);
+void i2s(Frame *curr_frame);
 void l2f(Frame *curr_frame);
 void d2f(Frame *curr_frame);
 void iadd(Frame *curr_frame);
