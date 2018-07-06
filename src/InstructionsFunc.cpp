@@ -3266,3 +3266,37 @@ void aload(Frame *curr_frame) {
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
   curr_frame->push_operand(curr_frame->local_variables_array.at(index));
 }
+
+void laload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void faload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void daload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void aaload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+
+  Operand *loaded_array = array->array_type->array->at(index->type_int);
+  curr_frame->push_operand(loaded_array);
+}

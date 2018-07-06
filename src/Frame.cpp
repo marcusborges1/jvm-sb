@@ -116,11 +116,11 @@ void Frame::setup_instructions_func() {
     func[43] = aload_1;
     func[44] = aload_2;
     func[45] = aload_3;
-    // func[46] = iaload;
-    // func[47] = laload;
-    // func[48] = faload;
-    // func[49] = daload;
-    // func[50] = aaload;
+    func[46] = iaload;
+    func[47] = laload;
+    func[48] = faload;
+    func[49] = daload;
+    func[50] = aaload;
     // func[51] = baload;
     // func[52] = caload;
     // func[53] = saload;

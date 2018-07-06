@@ -107,7 +107,11 @@ void f2l(Frame *curr_frame);
 void ladd(Frame *curr_frame);
 void lsub(Frame *curr_frame);
 void ldiv(Frame *curr_frame);
-
+void laload(Frame *curr_frame);
+void iaload(Frame *curr_frame);
+void faload(Frame *curr_frame);
+void daload(Frame *curr_frame);
+void aaload(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
