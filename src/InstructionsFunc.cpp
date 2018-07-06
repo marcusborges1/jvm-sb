@@ -1,5 +1,5 @@
 /** @file InstructionsFunc.cpp
- *  @brief ...
+ *  @brief Módulo que contém todas as instruções da JVM.
  *  @bug No know bugs.
  */
 #include "InstructionsFunc.h"
@@ -10,6 +10,7 @@
 #include <cmath>
 /** @endcond */
 
+
 namespace patch {
   template < typename T > std::string to_string( const T& n ) {
     std::ostringstream stm ;
@@ -18,6 +19,7 @@ namespace patch {
   }
 }
 
+
 /** @brief Não faz nada, só incrementa pc.
  * param *curr_frame ponteiro para o frame atual
  * @return void
@@ -25,6 +27,7 @@ namespace patch {
 void nop(Frame *curr_frame) {
   curr_frame->pc++;
 }
+
 
 /** @brief Coloca na pilha de operandos uma constante do tamanho de uma word.
  * @param *curr_frame ponteiro para o frame atual
@@ -120,7 +123,6 @@ void iconst_0(Frame* curr_frame) {
     op->tag = CONSTANT_Integer;
     op->type_int = 0;
     curr_frame->push_operand(op);
-    if(DEBUG)printf("[PUSHED OPERAND] %d\n", curr_frame->operand_stack.top()->type_int);
     curr_frame->pc++;
 }
 
@@ -148,6 +150,8 @@ void iconst_3(Frame* curr_frame) {
     op->type_int = 3;
     curr_frame->push_operand(op);
     curr_frame->pc++;
+
+    if (DEBUG) std::cout << "iconst_3\n";
 }
 
 /** @brief Empurra int na pilha de operandos
@@ -167,12 +171,13 @@ void iconst_4(Frame* curr_frame) {
  * @return void
  */
 void iconst_5(Frame* curr_frame) {
-    Operand *op = (Operand*)malloc(sizeof(Operand));
-    op->tag = CONSTANT_Integer;
-    op->type_int = 5;
-    curr_frame->push_operand(op);
-    curr_frame->pc++;
-  if(DEBUG)printf("[PUSHED OPERAND] %d\n", curr_frame->operand_stack.top()->type_int);
+  Operand *op = (Operand*)malloc(sizeof(Operand));
+  op->tag = CONSTANT_Integer;
+  op->type_int = 5;
+  curr_frame->push_operand(op);
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "iconst_5\n";
 }
 
 /** @brief ...
@@ -893,6 +898,7 @@ void lload(Frame *curr_frame) {
   curr_frame->pc++;
 
   int index = curr_frame->method_code.code[curr_frame->pc++];
+  if (DEBUG) std::cout << (int)index;
   curr_frame->push_operand(curr_frame->local_variables_array[(int)index]);
 
   if (DEBUG) std::cout << "lload\n";
@@ -1367,8 +1373,8 @@ void dsub(Frame *curr_frame) {
 }
 
 /**
- * @brief Multiplicação de inteiros. Retira os dois operando do topo da pilha, multiplica-os
- * e coloca o resultado no topo da pilha.
+ * @brief Multiplicação de inteiros. Retira os dois operando do topo da pilha,
+ *  multiplica-os e coloca o resultado no topo da pilha.
  * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
@@ -1383,6 +1389,8 @@ void imul(Frame *curr_frame) {
   result->type_int = (operand_1->type_int) * (operand_2->type_int);
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "imul\n";
 }
 
 /**
@@ -1459,8 +1467,8 @@ void dmul(Frame *curr_frame) {
 }
 
 /**
- * @brief Divisão de inteiro. Retira os dois operandos do topo da pilha, divide-os
- * e coloca o resultado no topo da pilha.
+ * @brief Divisão de inteiro. Retira os dois operandos do topo da pilha,
+ *  divide-os e coloca o resultado no topo da pilha.
  * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
@@ -1475,7 +1483,10 @@ void idiv(Frame *curr_frame) {
   result->type_int = (operand_2->type_int) / (operand_1->type_int);
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "idiv\n";
 }
+
 
 /**
  * @brief Divisão de long. Retira os dois operandos do topo da pilha, divide-os
@@ -1495,8 +1506,8 @@ void ldiv(Frame *curr_frame) {
 
   curr_frame->push_operand(result);
   if (DEBUG) std::cout << "ldiv\n";
-
 }
+
 
 /**
  * @brief Divisão de float. Retira os dois operandos do topo da pilha, divide-os
@@ -1625,8 +1636,9 @@ void lstore_3(Frame* curr_frame) {
 }
 
 /**
- * @brief Calcula o resto da divisão entre dois inteiros. Retira os dois operandos do topo da pilha,
- * calcula o resto da divisão e coloca no topo.
+ * @brief Calcula o resto da divisão entre dois inteiros.
+ *  Retira os dois operandos do topo da pilha, calcula o resto da divisão e
+ *  coloca no topo.
  * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
@@ -1646,6 +1658,8 @@ void irem(Frame *curr_frame) {
   result->type_int = i_remainder;
 
   curr_frame->push_operand(result);
+
+  if (DEBUG) std::cout << "irem\n";
 }
 
 /**
@@ -2016,6 +2030,28 @@ void i2d(Frame *curr_frame){
 
 
 /**
+ * @brief Converte int para short int.
+ * @param *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+void i2s(Frame *curr_frame){
+  curr_frame->pc++;
+
+  int stack_value;
+  Operand *int_type = curr_frame->pop_operand();
+  memcpy(&stack_value, &int_type->type_int, sizeof(int32_t));
+
+  short conv_value = (short)stack_value;
+  Operand *op_from_type = check_string_create_type("S");
+  memcpy(&op_from_type->type_byte, &conv_value, sizeof(uint32_t));
+
+  curr_frame->push_operand(op_from_type);
+
+  if (DEBUG) std::cout << "i2s\n";
+}
+
+
+/**
  * @brief Função para saltar para um certo offset.
  * @param *curr_frame ponteiro para o frame atual
  * @return void
@@ -2208,23 +2244,27 @@ void f2d(Frame *curr_frame) {
   if (DEBUG) std::cout << "f2d\n";
 }
 
+
 /**
  * @brief Converte de float para inteiro
  * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void f2i(Frame *curr_frame) {
-    float float_value;
-    Operand *float_type = curr_frame->pop_operand();
-    memcpy(&float_value, &float_type->type_float, sizeof(u4));
+  float float_value;
+  Operand *float_type = curr_frame->pop_operand();
+  memcpy(&float_value, &float_type->type_float, sizeof(u4));
 
-    int int_value = (int)float_value;
-    Operand *new_int = check_string_create_type("I");
-    memcpy(&new_int->type_int, &int_value, sizeof(u4));
+  int int_value = (int)float_value;
+  Operand *new_int = check_string_create_type("I");
+  memcpy(&new_int->type_int, &int_value, sizeof(u4));
 
-    curr_frame->push_operand(new_int);
-    curr_frame->pc++;
+  curr_frame->push_operand(new_int);
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "f2i\n";
 }
+
 
 /**
  * @brief Converte um long para double
@@ -2285,23 +2325,25 @@ void iand(Frame *curr_frame) {
     curr_frame->push_operand(result);
 }
 
+
 /**
  * @brief Converte de double para int
  * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void d2i(Frame *curr_frame) {
-    double stack_value;
-    Operand *double_type = curr_frame->pop_operand();
-	memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
+  double stack_value;
+  Operand *double_type = curr_frame->pop_operand();
+  memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
 
-    int int_value = (int)stack_value;
-    Operand *new_int = check_string_create_type("I");
-    memcpy(&new_int->type_int, &int_value, sizeof(u4));
+  int int_value = (int)stack_value;
+  Operand *new_int = check_string_create_type("I");
+  memcpy(&new_int->type_int, &int_value, sizeof(u4));
 
-    curr_frame->push_operand(new_int);
-    curr_frame->pc++;
+  curr_frame->push_operand(new_int);
+  curr_frame->pc++;
 }
+
 
 /**
  * @brief Converte de double para long
@@ -2922,13 +2964,13 @@ void if_icmpne(Frame *curr_frame){
 }
 
 void f2l(Frame *curr_frame){
-    float valorPilha;
+    float stack_value;
     Operand *floatType = curr_frame->pop_operand();
-	memcpy(&valorPilha, &floatType->type_float, sizeof(int32_t));
+	memcpy(&stack_value, &floatType->type_float, sizeof(int32_t));
 
-    long valorConvertido = (long)valorPilha;
+    long conv_value = (long)stack_value;
     Operand *longConvertidoType = check_string_create_type("J");
-    memcpy(&longConvertidoType->type_long, &valorConvertido, sizeof(uint64_t));
+    memcpy(&longConvertidoType->type_long, &conv_value, sizeof(uint64_t));
 
     curr_frame->pc++;
     curr_frame->push_operand(longConvertidoType);
