@@ -202,7 +202,7 @@ void Frame::setup_instructions_func() {
     func[129] = lor;
     func[130] = ixor;
     func[131] = lxor;
-    // func[132] = iinc;
+    func[132] = iinc;
     func[133] = i2l;
     func[134] = i2f;
     func[135] = i2d;
@@ -211,8 +211,6 @@ void Frame::setup_instructions_func() {
     func[138] = l2d;
     func[139] = f2i;
     func[140] = f2l;
-    // func[141] = f2d;
-    // func[140] = f2l;
     func[141] = f2d;
     func[142] = d2i;
     func[143] = d2l;
@@ -225,23 +223,23 @@ void Frame::setup_instructions_func() {
     // func[150] = fcmpg;
     // func[151] = dcmpl;
     // func[152] = dcmpg;
-    // func[153] = ifeq;
-    // func[154] = ifne;
-    // func[155] = iflt;
-    // func[156] = ifge;
-    // func[157] = ifgt;
-    // func[158] = ifle;
+    func[153] = ifeq;
+    func[154] = ifne;
+    func[155] = iflt;
+    func[156] = ifge;
+    func[157] = ifgt;
+    func[158] = ifle;
     func[159] = if_icmpeq;
     func[160] = if_icmpne;
-    // func[161] = if_icmplt;
+    func[161] = if_icmplt;
     func[162] = if_icmpge;
-    // func[163] = if_icmpgt;
-    // func[164] = if_icmple;
-    // func[165] = if_acmpeq;
-    // func[166] = if_acmpne;
+    func[163] = if_icmpgt;
+    func[164] = if_icmple;
+    func[165] = if_acmpeq;
+    func[166] = if_acmpne;
     func[167] = ins_goto;
     // func[168] = jsr;
-    // func[169] = ret;
+    func[169] = ret;
     // func[170] = tableswitch;
     func[171] = lookupswitch;
     func[172] = ireturn;
@@ -259,10 +257,10 @@ void Frame::setup_instructions_func() {
     func[184] = invokestatic;
     func[185] = invokeinterface;
     //
-    // func[187] = new_obj;
+    func[187] = new_obj;
     func[188] = newarray;
     // func[189] = anewarray;
-    // func[190] = arraylength;
+    func[190] = arraylength;
     //
     // func[192] = checkcast;
     // func[193] = instanceof;
@@ -270,8 +268,8 @@ void Frame::setup_instructions_func() {
     //
     // func[196] = wide;
     // func[197] = multianewarray;
-    // func[198] = ifnull;
-    // func[199] = ifnonnull;
+    func[198] = ifnull;
+    func[199] = ifnonnull;
     // func[200] = goto_w;
     // func[201] = jsr_w;
 }
