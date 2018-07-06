@@ -3429,3 +3429,22 @@ void swap(Frame *curr_frame) {
   curr_frame->push_operand(operand_1);
   curr_frame->push_operand(operand_2);
 }
+
+void iushr(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u4 i_value_1 = operand_1->type_int;
+  u4 i_value_2 = operand_2->type_int;
+
+  i_value_2 &= 0x0000001f;
+
+  u4 i_result = i_value_1 >> i_value_2;
+  Operand *result = check_string_create_type("I");
+
+  result->type_int = i_result;
+
+  curr_frame->push_operand(result);
+}

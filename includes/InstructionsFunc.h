@@ -181,4 +181,5 @@ void ishl(Frame *curr_frame);
 void lshl(Frame *curr_frame);
 void ishr(Frame *curr_frame);
 void lshr(Frame *curr_frame);
+void iushr(Frame *curr_frame);
 #endif
