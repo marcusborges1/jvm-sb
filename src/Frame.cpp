@@ -196,8 +196,8 @@ void Frame::setup_instructions_func() {
     func[123] = lshr;
     func[124] = iushr;
     func[125] = lushr;
-    // func[126] = iand;
-    // func[127] = land;
+    func[126] = iand;
+    func[127] = land;
     // func[128] = ior;
     // func[129] = lor;
     // func[130] = ixor;
