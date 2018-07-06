@@ -167,4 +167,6 @@ void if_icmpeq(Frame *curr_frame);
 
 void newarray(Frame*);
 void iastore(Frame*);
+
+void swap(Frame *curr_frame);
 #endif

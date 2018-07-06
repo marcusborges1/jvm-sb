@@ -3419,3 +3419,13 @@ void pop2(Frame *curr_frame) {
   if (operand->tag != CONSTANT_Long && operand->tag != CONSTANT_Double)
     curr_frame->pop_operand();
 }
+
+void swap(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  curr_frame->push_operand(operand_1);
+  curr_frame->push_operand(operand_2);
+}
