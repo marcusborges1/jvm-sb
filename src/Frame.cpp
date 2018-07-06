@@ -183,7 +183,7 @@ void Frame::setup_instructions_func() {
     func[110] = fdiv;
     func[111] = ddiv;
     func[112] = irem;
-    // func[113] = lrem;
+    func[113] = lrem;
     func[114] = frem;
     func[115] = drem;
     // func[116] = ineg;
