@@ -230,17 +230,18 @@ void getstatic(Frame *curr_frame) {
                                   field_info.FieldRef.name_and_type_index-1];
     std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
       curr_frame->constant_pool_reference, field_info.FieldRef.class_index-1);
-    //
-    // if (class_name == "java/lang/System") {
-    //     // se for a classe System (default java) não coloca na pilha
-    //     return;
-    // }
-
+    
+    if (class_name == "java/lang/System") {
+        // se for a classe System (default java) não coloca na pilha
+        return;
+    }
+    printf("entrei aqui 3\n");
     JavaClass class_info = get_class_info_and_load_not_exists(class_name);
+    printf("entrei aqui 2\n");
     std::string var_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
                                       class_info.constant_pool,
                                       name_and_type.NameAndType.name_index-1);
-
+    printf("entrei aqui\n");
     Operand *static_field = get_static_field_of_class(class_name, var_name);
 
     curr_frame->push_operand(static_field);
@@ -1641,7 +1642,7 @@ void lstore_3(Frame* curr_frame) {
 
   curr_frame->local_variables_array[3] = op;
   curr_frame->pc++;
-  if (DEBUG) std::cout << "istore_3\n";
+  if (DEBUG) std::cout << "lstore_3\n";
 
 }
 
