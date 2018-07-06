@@ -172,4 +172,13 @@ void swap(Frame *curr_frame);
 void imul(Frame *curr_frame);
 void lmul(Frame *curr_frame);
 void idiv(Frame *curr_frame);
+void irem(Frame *curr_frame);
+void lrem(Frame *curr_frame);
+void ineg(Frame *curr_frame);
+void lneg(Frame *curr_frame);
+void dneg(Frame *curr_frame);
+void ishl(Frame *curr_frame);
+void lshl(Frame *curr_frame);
+void ishr(Frame *curr_frame);
+void lshr(Frame *curr_frame);
 #endif
