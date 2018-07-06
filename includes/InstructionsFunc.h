@@ -124,6 +124,9 @@ void bastore(Frame *curr_frame);
 void castore(Frame *curr_frame);
 void sastore(Frame *curr_frame);
 
+void pop(Frame *curr_frame);
+void pop2(Frame *curr_frame);
+
 void astore(Frame *curr_frame);
 void astore_0(Frame *curr_frame);
 
