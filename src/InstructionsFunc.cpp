@@ -3246,3 +3246,13 @@ void ifle(Frame *curr_frame){
         curr_frame->pc +=3;
     }
 }
+
+void arraylength(Frame* curr_frame){
+  curr_frame->pc++;
+
+  Operand *array = curr_frame->pop_operand();
+
+  Operand *size = check_string_create_type("I");
+  size->type_int = array->array_type->array->size();
+  curr_frame->push_operand(size);
+}
