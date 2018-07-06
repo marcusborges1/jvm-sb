@@ -235,17 +235,14 @@ void getstatic(Frame *curr_frame) {
         // se for a classe System (default java) não coloca na pilha
         return;
     }
-    printf("entrei aqui 3\n");
     JavaClass class_info = get_class_info_and_load_not_exists(class_name);
-    printf("entrei aqui 2\n");
     std::string var_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
                                       class_info.constant_pool,
                                       name_and_type.NameAndType.name_index-1);
-    printf("entrei aqui\n");
     Operand *static_field = get_static_field_of_class(class_name, var_name);
 
     curr_frame->push_operand(static_field);
-if(DEBUG)printf("ARRAY SIZE: %d\n", curr_frame->operand_stack.top()->array_type->array->size());
+
     if (DEBUG) std::cout << "getstatic\n";
 }
 
@@ -3022,6 +3019,7 @@ void i2f(Frame *curr_frame) {
   curr_frame->push_operand(float_converted_type);
 }
 
+
 /**
 * @brief Converte de long para float
 * @param *curr_frame ponteiro para o frame atual
@@ -3043,7 +3041,7 @@ void l2f(Frame *curr_frame) {
 void iaload(Frame *curr_frame){
     Operand* index = curr_frame->pop_operand();
     Operand* array = curr_frame->pop_operand();
-    if(DEBUG)printf("ARRAY SIZE: %d\n", array->array_type->array->size());
+    
     Operand* op = array->array_type->array->at(index->type_int);
     curr_frame->operand_stack.push(op);
 
@@ -3325,6 +3323,12 @@ void saload(Frame *curr_frame) {
   curr_frame->push_operand(array->array_type->array->at(index->type_int));
 }
 
+
+/**
+* @brief ...
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
 void astore(Frame *curr_frame) {
   curr_frame->pc++;
 
