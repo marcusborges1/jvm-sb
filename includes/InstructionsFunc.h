@@ -201,4 +201,6 @@ void lxor(Frame *curr_frame);
 
 void iinc(Frame *curr_frame);
 
+void ret(Frame *curr_frame);
+
 #endif

@@ -241,7 +241,7 @@ void Frame::setup_instructions_func() {
     func[166] = if_acmpne;
     func[167] = ins_goto;
     // func[168] = jsr;
-    // func[169] = ret;
+    func[169] = ret;
     // func[170] = tableswitch;
     func[171] = lookupswitch;
     func[172] = ireturn;
@@ -259,10 +259,10 @@ void Frame::setup_instructions_func() {
     func[184] = invokestatic;
     func[185] = invokeinterface;
     //
-    // func[187] = new_obj;
+    func[187] = new_obj;
     func[188] = newarray;
     // func[189] = anewarray;
-    // func[190] = arraylength;
+    func[190] = arraylength;
     //
     // func[192] = checkcast;
     // func[193] = instanceof;
@@ -270,8 +270,8 @@ void Frame::setup_instructions_func() {
     //
     // func[196] = wide;
     // func[197] = multianewarray;
-    // func[198] = ifnull;
-    // func[199] = ifnonnull;
+    func[198] = ifnull;
+    func[199] = ifnonnull;
     // func[200] = goto_w;
     // func[201] = jsr_w;
 }
