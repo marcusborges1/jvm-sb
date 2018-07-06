@@ -3331,5 +3331,78 @@ void astore(Frame *curr_frame) {
   u1 index = curr_frame->method_code.code[curr_frame->pc++];
 
   Operand *operand = curr_frame->pop_operand();
-  curr_frame->local_variables_array.at(index) = value;
+  curr_frame->local_variables_array.at(index) = operand;
+}
+
+void lastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_long = operand->type_long;
+}
+
+void fastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_float = operand->type_float;
+}
+
+void dastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_double = operand->type_double;
+}
+
+void aastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->array_type = operand->array_type;
+}
+
+void bastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_bool = operand->type_bool;
+}
+
+void castore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_char = operand->type_char;
+}
+
+void sastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  Operand *small = check_string_create_type("S");
+  small->type_short = (u2) operand->type_int;
+
+  array->array_type->array->at(index->type_int)->type_short = small->type_short;
 }

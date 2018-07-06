@@ -115,7 +115,17 @@ void aaload(Frame *curr_frame);
 void baload(Frame *curr_frame);
 void caload(Frame *curr_frame);
 void saload(Frame *curr_frame);
+
+void lastore(Frame *curr_frame);
+void fastore(Frame *curr_frame);
+void dastore(Frame *curr_frame);
+void aastore(Frame *curr_frame);
+void bastore(Frame *curr_frame);
+void castore(Frame *curr_frame);
+void sastore(Frame *curr_frame);
+
 void astore(Frame *curr_frame);
+void astore_0(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
