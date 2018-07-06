@@ -106,6 +106,7 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   printf("22. vetor ladeira\n");
   printf("23. Goto\n");
   printf("23. Class x Nome do Arquivo\n");
+  printf("24. Short\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
@@ -182,6 +183,8 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
       filename = "test/Goto.class";
     case 24:
       filename = "test/UmNome.class";
+    case 25:
+      filename = "test/ShortDemo.class";
       break;
     case 0:
       printf("Até mais!\n");
