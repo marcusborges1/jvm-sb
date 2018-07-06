@@ -112,6 +112,10 @@ void iaload(Frame *curr_frame);
 void faload(Frame *curr_frame);
 void daload(Frame *curr_frame);
 void aaload(Frame *curr_frame);
+void baload(Frame *curr_frame);
+void caload(Frame *curr_frame);
+void saload(Frame *curr_frame);
+void astore(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);

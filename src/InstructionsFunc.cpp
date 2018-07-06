@@ -3300,3 +3300,36 @@ void aaload(Frame *curr_frame) {
   Operand *loaded_array = array->array_type->array->at(index->type_int);
   curr_frame->push_operand(loaded_array);
 }
+
+void baload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void caload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void saload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void astore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+
+  Operand *operand = curr_frame->pop_operand();
+  curr_frame->local_variables_array.at(index) = value;
+}
