@@ -1,5 +1,5 @@
 class LongDemo {
-    static long foo(long args) {
+    static long vaiporra(long args) {
         return args;
     }
 
@@ -29,10 +29,10 @@ class LongDemo {
     System.out.println(e8);
 
     double i3 = 5.5;
-    long e9 = (long) i2;
+    long e9 = (long) i3;
     System.out.println(e9);
 
-    System.out.println(foo(e1));
+    System.out.println(vaiporra(e1));
 
   }
 }
