@@ -758,7 +758,7 @@ void bipush(Frame *curr_frame) {
   if (DEBUG) std::cout << "bipush byte " << byte << std::endl;
 
   op->tag = CONSTANT_Integer;
-  op->type_int = byte;
+  op->type_int = (int8_t) byte;
   curr_frame->operand_stack.push(op);
 
   if (DEBUG) std::cout << "bipush\n";

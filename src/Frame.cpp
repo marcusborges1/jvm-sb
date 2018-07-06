@@ -175,7 +175,7 @@ void Frame::setup_instructions_func() {
     func[102] = fsub;
     func[103] = dsub;
     func[104] = imul;
-    // func[105] = lmul;
+    func[105] = lmul;
     func[106] = fmul;
     func[107] = dmul;
     func[108] = idiv;
@@ -215,7 +215,7 @@ void Frame::setup_instructions_func() {
     // func[140] = f2l;
     func[141] = f2d;
     func[142] = d2i;
-    // func[143] = d2l;
+    func[143] = d2l;
     func[144] = d2f;
     // func[145] = i2b;
     // func[146] = i2c;
