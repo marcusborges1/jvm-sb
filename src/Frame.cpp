@@ -200,8 +200,8 @@ void Frame::setup_instructions_func() {
     func[127] = land;
     func[128] = ior;
     func[129] = lor;
-    // func[130] = ixor;
-    // func[131] = lxor;
+    func[130] = ixor;
+    func[131] = lxor;
     // func[132] = iinc;
     func[133] = i2l;
     func[134] = i2f;
