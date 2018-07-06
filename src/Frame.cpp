@@ -178,7 +178,7 @@ void Frame::setup_instructions_func() {
     func[105] = lmul;
     func[106] = fmul;
     func[107] = dmul;
-    // func[108] = idiv;
+    func[108] = idiv;
     func[109] = ldiv;
     func[110] = fdiv;
     func[111] = ddiv;

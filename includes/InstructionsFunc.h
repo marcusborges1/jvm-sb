@@ -171,4 +171,5 @@ void iastore(Frame*);
 void swap(Frame *curr_frame);
 void imul(Frame *curr_frame);
 void lmul(Frame *curr_frame);
+void idiv(Frame *curr_frame);
 #endif
