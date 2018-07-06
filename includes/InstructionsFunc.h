@@ -174,10 +174,11 @@ void ifle(Frame *curr_frame);
 void if_icmplt(Frame *curr_frame);
 void if_icmpgt(Frame *curr_frame);
 void if_icmple(Frame *curr_frame);
-void if_acmpeq(Frame *curr_frame;
+void if_acmpeq(Frame *curr_frame);
 void if_acmpne(Frame *curr_frame);
 
 void newarray(Frame*);
+void arraylength(Frame* curr_frame);
 void iastore(Frame*);
 
 void swap(Frame *curr_frame);
@@ -201,6 +202,8 @@ void ixor(Frame *curr_frame);
 void lxor(Frame *curr_frame);
 
 void iinc(Frame *curr_frame);
+void ifnull(Frame *curr_frame);
+void ifnonnull(Frame *curr_frame);
 
 void ret(Frame *curr_frame);
 
