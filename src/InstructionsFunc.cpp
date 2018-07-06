@@ -3171,8 +3171,8 @@ void if_acmpne(Frame *curr_frame){
 
 void ifeq(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
-
-    if (op->type_int == 0){
+    int val = (int)op->type_int;
+    if (val == 0){
         int shift;
         shift = curr_frame->method_code.code[curr_frame->pc + 1];
         shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
@@ -3184,8 +3184,8 @@ void ifeq(Frame *curr_frame){
 
 void ifne(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
-
-    if (op->type_int != 0){
+    int val = (int)op->type_int;
+    if (val != 0){
         int shift;
         shift = curr_frame->method_code.code[curr_frame->pc + 1];
         shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
@@ -3197,8 +3197,8 @@ void ifne(Frame *curr_frame){
 
 void iflt(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
-
-    if (op->type_int < 0){
+    int val = (int)op->type_int;
+    if (val < 0){
         int shift;
         shift = curr_frame->method_code.code[curr_frame->pc + 1];
         shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
@@ -3210,8 +3210,8 @@ void iflt(Frame *curr_frame){
 
 void ifge(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
-
-    if (op->type_int >= 0){
+    int val = (int)op->type_int;
+    if (val >= 0){
         int shift;
         shift = curr_frame->method_code.code[curr_frame->pc + 1];
         shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
@@ -3223,8 +3223,8 @@ void ifge(Frame *curr_frame){
 
 void ifgt(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
-
-    if (op->type_int > 0){
+    int val = (int)op->type_int;
+    if (val > 0){
         int shift;
         shift = curr_frame->method_code.code[curr_frame->pc + 1];
         shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
@@ -3236,8 +3236,9 @@ void ifgt(Frame *curr_frame){
 
 void ifle(Frame *curr_frame){
     Operand *op = curr_frame->pop_operand();
+    int val = (int)op->type_int;
 
-    if (op->type_int <= 0){
+    if (val <= 0){
         int shift;
         shift = curr_frame->method_code.code[curr_frame->pc + 1];
         shift = (shift << 8 ) | curr_frame->method_code.code[curr_frame->pc + 2];
