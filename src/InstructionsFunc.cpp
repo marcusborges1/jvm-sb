@@ -129,11 +129,13 @@ void iconst_m1(Frame* curr_frame) {
  * @return void
  */
 void iconst_0(Frame* curr_frame) {
-    Operand *op = (Operand*)malloc(sizeof(Operand));
-    op->tag = CONSTANT_Integer;
-    op->type_int = 0;
-    curr_frame->push_operand(op);
-    curr_frame->pc++;
+  Operand *op = (Operand*)malloc(sizeof(Operand));
+  op->tag = CONSTANT_Integer;
+  op->type_int = 0;
+  curr_frame->push_operand(op);
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "iconst_0\n";
 }
 
 /** @brief Empurra int na pilha de operandos
@@ -169,11 +171,13 @@ void iconst_3(Frame* curr_frame) {
  * @return void
  */
 void iconst_4(Frame* curr_frame) {
-    Operand *op = (Operand*)malloc(sizeof(Operand));
-    op->tag = CONSTANT_Integer;
-    op->type_int = 4;
-    curr_frame->push_operand(op);
-    curr_frame->pc++;
+  Operand *op = (Operand*)malloc(sizeof(Operand));
+  op->tag = CONSTANT_Integer;
+  op->type_int = 4;
+  curr_frame->push_operand(op);
+  curr_frame->pc++;
+
+  if (DEBUG) std::cout << "iconst_4\n";
 }
 
 /** @brief Empurra int na pilha de operandos
@@ -230,22 +234,19 @@ void getstatic(Frame *curr_frame) {
                                   field_info.FieldRef.name_and_type_index-1];
     std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
       curr_frame->constant_pool_reference, field_info.FieldRef.class_index-1);
-    
+
     if (class_name == "java/lang/System") {
         // se for a classe System (default java) não coloca na pilha
         return;
     }
-    printf("entrei aqui 3\n");
     JavaClass class_info = get_class_info_and_load_not_exists(class_name);
-    printf("entrei aqui 2\n");
     std::string var_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
                                       class_info.constant_pool,
                                       name_and_type.NameAndType.name_index-1);
-    printf("entrei aqui\n");
     Operand *static_field = get_static_field_of_class(class_name, var_name);
 
     curr_frame->push_operand(static_field);
-if(DEBUG)printf("ARRAY SIZE: %d\n", curr_frame->operand_stack.top()->array_type->array->size());
+
     if (DEBUG) std::cout << "getstatic\n";
 }
 
@@ -265,8 +266,10 @@ void aload_0(Frame *curr_frame) {
  * @return void
  */
 void aload_1(Frame *curr_frame) {
-    curr_frame->pc++;
-    curr_frame->push_operand(curr_frame->local_variables_array.at(1));
+  curr_frame->pc++;
+  curr_frame->push_operand(curr_frame->local_variables_array.at(1));
+
+  if (DEBUG) std::cout << "aload_1\n";
 }
 
 /** @brief Coloca na pilha de operandos a variável da posição 2 do vetor de
@@ -1131,15 +1134,11 @@ void newarray(Frame *curr_frame) {
 
   Operand *operand_1 = curr_frame->pop_operand();
   u4 index = operand_1->type_int;
-  if (DEBUG) printf("[POPPED OPERAND] %d\n",operand_1->type_int);
 
   Operand *operand_2 = check_string_create_type("[");
-  // Operand *operand_2 =  (Operand*)malloc(sizeof(Operand));
-  // operand_2->array_type = (ArrayType*)malloc(sizeof(ArrayType));
-  // operand_2->array_type->array =  (std::vector<Operand*>*)malloc(sizeof(std::vector<Operand*>)); // new std::vector<Operand*>();
   u1 array_type = curr_frame->method_code.code[curr_frame->pc++];
-  // if(DEBUG) printf("Array type: %d\n", array_type-> );
-  switch (array_type) {
+
+  switch ((int)array_type) {
     case 4:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("Z"));
@@ -1171,10 +1170,10 @@ void newarray(Frame *curr_frame) {
       }
       break;
     case 10:
-      for (int i = 0; i < (int) index; i++) {
-        operand_2->array_type->array->emplace_back(check_string_create_type("I"));
-      }
-      break;
+    if (DEBUG) std::cout << "array type int\n";
+    for (int i = 0; i < (int) index; i++)
+      operand_2->array_type->array->emplace_back(check_string_create_type("I"));
+    break;
     case 11:
       for (int i = 0; i < (int) index; i++) {
         operand_2->array_type->array->emplace_back(check_string_create_type("J"));
@@ -1182,10 +1181,12 @@ void newarray(Frame *curr_frame) {
       break;
   }
 
-  if (DEBUG) std::cout << "[DEBUG] array size "
+  if (DEBUG) std::cout << "array size "
                       << operand_2->array_type->array->size() << std::endl;
 
   curr_frame->push_operand(operand_2);
+
+  if (DEBUG) std::cout << "newarray\n";
 }
 
 /**
@@ -1194,6 +1195,7 @@ void newarray(Frame *curr_frame) {
  * @return void
  */
 void anewarray(Frame *curr_frame) {}
+
 
 /**
  * @brief Soma de inteiros. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
@@ -1216,6 +1218,7 @@ void iadd(Frame *curr_frame) {
 
   if (DEBUG) std::cout << "iadd\n";
 }
+
 
 /**
  * @brief Soma do tipo long. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
@@ -2051,7 +2054,7 @@ void i2s(Frame *curr_frame){
 
   int stack_value;
   Operand *int_type = curr_frame->pop_operand();
-  memcpy(&stack_value, &int_type->type_int, sizeof(int32_t));
+  memcpy(&stack_value, &int_type->type_int, sizeof(uint32_t));
 
   short conv_value = (short)stack_value;
   Operand *op_from_type = check_string_create_type("S");
@@ -2211,21 +2214,23 @@ void new_obj(Frame *curr_frame){
 
 
 /**
- * @brief Faz uma cópia do item que está no topo da pilha e o adiciona ao topo da pilha.
+ * @brief Faz uma cópia do item que está no topo da pilha e o adiciona ao
+ *  topo da pilha.
  * @param *curr_frame ponteiro para o frame atual
  * @return void
  */
 void dup(Frame *curr_frame){
-    curr_frame->pc++;
+  curr_frame->pc++;
 
-    if (DEBUG) std::cout << "top array size "
-                        << curr_frame->operand_stack.top()->array_type->array->size()
-                        << std::endl;
-    // if(DEBUG) printf("accessing vector %d\n", curr_frame->operand_stack.top()->array_type->array->at(0)->type_int);
-    Operand *copy_1 = copy_operand(curr_frame->operand_stack.top());
-    if(DEBUG) printf("coppied opperands\n");
-    curr_frame->push_operand(copy_1);
-    if(DEBUG) printf("[PUSHED OPERAND]\n");
+  Operand *copy_1 = copy_operand(curr_frame->operand_stack.top());
+
+  if (DEBUG) std::cout << "top array size "
+                      << copy_1->array_type->array->size()
+                      << std::endl;
+
+  curr_frame->push_operand(copy_1);
+
+  if (DEBUG) std::cout << "dup\n";
 }
 
 
@@ -2987,22 +2992,32 @@ void f2l(Frame *curr_frame){
     if (DEBUG) std::cout << "f2l\n";
 }
 
-void iastore(Frame* curr_frame){
-  if(DEBUG)printf("iastore\n");
-  Operand* value = curr_frame->pop_operand();
-  if(DEBUG)printf("popped first\n");
-  Operand* index = curr_frame->pop_operand();
-  if(DEBUG)printf("popped second\n");
-  Operand *array = curr_frame->pop_operand();
-  if(DEBUG)printf("popped third\n");
-  if(DEBUG)printf("index: %d\n", index->type_int);
-  Operand *op = array->array_type->array->at(index->type_int);
-  if(DEBUG)printf("cant get index\n");
-  op->type_int = value->type_int;
-  if(DEBUG)printf("atribuiu\n");
 
-  curr_frame->pc++;
+/**
+ * @brief Coleta um int da pilha de operandos e armazena em um vetor de ints.
+ * @param *curr_frame ponteiro para o frame atual
+ * @return void
+ */
+void iastore(Frame* curr_frame){
+  Operand* value = curr_frame->pop_operand();
+  Operand* index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+
+  ((*array->array_type->array)[(int)index->type_int])->type_int = value->type_int;
+
+  if (DEBUG) std::cout << "iastore value : " << value->type_int << std::endl;
+  if (DEBUG)
+    for (int j=0; (unsigned)j < array->array_type->array->size(); ++j) {
+      int value = (array->array_type->array->at(j))->type_int;
+      if (DEBUG) std::cout << "array item : " << value << std::endl;
+    }
+
+  curr_frame->push_operand(array);
+   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "iastore\n";
 }
+
 
 /**
 * @brief Converte de inteiro para float
@@ -3022,6 +3037,7 @@ void i2f(Frame *curr_frame) {
   curr_frame->push_operand(float_converted_type);
 }
 
+
 /**
 * @brief Converte de long para float
 * @param *curr_frame ponteiro para o frame atual
@@ -3040,14 +3056,29 @@ void l2f(Frame *curr_frame) {
   curr_frame->push_operand(float_converted_type);
 }
 
-void iaload(Frame *curr_frame){
-    Operand* index = curr_frame->pop_operand();
-    Operand* array = curr_frame->pop_operand();
-    if(DEBUG)printf("ARRAY SIZE: %d\n", array->array_type->array->size());
-    Operand* op = array->array_type->array->at(index->type_int);
-    curr_frame->operand_stack.push(op);
 
-    curr_frame->pc++;
+/**
+* @brief ...
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
+void iaload(Frame *curr_frame){
+  Operand* index = curr_frame->pop_operand();
+  Operand* array = curr_frame->pop_operand();
+
+  if (DEBUG) std::cout << "array size : " << array->array_type->array->size()
+                        << std::endl;
+  Operand* op = array->array_type->array->at(index->type_int);
+  if (DEBUG) std::cout << "array index : " << (int)index->type_int << std::endl;
+  if (DEBUG)
+     for (int j=0; (unsigned)j < array->array_type->array->size(); ++j) {
+       int value = (array->array_type->array->at(j))->type_int;
+       std::cout << "array item : " << value << std::endl;
+     }
+  curr_frame->push_operand(op);
+
+  curr_frame->pc++;
+  if (DEBUG) std::cout << "iaload\n";
 }
 
 void ifnull(Frame *curr_frame){
@@ -3257,4 +3288,291 @@ void arraylength(Frame* curr_frame){
   Operand *size = check_string_create_type("I");
   size->type_int = array->array_type->array->size();
   curr_frame->push_operand(size);
+}
+
+
+void aload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->push_operand(curr_frame->local_variables_array.at(index));
+}
+
+void laload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void faload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void daload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void aaload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+
+  Operand *loaded_array = array->array_type->array->at(index->type_int);
+  curr_frame->push_operand(loaded_array);
+}
+
+void baload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void caload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+void saload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *index = curr_frame->pop_operand();
+  Operand *array = curr_frame->pop_operand();
+  curr_frame->push_operand(array->array_type->array->at(index->type_int));
+}
+
+
+/**
+* @brief ...
+* @param *curr_frame ponteiro para o frame atual
+* @return void
+*/
+void astore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+
+  Operand *operand = curr_frame->pop_operand();
+  curr_frame->local_variables_array.at(index) = operand;
+}
+
+void lastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_long = operand->type_long;
+}
+
+void fastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_float = operand->type_float;
+}
+
+void dastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_double = operand->type_double;
+}
+
+void aastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->array_type = operand->array_type;
+}
+
+void bastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_bool = operand->type_bool;
+}
+
+void castore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  array->array_type->array->at(index->type_int)->type_char = operand->type_char;
+}
+
+void sastore(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand = curr_frame->pop_operand();
+  Operand *index = curr_frame->pop_operand();
+
+  Operand *array = curr_frame->pop_operand();
+  Operand *small = check_string_create_type("S");
+  small->type_short = (u2) operand->type_int;
+
+  array->array_type->array->at(index->type_int)->type_short = small->type_short;
+}
+
+void pop(Frame *curr_frame) {
+  curr_frame->pc++;
+  curr_frame->pop_operand();
+}
+
+void pop2(Frame *curr_frame) {
+  curr_frame->pc++;
+  Operand *operand = curr_frame->pop_operand();
+
+  if (operand->tag != CONSTANT_Long && operand->tag != CONSTANT_Double)
+    curr_frame->pop_operand();
+}
+
+void swap(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  curr_frame->push_operand(operand_1);
+  curr_frame->push_operand(operand_2);
+}
+
+void iushr(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u4 i_value_1 = operand_1->type_int;
+  u4 i_value_2 = operand_2->type_int;
+
+  i_value_2 &= 0x0000001f;
+
+  u4 i_result = i_value_1 >> i_value_2;
+  Operand *result = check_string_create_type("I");
+
+  result->type_int = i_result;
+
+  curr_frame->push_operand(result);
+}
+
+void lushr(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u4 i_value_1 = operand_1->type_long;
+  u4 i_value_2 = operand_2->type_long;
+
+  i_value_2 &= 0x0000003f;
+
+  u4 i_result = i_value_1 >> i_value_2;
+  Operand *result = check_string_create_type("J");
+
+  result->type_long = i_result;
+
+  curr_frame->push_operand(result);
+}
+
+void land(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u8 i_value_1 = operand_1->type_long;
+  u8 i_value_2 = operand_2->type_long;
+
+  u8 i_result = i_value_1 & i_value_2;
+
+  Operand *result = check_string_create_type("J");
+
+  result->type_long = (u8) i_result;
+
+  curr_frame->push_operand(result);
+}
+
+void lor(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u8 i_value_1 = operand_1->type_long;
+  u8 i_value_2 = operand_2->type_long;
+
+  u8 i_result = i_value_1 | i_value_2;
+
+  Operand *result = check_string_create_type("J");
+
+  result->type_long = (u8) i_result;
+
+  curr_frame->push_operand(result);
+}
+
+void ixor(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u4 i_value_1 = operand_1->type_int;
+  u4 i_value_2 = operand_2->type_int;
+
+  u4 i_result = i_value_1 ^ i_value_2;
+
+  Operand *result = check_string_create_type("I");
+
+  result->type_int = (u4) i_result;
+
+  curr_frame->push_operand(result);
+}
+
+void lxor(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  Operand *operand_1 = curr_frame->pop_operand();
+  Operand *operand_2 = curr_frame->pop_operand();
+
+  u8 i_value_1 = operand_1->type_long;
+  u8 i_value_2 = operand_2->type_long;
+
+  u8 i_result = i_value_1 ^ i_value_2;
+
+  Operand *result = check_string_create_type("I");
+
+  result->type_long = (u8) i_result;
+
+  curr_frame->push_operand(result);
 }

@@ -10,7 +10,6 @@ void nop(Frame *curr_frame);
 void ldc(Frame *curr_frame);
 void invokespecial(Frame *curr_frame);
 void invokevirtual(Frame *curr_frame);
-void astore_0(Frame *curr_frame);
 void astore_1(Frame *curr_frame);
 void astore_2(Frame *curr_frame);
 void astore_3(Frame *curr_frame);
@@ -25,6 +24,7 @@ void iconst_3(Frame *curr_frame);
 void iconst_4(Frame *curr_frame);
 void iconst_5(Frame *curr_frame);
 void getfield(Frame *curr_frame);
+void aload(Frame *curr_frame);
 void aload_0(Frame *curr_frame);
 void aload_1(Frame *curr_frame);
 void aload_2(Frame *curr_frame);
@@ -99,9 +99,6 @@ void d2f(Frame *curr_frame);
 void d2l(Frame *curr_frame);
 void d2i(Frame *curr_frame);
 void ior(Frame *curr_frame);
-void idiv(Frame *curr_frame);
-void imul(Frame *curr_frame);
-void irem(Frame *curr_frame);
 void dup_x1(Frame *curr_frame);
 void dup_x2(Frame *curr_frame);
 void dup2(Frame *curr_frame);
@@ -111,8 +108,28 @@ void f2l(Frame *curr_frame);
 void ladd(Frame *curr_frame);
 void lsub(Frame *curr_frame);
 void ldiv(Frame *curr_frame);
-void lmul(Frame * curr_frame);
-void lrem(Frame *curr_frame);
+void laload(Frame *curr_frame);
+void iaload(Frame *curr_frame);
+void faload(Frame *curr_frame);
+void daload(Frame *curr_frame);
+void aaload(Frame *curr_frame);
+void baload(Frame *curr_frame);
+void caload(Frame *curr_frame);
+void saload(Frame *curr_frame);
+
+void lastore(Frame *curr_frame);
+void fastore(Frame *curr_frame);
+void dastore(Frame *curr_frame);
+void aastore(Frame *curr_frame);
+void bastore(Frame *curr_frame);
+void castore(Frame *curr_frame);
+void sastore(Frame *curr_frame);
+
+void pop(Frame *curr_frame);
+void pop2(Frame *curr_frame);
+
+void astore(Frame *curr_frame);
+void astore_0(Frame *curr_frame);
 
 void if_icmpge(Frame*);
 void ins_goto(Frame*);
@@ -148,26 +165,46 @@ void iconst_m1(Frame *curr_frame);
 
 void if_icmpne(Frame *curr_frame);
 void if_icmpeq(Frame *curr_frame);
+void ifeq(Frame *curr_frame);
+void ifne(Frame *curr_frame);
+void iflt(Frame *curr_frame);
+void ifge(Frame *curr_frame);
+void ifgt(Frame *curr_frame);
+void ifle(Frame *curr_frame);
+void if_icmplt(Frame *curr_frame);
+void if_icmpgt(Frame *curr_frame);
+void if_icmple(Frame *curr_frame);
+void if_acmpeq(Frame *curr_frame);
+void if_acmpne(Frame *curr_frame);
 
 void newarray(Frame*);
+void arraylength(Frame* curr_frame);
 void iastore(Frame*);
-void iaload(Frame*);
-// void istore_0(Frame*);
 
-// cat 1 desvios
-void ifnull(Frame*);
-void ifnonnull(Frame*);
-void ret(Frame*);
-void  if_icmplt(Frame*);
-void if_icmpgt(Frame*);
-void if_icmple(Frame*);
-void if_acmpeq(Frame*);
-void if_acmpne(Frame*);
-void ifeq(Frame*);
-void ifne(Frame*);
-void iflt(Frame *);
-void ifge(Frame*);
-void ifgt(Frame*);
-void ifle(Frame*);
-void arraylength(Frame*);
+void swap(Frame *curr_frame);
+void imul(Frame *curr_frame);
+void lmul(Frame *curr_frame);
+void idiv(Frame *curr_frame);
+void irem(Frame *curr_frame);
+void lrem(Frame *curr_frame);
+void ineg(Frame *curr_frame);
+void lneg(Frame *curr_frame);
+void dneg(Frame *curr_frame);
+void ishl(Frame *curr_frame);
+void lshl(Frame *curr_frame);
+void ishr(Frame *curr_frame);
+void lshr(Frame *curr_frame);
+void iushr(Frame *curr_frame);
+void lushr(Frame *curr_frame);
+void land(Frame *curr_frame);
+void lor(Frame *curr_frame);
+void ixor(Frame *curr_frame);
+void lxor(Frame *curr_frame);
+
+void iinc(Frame *curr_frame);
+void ifnull(Frame *curr_frame);
+void ifnonnull(Frame *curr_frame);
+
+void ret(Frame *curr_frame);
+
 #endif
