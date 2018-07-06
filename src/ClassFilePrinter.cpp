@@ -105,8 +105,8 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
   printf("21. vetor2-java6\n");
   printf("22. vetor ladeira\n");
   printf("23. Goto\n");
-  printf("23. Class x Nome do Arquivo\n");
-  printf("24. Short\n");
+  printf("24. Class x Nome do Arquivo\n");
+  printf("25. Short\n");
   printf("0. Sair\n");
   scanf("%d", &option);
 
