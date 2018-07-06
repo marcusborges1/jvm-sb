@@ -1280,8 +1280,8 @@ void dadd(Frame *curr_frame) {
 }
 
 /**
- * @brief Subtração do tipo inteiro. Retira os dois operando do topo da pilha, subtraí-os e coloca o
- * resultado no topo da pilha.
+ * @brief Subtração do tipo inteiro. Retira os dois operando do topo da pilha,
+ *  subtraí-os e coloca o resultado no topo da pilha.
  * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
@@ -1292,7 +1292,7 @@ void isub(Frame *curr_frame) {
 
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Integer;
-  result->type_long = operand_1->type_long - operand_2->type_long;
+  result->type_int = operand_2->type_int - operand_1->type_int;
 
   curr_frame->push_operand(result);
 
@@ -1312,7 +1312,7 @@ void lsub(Frame *curr_frame) {
 
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Long;
-  result->type_long = operand_1->type_long - operand_2->type_long;
+  result->type_long = operand_2->type_long - operand_1->type_long;
 
   curr_frame->push_operand(result);
   if (DEBUG) std::cout << "lsub\n";
@@ -1688,8 +1688,8 @@ void lrem(Frame *curr_frame) {
 
 
 /**
- * @brief Calcula o resto da divisão entre dois double. Retira os dois operandos do topo da pilha,
- * calcula o resto da divisão e coloca no topo.
+ * @brief Calcula o resto da divisão entre dois double. Retira os dois
+ *  operandos do topo da pilha, calcula o resto da divisão e coloca no topo.
  * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
@@ -1709,6 +1709,7 @@ void drem(Frame *curr_frame) {
   memcpy(&result->type_double, &f_remainder, sizeof(u8));
   curr_frame->push_operand(result);
 }
+
 
 /**
  * @brief Calcula o valor negativo de int. Retira o operando do topo da pilha, nega o valor do
@@ -2253,11 +2254,13 @@ void f2d(Frame *curr_frame) {
 void f2i(Frame *curr_frame) {
   float float_value;
   Operand *float_type = curr_frame->pop_operand();
-  memcpy(&float_value, &float_type->type_float, sizeof(u4));
+  float_value = float_type->type_float;
+  if (DEBUG) std::cout << "f2i float " << float_value << std::endl;
 
   int int_value = (int)float_value;
   Operand *new_int = check_string_create_type("I");
   memcpy(&new_int->type_int, &int_value, sizeof(u4));
+  if (DEBUG) std::cout << "f2i int " << int_value << std::endl;
 
   curr_frame->push_operand(new_int);
   curr_frame->pc++;

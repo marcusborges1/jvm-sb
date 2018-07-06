@@ -185,7 +185,7 @@ void Frame::setup_instructions_func() {
     func[112] = irem;
     // func[113] = lrem;
     func[114] = frem;
-    // func[115] = drem;
+    func[115] = drem;
     // func[116] = ineg;
     // func[117] = lneg;
     func[118] = fneg;
