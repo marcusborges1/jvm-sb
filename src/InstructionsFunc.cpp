@@ -2306,7 +2306,7 @@ void l2i(Frame *curr_frame) {
     memcpy(&stack_value, &long_type->type_long, sizeof(u8));
 
     int new_value = (int) stack_value;
-    Operand *new_int = check_string_create_type("D");
+    Operand *new_int = check_string_create_type("I");
     memcpy(&new_int->type_int, &new_value, sizeof(u4));
 
     curr_frame->push_operand(new_int);
