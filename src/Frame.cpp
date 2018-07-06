@@ -40,7 +40,6 @@ Frame::Frame(MethodInfo *method, CpInfo *cp_info) {
 void Frame::execute_frame() {
   // coleta o primeiro opcode
   u1 op_code = method_code.code[pc];
-  if(DEBUG)printf("\nOP CODE %d\n", op_code);
   // substituir pelo op_code
   func[op_code](this);
 }
@@ -96,7 +95,7 @@ void Frame::setup_instructions_func() {
     func[22] = lload;
     func[23] = fload;
     func[24] = dload;
-    // func[25] = aload;
+    func[25] = aload;
     func[26] = iload_0;
     func[27] = iload_1;
     func[28] = iload_2;
@@ -117,7 +116,7 @@ void Frame::setup_instructions_func() {
     func[43] = aload_1;
     func[44] = aload_2;
     func[45] = aload_3;
-    func[46] = iaload;
+    // func[46] = iaload;
     // func[47] = laload;
     // func[48] = faload;
     // func[49] = daload;
@@ -130,7 +129,7 @@ void Frame::setup_instructions_func() {
     func[56] = fstore;
     func[57] = dstore;
     // func[58] = astore;
-    func[59] = istore_0;
+    // func[59] = istore_0;
     func[60] = istore_1;
     func[61] = istore_2;
     func[62] = istore_3;
@@ -146,10 +145,10 @@ void Frame::setup_instructions_func() {
     func[72] = dstore_1;
     func[73] = dstore_2;
     func[74] = dstore_3;
-    func[75] = astore_0;
+    // func[75] = astore_0;
     func[76] = astore_1;
-    func[77] = astore_2;
-    func[78] = astore_3;
+    // func[77] = astore_2;
+    // func[78] = astore_3;
     func[79] = iastore;
     // func[80] = lastore;
     // func[81] = fastore;
@@ -175,18 +174,18 @@ void Frame::setup_instructions_func() {
     func[101] = lsub;
     func[102] = fsub;
     func[103] = dsub;
-    func[104] = imul;
-    func[105] = lmul;
+    // func[104] = imul;
+    // func[105] = lmul;
     func[106] = fmul;
     func[107] = dmul;
-    func[108] = idiv;
+    // func[108] = idiv;
     func[109] = ldiv;
     func[110] = fdiv;
     func[111] = ddiv;
-    func[112] = irem;
-    func[113] = lrem;
+    // func[112] = irem;
+    // func[113] = lrem;
     func[114] = frem;
-    func[115] = drem;
+    // func[115] = drem;
     // func[116] = ineg;
     // func[117] = lneg;
     func[118] = fneg;
@@ -210,39 +209,39 @@ void Frame::setup_instructions_func() {
     func[136] = l2i;
     func[137] = l2f;
     func[138] = l2d;
-    func[139] = f2i;
+    // func[139] = f2i;
     func[140] = f2l;
     // func[141] = f2d;
     // func[140] = f2l;
     func[141] = f2d;
-    func[142] = d2i;
-    func[143] = d2l;
+    // func[142] = d2i;
+    // func[143] = d2l;
     func[144] = d2f;
     // func[145] = i2b;
     // func[146] = i2c;
-    func[147] = i2s;
+    // func[147] = i2s;
     // func[148] = lcmp;
     // func[149] = fcmpl;
     // func[150] = fcmpg;
     // func[151] = dcmpl;
     // func[152] = dcmpg;
-    func[153] = ifeq;
-    func[154] = ifne;
-    func[155] = iflt;
-    func[156] = ifge;
-    func[157] = ifgt;
-    func[158] = ifle;
+    // func[153] = ifeq;
+    // func[154] = ifne;
+    // func[155] = iflt;
+    // func[156] = ifge;
+    // func[157] = ifgt;
+    // func[158] = ifle;
     func[159] = if_icmpeq;
     func[160] = if_icmpne;
-    func[161] = if_icmplt;
+    // func[161] = if_icmplt;
     func[162] = if_icmpge;
-    func[163] = if_icmpgt;
-    func[164] = if_icmple;
-    func[165] = if_acmpeq;
-    func[166] = if_acmpne;
+    // func[163] = if_icmpgt;
+    // func[164] = if_icmple;
+    // func[165] = if_acmpeq;
+    // func[166] = if_acmpne;
     func[167] = ins_goto;
     // func[168] = jsr;
-    func[169] = ret;
+    // func[169] = ret;
     // func[170] = tableswitch;
     func[171] = lookupswitch;
     func[172] = ireturn;
@@ -260,10 +259,10 @@ void Frame::setup_instructions_func() {
     func[184] = invokestatic;
     func[185] = invokeinterface;
     //
-    func[187] = new_obj;
+    // func[187] = new_obj;
     func[188] = newarray;
     // func[189] = anewarray;
-    func[190] = arraylength;
+    // func[190] = arraylength;
     //
     // func[192] = checkcast;
     // func[193] = instanceof;
@@ -271,8 +270,8 @@ void Frame::setup_instructions_func() {
     //
     // func[196] = wide;
     // func[197] = multianewarray;
-    func[198] = ifnull;
-    func[199] = ifnonnull;
+    // func[198] = ifnull;
+    // func[199] = ifnonnull;
     // func[200] = goto_w;
     // func[201] = jsr_w;
 }

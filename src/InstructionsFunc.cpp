@@ -230,7 +230,7 @@ void getstatic(Frame *curr_frame) {
                                   field_info.FieldRef.name_and_type_index-1];
     std::string class_name = curr_frame->constant_pool_reference->get_utf8_constant_pool(
       curr_frame->constant_pool_reference, field_info.FieldRef.class_index-1);
-    
+
     if (class_name == "java/lang/System") {
         // se for a classe System (default java) não coloca na pilha
         return;
@@ -3257,4 +3257,12 @@ void arraylength(Frame* curr_frame){
   Operand *size = check_string_create_type("I");
   size->type_int = array->array_type->array->size();
   curr_frame->push_operand(size);
+}
+
+
+void aload(Frame *curr_frame) {
+  curr_frame->pc++;
+
+  u1 index = curr_frame->method_code.code[curr_frame->pc++];
+  curr_frame->push_operand(curr_frame->local_variables_array.at(index));
 }
