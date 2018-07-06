@@ -184,4 +184,5 @@ void lshr(Frame *curr_frame);
 void iushr(Frame *curr_frame);
 void lushr(Frame *curr_frame);
 void land(Frame *curr_frame);
+void lor(Frame *curr_frame);
 #endif
