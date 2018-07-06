@@ -10,6 +10,7 @@ void nop(Frame *curr_frame);
 void ldc(Frame *curr_frame);
 void invokespecial(Frame *curr_frame);
 void invokevirtual(Frame *curr_frame);
+void astore_0(Frame *curr_frame);
 void astore_1(Frame *curr_frame);
 void astore_2(Frame *curr_frame);
 void astore_3(Frame *curr_frame);
@@ -148,4 +149,6 @@ void if_icmpeq(Frame *curr_frame);
 
 void newarray(Frame*);
 void iastore(Frame*);
+void iaload(Frame*);
+// void istore_0(Frame*);
 #endif
