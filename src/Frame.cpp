@@ -240,7 +240,7 @@ void Frame::setup_instructions_func() {
     func[167] = ins_goto;
     // func[168] = jsr;
     func[169] = ret;
-    // func[170] = tableswitch;
+    func[170] = tableswitch;
     func[171] = lookupswitch;
     func[172] = ireturn;
     func[173] = lreturn;
