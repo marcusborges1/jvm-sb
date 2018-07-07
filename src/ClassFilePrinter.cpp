@@ -499,7 +499,7 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
           std::string str = class_file.constant_pool->get_utf8_constant_pool(
                           class_file.constant_pool, index-1);
           if (!str.empty()) {
-            std::cout << " #" << index << " " << str;
+            std::cout << " #" << std::dec << index << " " << str;
             std::cout << " dim " << (int)dim;
           }
           j++;
@@ -514,7 +514,7 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
             u1 byte1 = info_code.code[i];
             u1 byte2 = info_code.code[i+1];
             u2 index = (byte1<<8)|byte2;
-            std::cout << " #" << index << " "
+            std::cout << " #" << std::dec << index << " "
                       << class_file.constant_pool->get_utf8_constant_pool(
                                       class_file.constant_pool, index-1);
 
@@ -532,12 +532,12 @@ void ClassFilePrinter::print_instructions(JavaClass class_file,
             u1 branchbyte1 = info_code.code[i];
             u1 branchbyte2 = info_code.code[i+1];
             u2 address = (branchbyte1 << 8) | branchbyte2;
-            printf(" %08X ", address);
+            printf(" %d ", address);
             i++;
             j++;
         }
 
-        else printf(" %x ", info_code.code[j]);
+        else printf(" %d ", info_code.code[j]);
     }
     std::cout << std::endl;
   }
