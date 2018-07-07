@@ -428,7 +428,6 @@ Operand* copy_operand(Operand* original_type) {
           copy_type->array_type = (ArrayType*)malloc(sizeof(ArrayType));
           copy_type->array_type->array = new std::vector<Operand*>();
             for (int i=0; (unsigned)i < original_type->array_type->array->size(); i++) {
-              if(DEBUG)printf("i %d\n", i);
                 Operand* aux = original_type->array_type->array->at(i);
                 Operand *value = copy_operand(aux);
                 copy_type->array_type->array->emplace_back(value);
