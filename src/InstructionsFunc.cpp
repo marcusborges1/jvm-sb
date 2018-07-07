@@ -48,10 +48,8 @@ void ldc(Frame *curr_frame) {
         op->type_int = cpinfo.Integer.bytes;
         break;
     case CONSTANT_Float:
-      float valor_f;
-      memcpy(&valor_f, &(cpinfo.Float.bytes), sizeof(float));
-      op->type_float = valor_f;
-      if (DEBUG) std::cout << "ldc value : " << op->type_float << std::endl;
+      op->type_float = (float) cpinfo.Float.bytes;
+      if (DEBUG) std::cout << "ldc value : " << (float) op->type_float << std::endl;
       break;
     case CONSTANT_String: {
         std::string utf8_s = cpinfo.get_utf8_constant_pool(
@@ -350,8 +348,9 @@ void invokevirtual(Frame *curr_frame) {
                         std::cout << (u4) op->type_int;
                         break;
                     case CONSTANT_Float: {
-                        float value_f = (float) op->type_float;
-                        std::cout << value_f; }
+                        float float_v;
+                        memcpy(&float_v, &op->type_float, sizeof(float));
+                        printf("%f", float_v); }
                         break;
                     case CONSTANT_Long:
                         std::cout << (long) op->type_long;
@@ -598,19 +597,10 @@ void void_return(Frame *curr_frame) {
  * @return void
  */
 void iinc(Frame *curr_frame) {
-    
-    u1 index = curr_frame->method_code.code[++curr_frame->pc];
-    u1 constant_value = curr_frame->method_code.code[++curr_frame->pc];
-
-    int valorVariavel = curr_frame->local_variables_array.at((int)index)->type_int;
-    valorVariavel += (int) constant_value;   
-    
+    u1 index = curr_frame->method_code.code[curr_frame->pc++];
+    u1 constant_value = curr_frame->method_code.code[curr_frame->pc++];
+    curr_frame->local_variables_array.at(index) += constant_value;
     curr_frame->pc++;
-    if (DEBUG) std::cout << "iinc\n";
-    curr_frame->local_variables_array.at(index)->type_int = valorVariavel;
-
-    if (DEBUG) std::cout << "iinc\n";
-
 }
 
 /**
@@ -2327,19 +2317,16 @@ void l2d(Frame *curr_frame) {
  * @return void
  */
 void l2i(Frame *curr_frame) {
-    if (DEBUG) std::cout << "l2i\n";
     long stack_value;
     Operand *long_type = curr_frame->pop_operand();
     memcpy(&stack_value, &long_type->type_long, sizeof(u8));
 
     int new_value = (int) stack_value;
-    if (DEBUG) std::cout << new_value;
     Operand *new_int = check_string_create_type("I");
     memcpy(&new_int->type_int, &new_value, sizeof(u4));
 
-    curr_frame->pc++;
     curr_frame->push_operand(new_int);
-    if (DEBUG) std::cout << "l2i\n";
+    curr_frame->pc++;
 }
 
 
@@ -2414,16 +2401,20 @@ void d2l(Frame *curr_frame) {
  * @return void
  */
 void d2f(Frame *curr_frame) {
-  double stack_value;
+  u8 stack_value;
   Operand *double_type = curr_frame->pop_operand();
-  memcpy(&stack_value, &double_type->type_double, sizeof(double));
+  memcpy(&stack_value, &double_type->type_double, sizeof(u8));
+  if (DEBUG) std::cout << "d2f double value : " << stack_value << std::endl;
 
   float float_value = (float)stack_value;
   Operand *new_float = check_string_create_type("F");
   memcpy(&new_float->type_float, &float_value, sizeof(u4));
+  if (DEBUG) std::cout << "d2f float value : " << new_float->type_float << std::endl;
 
   curr_frame->push_operand(new_float);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "d2f\n";
 }
 
 
@@ -2966,64 +2957,6 @@ void lookupswitch(Frame *curr_frame) {
     free(jpOffset);
 }
 
-
-
-/**
- * @brief Acessa tabela de salto por chave e realizar salto.
- * @param Frame *curr_frame ponteiro que aponta para o frame atual
- * @return void
- */
-
-void tableswitch(Frame *curr_frame){
-    if (DEBUG) std::cout << "tableswitch\n";
-    uint32_t dftByte = 0;
-    uint32_t byteL = 0;
-    uint32_t byteH = 0;
-    uint32_t *jpOffset;
-    uint32_t index;
-    Operand *value1 = curr_frame->pop_operand();
-    index = value1->type_int;
-    uint32_t strt = curr_frame->pc;
-    curr_frame->pc++;
-
-    while (curr_frame->pc % 4 != 0) {
-        curr_frame->pc++;
-    }
-
-    dftByte = curr_frame->method_code.code[curr_frame->pc++];
-    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
-
-    byteL = curr_frame->method_code.code[curr_frame->pc++];
-    byteL = (byteL << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    byteL = (byteL << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    byteL = (byteL << 8) + curr_frame->method_code.code[curr_frame->pc++];
-
-    byteH = curr_frame->method_code.code[curr_frame->pc++];
-    byteH = (byteH << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    byteH = (byteH << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    byteH = (byteH << 8) + curr_frame->method_code.code[curr_frame->pc++];
-
-    jpOffset = (uint32_t*)malloc((byteH - byteL + 1) * sizeof(uint32_t));
-
-    for (int i = 0; i < (int)(byteH - byteL + 1); i++) {
-        jpOffset[i] = curr_frame->method_code.code[curr_frame->pc++];
-        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
-        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
-        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
-    }
-
-    if ((int32_t)index < (int32_t)byteL || (int32_t)index >(int32_t)byteH) {
-        curr_frame->pc = strt + (int32_t)dftByte;
-    }
-    else {
-        curr_frame->pc = strt + (int32_t)jpOffset[index - byteL];
-    }
-
-    free(jpOffset); 
-    if (DEBUG) std::cout << "tableswitch\n";
-}
 
 
 /**
@@ -3903,4 +3836,61 @@ void lxor(Frame *curr_frame) {
   result->type_long = (u8) i_result;
 
   curr_frame->push_operand(result);
+}
+
+/**
+ * @brief Acessa tabela de salto por chave e realizar salto.
+ * @param Frame *curr_frame ponteiro que aponta para o frame atual
+ * @return void
+ */
+
+void tableswitch(Frame *curr_frame){
+    if (DEBUG) std::cout << "tableswitch\n";
+    uint32_t dftByte = 0;
+    uint32_t byteL = 0;
+    uint32_t byteH = 0;
+    uint32_t *jpOffset;
+    uint32_t index;
+    Operand *value1 = curr_frame->pop_operand();
+    index = value1->type_int;
+    uint32_t strt = curr_frame->pc;
+    curr_frame->pc++;
+
+    while (curr_frame->pc % 4 != 0) {
+        curr_frame->pc++;
+    }
+
+    dftByte = curr_frame->method_code.code[curr_frame->pc++];
+    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    dftByte = (dftByte << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    byteL = curr_frame->method_code.code[curr_frame->pc++];
+    byteL = (byteL << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    byteL = (byteL << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    byteL = (byteL << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    byteH = curr_frame->method_code.code[curr_frame->pc++];
+    byteH = (byteH << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    byteH = (byteH << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    byteH = (byteH << 8) + curr_frame->method_code.code[curr_frame->pc++];
+
+    jpOffset = (uint32_t*)malloc((byteH - byteL + 1) * sizeof(uint32_t));
+
+    for (int i = 0; i < (int)(byteH - byteL + 1); i++) {
+        jpOffset[i] = curr_frame->method_code.code[curr_frame->pc++];
+        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+        jpOffset[i] = (jpOffset[i] << 8) + curr_frame->method_code.code[curr_frame->pc++];
+    }
+
+    if ((int32_t)index < (int32_t)byteL || (int32_t)index >(int32_t)byteH) {
+        curr_frame->pc = strt + (int32_t)dftByte;
+    }
+    else {
+        curr_frame->pc = strt + (int32_t)jpOffset[index - byteL];
+    }
+
+    free(jpOffset);
+    if (DEBUG) std::cout << "tableswitch\n";
 }

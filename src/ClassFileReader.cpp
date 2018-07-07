@@ -64,7 +64,7 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     // Se o nome do arquivo é diferente do nome da classe
     if (new_filename != class_name) {
-      printf("O nome do arquivo não compatível com o da classe. \n");
+      printf("O nome do arquivo não é compátivel com o da classe. \n");
       exit(1);
     }
 

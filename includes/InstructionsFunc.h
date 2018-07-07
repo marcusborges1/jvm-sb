@@ -207,9 +207,6 @@ void ifnonnull(Frame *curr_frame);
 
 void ret(Frame *curr_frame);
 
-
-
-
 void tableswitch(Frame *curr_frame);
 
 #endif
