@@ -349,14 +349,17 @@ void invokevirtual(Frame *curr_frame) {
                     case CONSTANT_Integer:
                         std::cout << (u4) op->type_int;
                         break;
-                    case CONSTANT_Float:
-                        std::cout << (float) op->type_float;
+                    case CONSTANT_Float: {
+                        float value_f = (float) op->type_float;
+                        std::cout << value_f; }
                         break;
                     case CONSTANT_Long:
                         std::cout << (long) op->type_long;
                         break;
-                    case CONSTANT_Double:
-                        std::cout << (double) op->type_double;
+                    case CONSTANT_Double: {
+                        double double_v;
+                        memcpy(&double_v, &op->type_double, sizeof(double));
+                        printf("%.15lf", double_v); }
                         break;
                     case CONSTANT_EmptySpace:
                         printf("null");
@@ -915,7 +918,6 @@ void lload(Frame *curr_frame) {
   curr_frame->pc++;
 
   int index = curr_frame->method_code.code[curr_frame->pc++];
-  if (DEBUG) std::cout << (int)index;
   curr_frame->push_operand(curr_frame->local_variables_array[(int)index]);
 
   if (DEBUG) std::cout << "lload\n";
@@ -1018,8 +1020,7 @@ void dstore_0(Frame* curr_frame) {
  * @return void
  */
 void dstore_1(Frame* curr_frame) {
-  Operand *op = curr_frame->operand_stack.top();
-  curr_frame->operand_stack.pop();
+  Operand *op = curr_frame->pop_operand();
 
   curr_frame->local_variables_array[1] = op;
   curr_frame->pc++;
@@ -1273,32 +1274,34 @@ void fadd(Frame *curr_frame) {
   if (DEBUG) std::cout << "fadd\n";
 }
 
+
 /**
  * @brief Soma do tipo double. Retira os dois operando do topo da pilha, soma-os e coloca o resultado
  * no topo da pilha.
  * @param *curr_frame Ponteiro para o frame atual
  * @return void
  */
-void dadd(Frame *curr_frame) {
-  curr_frame->pc++;
+ void dadd(Frame *curr_frame) {
+   curr_frame->pc++;
 
-  Operand *operand_1 = curr_frame->pop_operand();
-  Operand *operand_2 = curr_frame->pop_operand();
+   Operand *operand_1 = curr_frame->pop_operand();
+   Operand *operand_2 = curr_frame->pop_operand();
 
-  double value_1, value_2;
-  memcpy(&value_1, &operand_1->type_double, sizeof(double));
-  memcpy(&value_2, &operand_2->type_double, sizeof(double));
-  value_1 += value_2;
-  if (DEBUG) std::cout << "dadd value " << value_1 << std::endl;
+   double value_1, value_2;
+   memcpy(&value_1, &operand_1->type_double, sizeof(double));
+   memcpy(&value_2, &operand_2->type_double, sizeof(double));
+   value_1 += value_2;
+   if (DEBUG) std::cout << "dadd value " << value_1 << std::endl;
 
-  Operand *result = (Operand *) malloc(sizeof(Operand));
-  result->tag = CONSTANT_Double;
-  memcpy(&result->type_double, &value_1, sizeof(u8));
+   Operand *result = (Operand *) malloc(sizeof(Operand));
+   result->tag = CONSTANT_Double;
+   memcpy(&result->type_double, &value_1, sizeof(u8));
 
-  curr_frame->push_operand(result);
+   curr_frame->push_operand(result);
 
-  if (DEBUG) std::cout << "dadd\n";
-}
+   if (DEBUG) std::cout << "dadd\n";
+ }
+
 
 /**
  * @brief Subtração do tipo inteiro. Retira os dois operando do topo da pilha,
@@ -1554,6 +1557,7 @@ void fdiv(Frame *curr_frame) {
   curr_frame->push_operand(result);
 }
 
+
 /**
  * @brief Divisão de double. Retira os dois operandos do topo da pilha,
  *  divide-os e coloca o resultado no topo da pilha.
@@ -1574,6 +1578,7 @@ void ddiv(Frame *curr_frame) {
   Operand *result = (Operand *) malloc(sizeof(Operand));
   result->tag = CONSTANT_Double;
   memcpy(&result->type_double, &value_2, sizeof(u8));
+  if (DEBUG) std::cout << "ddiv result : " << result->type_double << std::endl;
 
   curr_frame->push_operand(result);
 
@@ -2355,14 +2360,20 @@ void iand(Frame *curr_frame) {
 void d2i(Frame *curr_frame) {
   double stack_value;
   Operand *double_type = curr_frame->pop_operand();
-  memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
+  stack_value = double_type->type_double;
+
+  if (DEBUG) std::cout << "d2i double value : " << stack_value << std::endl;
 
   int int_value = (int)stack_value;
   Operand *new_int = check_string_create_type("I");
   memcpy(&new_int->type_int, &int_value, sizeof(u4));
 
+  if (DEBUG) std::cout << "d2i int value : " << new_int->type_int << std::endl;
+
   curr_frame->push_operand(new_int);
   curr_frame->pc++;
+
+  if (DEBUG) std::cout << "d2i\n";
 }
 
 
@@ -2383,6 +2394,7 @@ void d2l(Frame *curr_frame) {
     curr_frame->push_operand(new_long);
     curr_frame->pc++;
 }
+
 
 /**
  * @brief Converte double para float
@@ -2577,16 +2589,14 @@ void ldc2_w(Frame *curr_frame) {
     if (cp_info->tag == CONSTANT_Double) { // double
         operands = (Operand*)malloc(sizeof(Operand));
         operands->tag = CONSTANT_Double;
+        operands->type_double = cp_info->Double.high_bytes;
+        operands->type_double = (operands->type_double << 32) + cp_info->Double.low_bytes;
 
-        double read_double_value;
-        u8 aux;
-        // representa uma constante de ponto flutuante de 8 bytes em big-endian
-        // no formato IEEE-754
-        aux = ((u8)cp_info->Double.high_bytes << 32) | cp_info->Double.low_bytes;
-        memcpy(&read_double_value, &aux, sizeof(double));
-
-        operands->type_double = read_double_value;
-        if (DEBUG) std::cout << "double value : " << read_double_value << std::endl;
+        if (DEBUG) {
+          double double_v;
+          memcpy(&double_v, &operands->type_double, sizeof(double));
+          printf("double value  %.15lf\n", double_v);
+        }
     } else { // long
         operands = (Operand*)malloc(sizeof(Operand));
         operands->tag = CONSTANT_Long;

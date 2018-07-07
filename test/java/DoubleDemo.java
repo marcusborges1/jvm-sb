@@ -5,9 +5,9 @@ class DoubleDemo {
   }
 
   public static void main(String[] args) {
-    double e1 = 5.0;
+    double e1 = 5.4;
     System.out.println(e1);
-    double e2 = 3.0;
+    double e2 = 3.5;
     System.out.println(e2);
 
     double e3 = e1 + e2;
