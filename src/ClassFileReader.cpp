@@ -20,7 +20,7 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     // fecha o programa de leitor/exibidor caso o arquivo .class não exista
     if (file == NULL) {
-        printf("File not found. Shutting down.\n");
+        printf("Arquivo não encontrado. Fechando a JVM.\n");
         exit(1);
     }
 
@@ -28,7 +28,7 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     class_file.magic_number = read_4_bytes(file);
     if(class_file.magic_number != 0xCAFEBABE){
-        printf("Arquivo .class invalido. \n");
+        printf("Arquivo com magic numebr inválido. \n");
         printf("Encerrando programa. \n");
         exit(1);
     }
@@ -64,7 +64,7 @@ JavaClass ClassFileReader::read_class_file(std::string filename) {
 
     // Se o nome do arquivo é diferente do nome da classe
     if (new_filename != class_name) {
-      printf("O nome do arquivo não é imcompátivel com o da classe. \n");
+      printf("O nome do arquivo não compatível com o da classe. \n");
       exit(1);
     }
 
