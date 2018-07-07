@@ -181,8 +181,10 @@ std::string ClassFilePrinter::print_menu_choose_type_file(std::string title) {
       break;
     case 23:
       filename = "test/Goto.class";
+      break;
     case 24:
       filename = "test/UmNome.class";
+      break;
     case 25:
       filename = "test/ShortDemo.class";
       break;

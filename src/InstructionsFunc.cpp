@@ -2360,7 +2360,7 @@ void iand(Frame *curr_frame) {
 void d2i(Frame *curr_frame) {
   double stack_value;
   Operand *double_type = curr_frame->pop_operand();
-  stack_value = double_type->type_double;
+  memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
 
   if (DEBUG) std::cout << "d2i double value : " << stack_value << std::endl;
 
@@ -2383,16 +2383,16 @@ void d2i(Frame *curr_frame) {
  * @return void
  */
 void d2l(Frame *curr_frame) {
-    double stack_value;
-    Operand *double_type = curr_frame->pop_operand();
-	memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
+  double stack_value;
+  Operand *double_type = curr_frame->pop_operand();
+  memcpy(&stack_value, &double_type->type_double, sizeof(int64_t));
 
-    long long_value = (long)stack_value;
-    Operand *new_long = check_string_create_type("J");
-    memcpy(&new_long->type_long, &long_value, sizeof(u8));
+  long long_value = (long)stack_value;
+  Operand *new_long = check_string_create_type("J");
+  memcpy(&new_long->type_long, &long_value, sizeof(u8));
 
-    curr_frame->push_operand(new_long);
-    curr_frame->pc++;
+  curr_frame->push_operand(new_long);
+  curr_frame->pc++;
 }
 
 
@@ -2535,7 +2535,7 @@ void ldc_w(Frame *curr_frame) {
 
     u2 index = (index_1 << 8) + index_2;
 
-    CpInfo *cp_info = curr_frame->constant_pool_reference + index - 1;
+    CpInfo *cp_info = curr_frame->constant_pool_reference + (int)index - 1;
     Operand* operands = nullptr;
 
     switch(cp_info->tag) {
@@ -3005,18 +3005,20 @@ void if_icmpne(Frame *curr_frame) {
 }
 
 void f2l(Frame *curr_frame) {
-    float stack_value;
-    Operand *floatType = curr_frame->pop_operand();
-	memcpy(&stack_value, &floatType->type_float, sizeof(int32_t));
+  float stack_value;
+  Operand *floatType = curr_frame->pop_operand();
+  stack_value = floatType->type_float;
+  if (DEBUG) std::cout << "f2l float value " << stack_value << std::endl;
 
-    long conv_value = (long)stack_value;
-    Operand *longConvertidoType = check_string_create_type("J");
-    memcpy(&longConvertidoType->type_long, &conv_value, sizeof(uint64_t));
+  long conv_value = (long)stack_value;
+  Operand *longConvertidoType = check_string_create_type("J");
+  memcpy(&longConvertidoType->type_long, &conv_value, sizeof(uint64_t));
+  if (DEBUG) std::cout << "f2l long value " << longConvertidoType->type_long << std::endl;
 
-    curr_frame->pc++;
-    curr_frame->push_operand(longConvertidoType);
+  curr_frame->pc++;
+  curr_frame->push_operand(longConvertidoType);
 
-    if (DEBUG) std::cout << "f2l\n";
+  if (DEBUG) std::cout << "f2l\n";
 }
 
 
